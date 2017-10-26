@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="XViewPager">
+        <!--是否可以循环-->
+        <attr name="XViewPager_enableLoop" format="boolean" />
+        <!--自动轮播时间(ms)-->
+        <attr name="XViewPager_loopInterval" format="integer" />
+        <!--是否自动滚动-->
+        <attr name="XViewPager_autoLoop" format="boolean" />
+        <!--是否可以手动滑动-->
+        <attr name="XViewPager_touchEnable" format="boolean" />
+        <!--滑动的速率(ms)-->
+        <attr name="XViewPager_scrollDuration" format="integer" />
+        <!--指示器的背景色-->
+        <attr name="XViewPager_indicator_background_color" format="color" />
+        <!--指示器的位置(上中下)-->
+        <attr name="XViewPager_indicator_position" format="enum">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+        <!--以下是默认的指示器设置-->
+        <!--默认指示器的选中资源id-->
+        <attr name="XViewPager_default_indicator_select_resId" format="reference" />
+        <!--默认指示器的正常资源id-->
+        <attr name="XViewPager_default_indicator_normal_resId" format="reference" />
+        <!--默认指示器item的间距-->
+        <attr name="XViewPager_default_indicator_margin" format="dimension" />
+        <!--默认指示器item的大小-->
+        <attr name="XViewPager_default_indicator_size" format="dimension" />
+        <!--默认指示器的gravity-->
+        <attr name="XViewPager_default_indicator_gravity" format="enum">
+            <enum name="left" value="0" />
+            <enum name="center" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>
