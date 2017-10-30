@@ -175,7 +175,7 @@ public class XViewPagerView extends ViewPager implements XViewPagerAdapter.LoopV
      *
      * @return
      */
-    public XViewPagerAdapter getxViewPagerAdapter() {
+    public XViewPagerAdapter getXViewPagerAdapter() {
         return xViewPagerAdapter;
     }
 

@@ -6,20 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-
-/**
- * ****************************************************************
- * 文件名称 :
- * 作   者 : xyh
- * 创建时间 : 2017/10/24 17:20
- * 文件描述 :
- * 版权声明 : Copyright (C) 2015-2018 杭州中焯信息技术股份有限公司
- * 修改历史 : 2017/10/24 1.00 初始版本
- * ****************************************************************
- */
 
 
 public class LineIndicatorView extends View {
@@ -77,7 +64,7 @@ public class LineIndicatorView extends View {
     }
 
     private int measureWidth() {
-        return (itemCount - 1) * itemSpace + itemWidth * itemCount + getPaddingLeft() + getPaddingRight();
+        return itemWidth * itemCount;
     }
 
     @Override
@@ -96,10 +83,13 @@ public class LineIndicatorView extends View {
     }
 
 
-    public void setOffsetX(int currentIndex, float positionOffset) {
-        offsetX = (int) (itemWidth * currentIndex + itemWidth * positionOffset);
-        Log.i("qfxl", "width = " + getWidth() + "---currentIndex = " + currentIndex + " --- offsetX = " + offsetX);
+    public void setOffsetX(int position, float positionOffset) {
+        offsetX = (int) (itemWidth * position + itemWidth * positionOffset);
         invalidate();
     }
 
+    public void onPageSelected(int position) {
+        offsetX = itemWidth * position;
+        invalidate();
+    }
 }

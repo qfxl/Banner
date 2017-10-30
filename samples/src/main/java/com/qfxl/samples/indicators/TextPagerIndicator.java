@@ -41,12 +41,14 @@ public class TextPagerIndicator extends XViewPagerBaseIndicator {
 
     @Override
     protected void createIndicators(int itemCount) {
-        textView = new TextView(getContext());
-        textView.setTextSize(16);
-        textView.setPadding(15, 15, 15, 15);
-        textView.setTextColor(Color.WHITE);
-        textView.setBackgroundResource(R.drawable.shape_text_indicator);
-        textView.setText("1/" + itemCount);
-        addView(textView);
+        if (itemCount > 1) {
+            textView = new TextView(getContext());
+            textView.setTextSize(16);
+            textView.setPadding(15, 15, 15, 15);
+            textView.setTextColor(Color.WHITE);
+            textView.setBackgroundResource(R.drawable.shape_text_indicator);
+            textView.setText("1/" + itemCount);
+            addView(textView);
+        }
     }
 }

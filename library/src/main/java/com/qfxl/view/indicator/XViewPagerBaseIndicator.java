@@ -18,11 +18,11 @@ public abstract class XViewPagerBaseIndicator extends LinearLayout implements Vi
     /**
      * 关联的LoopViewPager
      */
-    private XViewPagerView mXViewPagerView;
+    protected XViewPagerView mXViewPagerView;
     /**
      * item的总个数
      */
-    private int itemTotalCount;
+    protected int itemTotalCount;
     /**
      * ViewPager item选中监听
      */
@@ -73,7 +73,7 @@ public abstract class XViewPagerBaseIndicator extends LinearLayout implements Vi
         if (xViewPagerView != null && xViewPagerView.getAdapter() != null) {
             mXViewPagerView = xViewPagerView;
             mXViewPagerView.addOnPageChangeListener(this);
-            itemTotalCount = mXViewPagerView.getxViewPagerAdapter().getRealCount();
+            itemTotalCount = mXViewPagerView.getXViewPagerAdapter().getRealCount();
             createIndicators(itemTotalCount);
         }
     }
@@ -89,7 +89,7 @@ public abstract class XViewPagerBaseIndicator extends LinearLayout implements Vi
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        onItemScrolled(mXViewPagerView.getCurrentRealItem(), positionOffset, positionOffsetPixels);
+        onItemScrolled(position % mXViewPagerView.getXViewPagerAdapter().getRealCount(), positionOffset, positionOffsetPixels);
     }
 
     @Override
