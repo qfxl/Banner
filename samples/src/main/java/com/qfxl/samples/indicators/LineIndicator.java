@@ -7,7 +7,9 @@ import android.util.AttributeSet;
 import com.qfxl.view.indicator.XViewPagerBaseIndicator;
 
 
-
+/**
+ * @author qfxl
+ */
 public class LineIndicator extends XViewPagerBaseIndicator {
     private LineIndicatorView indicatorView;
 

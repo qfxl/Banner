@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.qfxl.samples.OthersActivity">
+
+    <com.qfxl.view.viewpager.XViewPager
+        android:id="@+id/xvp_others1"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:clipChildren="false" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <com.qfxl.view.viewpager.XViewPager
+        android:id="@+id/xvp_others2"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:clipChildren="false" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <com.qfxl.view.viewpager.XViewPager
+        android:id="@+id/xvp_others3"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:clipChildren="false" />
+</LinearLayout>

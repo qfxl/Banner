@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-
+/**
+ * @author qfxl
+ */
 public class LineIndicatorView extends View {
     /**
      * 每个item的宽度

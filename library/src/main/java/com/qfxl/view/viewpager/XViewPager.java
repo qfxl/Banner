@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -23,6 +24,7 @@ import com.qfxl.view.indicator.XViewPagerBaseIndicator;
  *         3，支持设置滑动速率
  *         4，支持设置是否可以手动滑动
  *         5，支持设置指示器及自定义指示器
+ *         6，其他所有ViewPager的特性
  */
 public class XViewPager extends RelativeLayout {
     /**
@@ -124,6 +126,8 @@ public class XViewPager extends RelativeLayout {
         setDefaultIndicatorSelectResId(a.getResourceId(R.styleable.XViewPager_XViewPager_default_indicator_select_resId, R.drawable.shape_default_indicator_select));
         setDefaultIndicatorMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_default_indicator_margin, (int) sp2px(2)));
         setDefaultIndicatorSize(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_default_indicator_size, (int) sp2px(6)));
+        setPageMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_page_margin, 0));
+        setOffscreenPageLimit(a.getInteger(R.styleable.XViewPager_XViewPager_page_offscreen_limit,1));
         int defaultGravity = a.getInt(R.styleable.XViewPager_XViewPager_default_indicator_gravity, 1);
         switch (defaultGravity) {
             case 0:
@@ -141,6 +145,14 @@ public class XViewPager extends RelativeLayout {
         setIndicatorPosition(mIndicatorPositions[a.getInt(R.styleable.XViewPager_XViewPager_indicator_position, 2)]);
         a.recycle();
         addView(xViewPagerView, lp);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            xViewPagerView.setClipChildren(getClipChildren());
+        }
     }
 
     /**
@@ -343,6 +355,30 @@ public class XViewPager extends RelativeLayout {
         return this;
     }
 
+    /**
+     * 设置ViewPager item的外边距
+     *
+     * @param margin
+     * @return
+     */
+    public XViewPager setPageMargin(int margin) {
+        if (xViewPagerView != null) {
+            xViewPagerView.setPageMargin(margin);
+        }
+        return this;
+    }
+
+    /**
+     * 设置ViewPager 离屏缓存的数量
+     * @param limit
+     * @return
+     */
+    public XViewPager setOffscreenPageLimit(int limit) {
+        if (xViewPagerView != null) {
+            xViewPagerView.setOffscreenPageLimit(limit);
+        }
+        return this;
+    }
     /**
      * 指示器初始化
      */

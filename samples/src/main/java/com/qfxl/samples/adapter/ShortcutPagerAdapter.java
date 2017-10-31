@@ -10,18 +10,10 @@ import com.qfxl.samples.R;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * ****************************************************************
- * 文件名称 :
- * 作   者 : xyh
- * 创建时间 : 2017/10/24 13:53
- * 文件描述 :
- * 版权声明 : Copyright (C) 2015-2018 杭州中焯信息技术股份有限公司
- * 修改历史 : 2017/10/24 1.00 初始版本
- * ****************************************************************
+ * @author qfxl
  */
-
-
 public class ShortcutPagerAdapter extends BasePagerAdapter {
 
     @Override

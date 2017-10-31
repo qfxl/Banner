@@ -12,20 +12,12 @@ import com.qfxl.samples.R;
 
 import java.util.List;
 
+
 /**
- * ****************************************************************
- * 文件名称 :
- * 作   者 : xyh
- * 创建时间 : 2017/10/24 14:14
- * 文件描述 :
- * 版权声明 : Copyright (C) 2015-2018 杭州中焯信息技术股份有限公司
- * 修改历史 : 2017/10/24 1.00 初始版本
- * ****************************************************************
+ * @author qfxl
  */
-
-
 public class GridViewAdapter extends BaseAdapter {
-    List<Pair<String, Integer>> gridItemList;
+   private List<Pair<String, Integer>> gridItemList;
 
     public GridViewAdapter(List<Pair<String, Integer>> gridItemList) {
         this.gridItemList = gridItemList;

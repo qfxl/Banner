@@ -7,6 +7,9 @@ import com.qfxl.samples.adapter.BannerAdapter;
 import com.qfxl.samples.adapter.ShortcutPagerAdapter;
 import com.qfxl.view.viewpager.XViewPager;
 
+/**
+ * @author qfxl
+ */
 public class BasicUseActivity extends AppCompatActivity {
 
     @Override

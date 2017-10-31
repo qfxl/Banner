@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".BasicUseActivity" />
-        <activity android:name=".IndicatorActivity"></activity>
+        <activity android:name=".IndicatorActivity" />
+        <activity android:name=".TransformActivity" />
+        <activity android:name=".OthersActivity"></activity>
     </application>
 
 </manifest>

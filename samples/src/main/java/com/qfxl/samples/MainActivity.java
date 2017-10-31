@@ -20,6 +20,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button indicatorBtn = (Button) findViewById(R.id.btn_indicator);
         indicatorBtn.setOnClickListener(this);
+
+        Button transformBtn = (Button) findViewById(R.id.btn_transform);
+        transformBtn.setOnClickListener(this);
+
+        Button othersBtn = (Button) findViewById(R.id.btn_others);
+        othersBtn.setOnClickListener(this);
     }
 
     private void startActivity(Class<?> clazz) {
@@ -37,6 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_indicator:
                 clazz = IndicatorActivity.class;
+                break;
+            case R.id.btn_transform:
+                clazz = TransformActivity.class;
+                break;
+            case R.id.btn_others:
+                clazz = OthersActivity.class;
                 break;
             default:
                 clazz = BasicUseActivity.class;

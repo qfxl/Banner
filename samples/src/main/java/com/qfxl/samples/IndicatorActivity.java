@@ -9,6 +9,9 @@ import com.qfxl.samples.indicators.LineIndicator;
 import com.qfxl.samples.indicators.TextPagerIndicator;
 import com.qfxl.view.viewpager.XViewPager;
 
+/**
+ * @author qfxl
+ */
 public class IndicatorActivity extends AppCompatActivity {
 
     @Override
