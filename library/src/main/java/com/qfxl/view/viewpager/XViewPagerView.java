@@ -17,7 +17,7 @@ public class XViewPagerView extends ViewPager implements XViewPagerAdapter.LoopV
     /**
      * 是否可以循环(默认可以)
      */
-    private boolean enableLoop;
+    private boolean enableInfinityLoop;
     /**
      * 自动循环的间隔(默认3s)
      */
@@ -57,7 +57,7 @@ public class XViewPagerView extends ViewPager implements XViewPagerAdapter.LoopV
         if (adapter != null) {
             if (xViewPagerAdapter == null || xViewPagerAdapter.getAdapter() != adapter) {
                 xViewPagerAdapter = new XViewPagerAdapter(adapter);
-                xViewPagerAdapter.setEnableLoop(enableLoop);
+                xViewPagerAdapter.setEnableInfinityLoop(enableInfinityLoop);
                 xViewPagerAdapter.setLoopViewPagerCenterListener(this);
                 super.setAdapter(xViewPagerAdapter);
             }
@@ -67,14 +67,14 @@ public class XViewPagerView extends ViewPager implements XViewPagerAdapter.LoopV
     /**
      * 设置是否可以循环
      *
-     * @param enableLoop
+     * @param enableInfinityLoop
      */
-    public void setEnableLoop(boolean enableLoop) {
+    public void setEnableInfinityLoop(boolean enableInfinityLoop) {
         //如果已经设置了适配器，则不允许设置此参数
         if (getAdapter() == null) {
-            this.enableLoop = enableLoop;
+            this.enableInfinityLoop = enableInfinityLoop;
         } else {
-            Log.i(XViewPagerView.class.getName(), "请在setAdapter之前调用setEnableLoop");
+            Log.i(XViewPagerView.class.getName(), "请在setAdapter之前调用setEnableInfinityLoop");
         }
     }
 
@@ -207,7 +207,7 @@ public class XViewPagerView extends ViewPager implements XViewPagerAdapter.LoopV
 
     @Override
     public void setCurrentItem(int item, boolean smoothScroll) {
-        if (xViewPagerAdapter != null && xViewPagerAdapter.getAdapter().getCount() > 0 && enableLoop) {
+        if (xViewPagerAdapter != null && xViewPagerAdapter.getAdapter().getCount() > 0 && enableInfinityLoop) {
             item = xViewPagerAdapter.getCount() >> 1 + item % xViewPagerAdapter.getRealCount();
         }
         super.setCurrentItem(item, smoothScroll);
@@ -219,7 +219,7 @@ public class XViewPagerView extends ViewPager implements XViewPagerAdapter.LoopV
      * @return
      */
     public int getCurrentRealItem() {
-        if (xViewPagerAdapter != null && xViewPagerAdapter.getAdapter().getCount() > 0 && enableLoop) {
+        if (xViewPagerAdapter != null && xViewPagerAdapter.getAdapter().getCount() > 0 && enableInfinityLoop) {
             return super.getCurrentItem() % xViewPagerAdapter.getRealCount();
         } else {
             return super.getCurrentItem();

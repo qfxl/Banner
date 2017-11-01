@@ -42,6 +42,7 @@ public class IndicatorActivity extends AppCompatActivity {
 
         XViewPager xViewPager4 = (XViewPager) findViewById(R.id.xvp_indicator_4);
         xViewPager4.setAutoLoop(false)
+                .setEnableInfinityLoop(false)
                 .setAdapter(new BannerAdapter())
                 //自定义指示器务必在setAdapter之后调用
                 .setPagerIndicator(new LineIndicator(this));

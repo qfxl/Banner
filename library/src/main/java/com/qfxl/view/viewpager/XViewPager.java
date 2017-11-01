@@ -116,7 +116,7 @@ public class XViewPager extends RelativeLayout {
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         xViewPagerView = new XViewPagerView(getContext());
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.XViewPager);
-        setEnableLoop(a.getBoolean(R.styleable.XViewPager_XViewPager_enableLoop, true));
+        setEnableInfinityLoop(a.getBoolean(R.styleable.XViewPager_XViewPager_enableInfinityLoop, true));
         setLoopInterval(a.getInteger(R.styleable.XViewPager_XViewPager_loopInterval, 3000));
         setAutoLoop(a.getBoolean(R.styleable.XViewPager_XViewPager_autoLoop, false));
         setScrollDuration(a.getInteger(R.styleable.XViewPager_XViewPager_scrollDuration, 800));
@@ -156,14 +156,14 @@ public class XViewPager extends RelativeLayout {
     }
 
     /**
-     * 设置是否可以循环
+     * 设置是否可以无限循环 (默认是开启的)
      *
-     * @param enableLoop
+     * @param enableInfinityLoop
      * @return this
      */
-    public XViewPager setEnableLoop(boolean enableLoop) {
+    public XViewPager setEnableInfinityLoop(boolean enableInfinityLoop) {
         if (xViewPagerView != null) {
-            xViewPagerView.setEnableLoop(enableLoop);
+            xViewPagerView.setEnableInfinityLoop(enableInfinityLoop);
         }
         return this;
     }

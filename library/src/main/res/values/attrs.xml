@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="XViewPager">
-        <!--是否可以循环-->
-        <attr name="XViewPager_enableLoop" format="boolean" />
+        <!--是否可以无限循环-->
+        <attr name="XViewPager_enableInfinityLoop" format="boolean" />
         <!--自动轮播时间(ms)-->
         <attr name="XViewPager_loopInterval" format="integer" />
         <!--是否自动滚动-->

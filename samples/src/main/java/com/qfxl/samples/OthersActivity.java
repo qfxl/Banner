@@ -25,6 +25,7 @@ public class OthersActivity extends AppCompatActivity {
         lp.setMargins(40, 0, 40, 0);
         xViewPager1.getViewPager().setLayoutParams(lp);
         xViewPager1.setPageMargin(10)
+                .setOffscreenPageLimit(3)
                 .setAdapter(new BannerAdapter());
 
         XViewPager xViewPager2 = (XViewPager) findViewById(R.id.xvp_others2);

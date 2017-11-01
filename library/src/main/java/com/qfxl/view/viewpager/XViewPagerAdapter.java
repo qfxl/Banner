@@ -13,7 +13,7 @@ public class XViewPagerAdapter extends PagerAdapter {
     /**
      * 是否可以循环
      */
-    private boolean enableLoop;
+    private boolean enableInfinityLoop;
     /**
      * 实际数量的倍数
      */
@@ -51,16 +51,16 @@ public class XViewPagerAdapter extends PagerAdapter {
     /**
      * 设置是否可以循环
      *
-     * @param enableLoop
+     * @param enableInfinityLoop
      */
-    public void setEnableLoop(boolean enableLoop) {
-        this.enableLoop = enableLoop;
+    public void setEnableInfinityLoop(boolean enableInfinityLoop) {
+        this.enableInfinityLoop = enableInfinityLoop;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         int realPosition = position;
-        if (enableLoop && pagerAdapter.getCount() != 0) {
+        if (enableInfinityLoop && pagerAdapter.getCount() != 0) {
             realPosition = position % pagerAdapter.getCount();
         }
         return pagerAdapter.instantiateItem(container, realPosition);
@@ -69,7 +69,7 @@ public class XViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         int realPosition = position;
-        if (enableLoop && pagerAdapter.getCount() != 0) {
+        if (enableInfinityLoop && pagerAdapter.getCount() != 0) {
             realPosition = position % pagerAdapter.getCount();
         }
         pagerAdapter.destroyItem(container, realPosition, object);
@@ -78,7 +78,7 @@ public class XViewPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         int count;
-        if (enableLoop) {
+        if (enableInfinityLoop) {
             //adapter获取的数量必须>1才能开启循环
             if (pagerAdapter.getCount() > 1) {
                 count = pagerAdapter.getCount() * RATIO;
@@ -98,7 +98,7 @@ public class XViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void finishUpdate(ViewGroup container) {
-        if (!hasCentered && enableLoop) {
+        if (!hasCentered && enableInfinityLoop) {
             if (centerListener != null) {
                 centerListener.center();
             }
@@ -114,7 +114,7 @@ public class XViewPagerAdapter extends PagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         int realPosition = position;
-        if (enableLoop && pagerAdapter.getCount() != 0) {
+        if (enableInfinityLoop && pagerAdapter.getCount() != 0) {
             realPosition = position % pagerAdapter.getCount();
         }
         return pagerAdapter.getPageTitle(realPosition);
@@ -144,7 +144,7 @@ public class XViewPagerAdapter extends PagerAdapter {
     @Override
     public float getPageWidth(int position) {
         int realPosition = position;
-        if (enableLoop) {
+        if (enableInfinityLoop) {
             realPosition = position % pagerAdapter.getCount();
         }
         return pagerAdapter.getPageWidth(realPosition);
