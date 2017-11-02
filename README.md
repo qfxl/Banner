@@ -88,15 +88,15 @@ bannerViewPager.setAdapter(mBannerAdapter);
 |XViewPager_loopInterval|自动轮播间隔|integer|3000|
 |XViewPager_touchEnable|是否允许手动滑动|boolean|true|
 |XViewPager_scrollDuration|滑动的速率|integer|800|
-|XViewPager_page_margin|item之间的间距|integer|0|
-|XViewPager_page_offscreen_limit|离屏item个数|integer|1|
-|XViewPager_indicator_background_color|指示器背景色|color|默认底色|
-|XViewPager_indicator_position|指示器的位置(top,center,bottom)|enum|bottom|
-|XViewPager_default_indicator_select_resId|默认指示器选中的资源id|reference|R.drawable.shape_default_indicator_select|
-|XViewPager_default_indicator_normal_resId|默认指示器正常资源id|reference|R.drawable.shape_default_indicator_normal|
-|XViewPager_default_indicator_margin|默认指示器之间的间距|dimension|2dp|
-|XViewPager_default_indicator_size|默认指示器的大小|dimension|6dp|
-|XViewPager_default_indicator_gravity|默认指示器的位置(left,center,right)|enum|center|
+|XViewPager_pageMargin|item之间的间距|integer|0|
+|XViewPager_pageOffscreenLimit|离屏item个数|integer|1|
+|XViewPager_indicatorBackgroundColor|指示器背景色|color|默认底色|
+|XViewPager_indicatorPosition|指示器的位置(top,center,bottom)|enum|bottom|
+|XViewPager_defaultIndicatorSelectResId|默认指示器选中的资源id|reference|R.drawable.shape_default_indicator_select|
+|XViewPager_defaultIndicatorNormalResId|默认指示器正常资源id|reference|R.drawable.shape_default_indicator_normal|
+|XViewPager_defaultIndicatorMargin|默认指示器之间的间距|dimension|2dp|
+|XViewPager_defaultIndicatorSize|默认指示器的大小|dimension|6dp|
+|XViewPager_defaultIndicatorGravity|默认指示器的位置(left,center,right)|enum|center|
 
 ## 如何自定义指示器
 
