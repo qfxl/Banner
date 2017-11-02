@@ -1,7 +1,9 @@
 package com.qfxl.samples;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.qfxl.samples.adapter.BannerAdapter;
@@ -24,9 +26,25 @@ public class BasicUseActivity extends AppCompatActivity {
                 Toast.makeText(BasicUseActivity.this, "click position = " + position, Toast.LENGTH_SHORT).show();
             }
         });
-        XViewPager bannerViewPager = (XViewPager) findViewById(R.id.xvp_banner);
-        bannerViewPager.setAutoLoop(true)
+        XViewPager bannerViewPager = (XViewPager) findViewById(R.id.xvp_basic_banner);
+        bannerViewPager.setAdapter(mBannerAdapter);
+
+        XViewPager bannerViewPager2 = (XViewPager) findViewById(R.id.xvp_basic_banner2);
+        bannerViewPager2.setAutoLoop(true)
+                .setEnableInfinityLoop(true)
+                .setScrollDuration(500)
                 .setLoopInterval(2000)
+                .setTouchScrollable(true)
+                .setIndicatorLayoutBackgroundColor(Color.TRANSPARENT)
+                .setIndicatorPosition(XViewPager.IndicatorPosition.BOTTOM)
+                .setOffscreenPageLimit(1)
+                .setPageMargin(10)
+                .setUseDefaultIndicator(true)
+                .setDefaultIndicatorGravity(Gravity.CENTER)
+                .setDefaultIndicatorNormalResId(R.drawable.shape_default_indicator_normal)
+                .setDefaultIndicatorSelectResId(R.drawable.shape_default_indicator_select)
+                .setDefaultIndicatorSize(20)
+                .setDefaultIndicatorMargin(10)
                 .setAdapter(mBannerAdapter);
 
         XViewPager shortcutViewPager = (XViewPager) findViewById(R.id.xvp_shortcut);

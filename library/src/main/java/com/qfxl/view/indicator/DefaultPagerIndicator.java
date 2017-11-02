@@ -27,11 +27,11 @@ public class DefaultPagerIndicator extends XViewPagerBaseIndicator {
     /**
      * 正常的资源id
      */
-    private int normalResId = R.drawable.shape_default_indicator_normal;
+    private int normalResId;
     /**
      * 被选中的资源id
      */
-    private int selectResId = R.drawable.shape_default_indicator_select;
+    private int selectResId;
     /**
      * 指示器默认的尺寸
      */

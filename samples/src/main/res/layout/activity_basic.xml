@@ -1,21 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#faf8f8"
+    android:orientation="vertical"
     tools:context="com.qfxl.samples.BasicUseActivity">
 
     <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_banner"
+        android:id="@+id/xvp_basic_banner"
         android:layout_width="match_parent"
-        android:layout_height="140dp" />
+        android:layout_height="140dp"
+        app:XViewPager_autoLoop="true"
+        app:XViewPager_default_indicator_gravity="right"
+        app:XViewPager_default_indicator_margin="3dp"
+        app:XViewPager_default_indicator_normal_resId="@drawable/shape_default_indicator_normal"
+        app:XViewPager_default_indicator_select_resId="@drawable/shape_default_indicator_select"
+        app:XViewPager_default_indicator_size="8dp"
+        app:XViewPager_enableInfinityLoop="true"
+        app:XViewPager_indicator_background_color="@android:color/transparent"
+        app:XViewPager_indicator_position="bottom"
+        app:XViewPager_loopInterval="2000"
+        app:XViewPager_page_margin="10dp"
+        app:XViewPager_page_offscreen_limit="1"
+        app:XViewPager_scrollDuration="500"
+        app:XViewPager_touchEnable="true" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <com.qfxl.view.viewpager.XViewPager
+        android:id="@+id/xvp_basic_banner2"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="#fff" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
 
     <com.qfxl.view.viewpager.XViewPager
         android:id="@+id/xvp_shortcut"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:layout_centerInParent="true"
         android:background="#fff" />
-</RelativeLayout>
+
+</LinearLayout>

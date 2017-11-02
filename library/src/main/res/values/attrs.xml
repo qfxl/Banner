@@ -3,10 +3,10 @@
     <declare-styleable name="XViewPager">
         <!--是否可以无限循环-->
         <attr name="XViewPager_enableInfinityLoop" format="boolean" />
-        <!--自动轮播时间(ms)-->
-        <attr name="XViewPager_loopInterval" format="integer" />
         <!--是否自动滚动-->
         <attr name="XViewPager_autoLoop" format="boolean" />
+        <!--自动轮播时间(ms)-->
+        <attr name="XViewPager_loopInterval" format="integer" />
         <!--是否可以手动滑动-->
         <attr name="XViewPager_touchEnable" format="boolean" />
         <!--滑动的速率(ms)-->
@@ -38,6 +38,5 @@
             <enum name="center" value="1" />
             <enum name="right" value="2" />
         </attr>
-
     </declare-styleable>
 </resources>

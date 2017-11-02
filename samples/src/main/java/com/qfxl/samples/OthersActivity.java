@@ -22,7 +22,7 @@ public class OthersActivity extends AppCompatActivity {
         //如果api < 18 记得手动设置clipChildren
         xViewPager1.getViewPager().setClipChildren(false);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) xViewPager1.getViewPager().getLayoutParams();
-        lp.setMargins(40, 0, 40, 0);
+        lp.setMargins(80, 0, 80, 0);
         xViewPager1.getViewPager().setLayoutParams(lp);
         xViewPager1.setPageMargin(10)
                 .setOffscreenPageLimit(3)
