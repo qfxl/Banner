@@ -1,11 +1,13 @@
-﻿## XViewPager
+﻿# XViewPager
 
-###简介
+## 简介
+
 XViewPager封装了ViewPager提供了多页面切换的统一解决方案
 
 ==|假装有效果图==|
 
-###主要功能
+## 主要功能
+
 * 支持自动轮播(view.postRunnable实现)
 * 支持循环轮播
 * 支持设置滑动速率
@@ -15,11 +17,14 @@ XViewPager封装了ViewPager提供了多页面切换的统一解决方案
 * 其他所有ViewPager的特性
 * 内置3种切换动画
 
-###设计思路
+## 设计思路
+
 XViewPager继承自RelativeLayout，将ViewPager和indicator置于其中，同时XViewPager提供了一些ViewPager常用方法的代理，这样在日常使用上保持和ViewPager无差异，如果需要调用ViewPager的所有方法，可通过getViewPager()方法拿到真正的ViewPager进行操作.
 
-###使用方法
-####xml
+## 使用方法
+
+### xml
+
 ```xml
  <com.qfxl.view.viewpager.XViewPager
         android:id="@+id/xvp_banner"
@@ -47,7 +52,9 @@ XViewPager继承自RelativeLayout，将ViewPager和indicator置于其中，同�
         app:XViewPager_scrollDuration="500"
         app:XViewPager_touchEnable="true" />
 ```
-####java代码
+
+### java
+
 ```java
 XViewPager bannerViewPager = (XViewPager)findViewById(R.id.xvp_banner);
 bannerViewPager.setAdapter(mBannerAdapter);
@@ -71,7 +78,9 @@ bannerViewPager.setAdapter(mBannerAdapter);
                 .setDefaultIndicatorMargin(10)
                 .setAdapter(mBannerAdapter);
 ```
-###自定义属性
+
+## 自定义属性
+
 |属性|属性说明|类型|默认值|
 |:--:|:--:|:--:|:--:|
 |XViewPager_enableInfinityLoop|是否无限循环|boolean|true|
@@ -89,7 +98,8 @@ bannerViewPager.setAdapter(mBannerAdapter);
 |XViewPager_default_indicator_size|默认指示器的大小|dimension|6dp|
 |XViewPager_default_indicator_gravity|默认指示器的位置(left,center,right)|enum|center|
 
-###如何自定义指示器
+## 如何自定义指示器
+
 indicator的容器是一个LinearLayout，所以你要做的操作就是将你的指示器添加到Linearlayout中,sample中有自定义指示器的案例，TextPagerIndicator跟LineIndicator，具体查看sample
 ```java
 public class TextPagerIndicator extends XViewPagerBaseIndicator {
