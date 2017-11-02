@@ -12,28 +12,28 @@
         <!--滑动的速率(ms)-->
         <attr name="XViewPager_scrollDuration" format="integer" />
         <!--viewPager的pageMargin-->
-        <attr name="XViewPager_page_margin" format="dimension" />
+        <attr name="XViewPager_pageMargin" format="dimension" />
         <!--viewPager离屏缓存item个数-->
-        <attr name="XViewPager_page_offscreen_limit" format="integer" />
+        <attr name="XViewPager_pageOffscreenLimit" format="integer" />
         <!--指示器的背景色-->
-        <attr name="XViewPager_indicator_background_color" format="color" />
+        <attr name="XViewPager_indicatorBackgroundColor" format="color" />
         <!--指示器的位置(上中下)-->
-        <attr name="XViewPager_indicator_position" format="enum">
+        <attr name="XViewPager_indicatorPosition" format="enum">
             <enum name="top" value="0" />
             <enum name="center" value="1" />
             <enum name="bottom" value="2" />
         </attr>
         <!--以下是默认的指示器设置-->
         <!--默认指示器的选中资源id-->
-        <attr name="XViewPager_default_indicator_select_resId" format="reference" />
+        <attr name="XViewPager_defaultIndicatorSelectResId" format="reference" />
         <!--默认指示器的正常资源id-->
-        <attr name="XViewPager_default_indicator_normal_resId" format="reference" />
+        <attr name="XViewPager_defaultIndicatorNormalResId" format="reference" />
         <!--默认指示器item的间距-->
-        <attr name="XViewPager_default_indicator_margin" format="dimension" />
+        <attr name="XViewPager_defaultIndicatorMargin" format="dimension" />
         <!--默认指示器item的大小-->
-        <attr name="XViewPager_default_indicator_size" format="dimension" />
+        <attr name="XViewPager_defaultIndicatorSize" format="dimension" />
         <!--默认指示器的gravity-->
-        <attr name="XViewPager_default_indicator_gravity" format="enum">
+        <attr name="XViewPager_defaultIndicatorGravity" format="enum">
             <enum name="left" value="0" />
             <enum name="center" value="1" />
             <enum name="right" value="2" />

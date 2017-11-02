@@ -92,8 +92,17 @@ public class XViewPager extends RelativeLayout {
      * indicator的位置，上中下
      */
     public enum IndicatorPosition {
+        /**
+         * 上
+         */
         TOP(0),
+        /**
+         * 中
+         */
         CENTER(1),
+        /**
+         * 下
+         */
         BOTTOM(2);
 
         IndicatorPosition(int index) {
@@ -119,16 +128,16 @@ public class XViewPager extends RelativeLayout {
         setEnableInfinityLoop(a.getBoolean(R.styleable.XViewPager_XViewPager_enableInfinityLoop, true));
         setLoopInterval(a.getInteger(R.styleable.XViewPager_XViewPager_loopInterval, 3000));
         setAutoLoop(a.getBoolean(R.styleable.XViewPager_XViewPager_autoLoop, false));
-        setScrollDuration(a.getInteger(R.styleable.XViewPager_XViewPager_scrollDuration, 800));
+        setScrollDuration(a.getInteger(R.styleable.XViewPager_XViewPager_scrollDuration, 600));
         setTouchScrollable(a.getBoolean(R.styleable.XViewPager_XViewPager_touchEnable, true));
-        setIndicatorLayoutBackgroundColor(a.getColor(R.styleable.XViewPager_XViewPager_indicator_background_color, getBackgroundColor()));
-        setDefaultIndicatorNormalResId(a.getResourceId(R.styleable.XViewPager_XViewPager_default_indicator_normal_resId, R.drawable.shape_default_indicator_normal));
-        setDefaultIndicatorSelectResId(a.getResourceId(R.styleable.XViewPager_XViewPager_default_indicator_select_resId, R.drawable.shape_default_indicator_select));
-        setDefaultIndicatorMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_default_indicator_margin, (int) dp2px(2)));
-        setDefaultIndicatorSize(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_default_indicator_size, (int) dp2px(6)));
-        setPageMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_page_margin, 0));
-        setOffscreenPageLimit(a.getInteger(R.styleable.XViewPager_XViewPager_page_offscreen_limit,1));
-        int defaultGravity = a.getInt(R.styleable.XViewPager_XViewPager_default_indicator_gravity, 1);
+        setIndicatorLayoutBackgroundColor(a.getColor(R.styleable.XViewPager_XViewPager_indicatorBackgroundColor, getBackgroundColor()));
+        setDefaultIndicatorNormalResId(a.getResourceId(R.styleable.XViewPager_XViewPager_defaultIndicatorNormalResId, R.drawable.shape_default_indicator_normal));
+        setDefaultIndicatorSelectResId(a.getResourceId(R.styleable.XViewPager_XViewPager_defaultIndicatorSelectResId, R.drawable.shape_default_indicator_select));
+        setDefaultIndicatorMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_defaultIndicatorMargin, (int) dp2px(2)));
+        setDefaultIndicatorSize(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_defaultIndicatorSize, (int) dp2px(6)));
+        setPageMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_pageMargin, 0));
+        setOffscreenPageLimit(a.getInteger(R.styleable.XViewPager_XViewPager_pageOffscreenLimit,1));
+        int defaultGravity = a.getInt(R.styleable.XViewPager_XViewPager_defaultIndicatorGravity, 1);
         switch (defaultGravity) {
             case 0:
                 setDefaultIndicatorGravity(Gravity.LEFT);
@@ -142,7 +151,7 @@ public class XViewPager extends RelativeLayout {
             default:
                 setDefaultIndicatorGravity(Gravity.CENTER);
         }
-        setIndicatorPosition(mIndicatorPositions[a.getInt(R.styleable.XViewPager_XViewPager_indicator_position, 2)]);
+        setIndicatorPosition(mIndicatorPositions[a.getInt(R.styleable.XViewPager_XViewPager_indicatorPosition, 2)]);
         a.recycle();
         addView(xViewPagerView, lp);
     }
