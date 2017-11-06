@@ -41,7 +41,6 @@ public class TextPagerIndicator extends XViewPagerBaseIndicator {
 
     @Override
     protected void createIndicators(int itemCount) {
-        if (itemCount > 1) {
             textView = new TextView(getContext());
             textView.setTextSize(16);
             textView.setPadding(15, 15, 15, 15);
@@ -49,6 +48,5 @@ public class TextPagerIndicator extends XViewPagerBaseIndicator {
             textView.setBackgroundResource(R.drawable.shape_text_indicator);
             textView.setText("1/" + itemCount);
             addView(textView);
-        }
     }
 }

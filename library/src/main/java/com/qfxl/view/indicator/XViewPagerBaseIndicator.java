@@ -74,7 +74,10 @@ public abstract class XViewPagerBaseIndicator extends LinearLayout implements Vi
             mXViewPagerView = xViewPagerView;
             mXViewPagerView.addOnPageChangeListener(this);
             itemTotalCount = mXViewPagerView.getXViewPagerAdapter().getRealCount();
-            createIndicators(itemTotalCount);
+            //只有数量>1才允许设置指示器
+            if (itemTotalCount > 1) {
+                createIndicators(itemTotalCount);
+            }
         }
     }
 
