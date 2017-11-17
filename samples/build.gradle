@@ -21,6 +21,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(path: ':library')
+    compile project(path: ':xViewPager')
     compile 'com.android.support:appcompat-v7:25.3.1'
 }
