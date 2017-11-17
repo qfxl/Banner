@@ -23,6 +23,9 @@ XViewPager继承自RelativeLayout，将ViewPager和indicator置于其中，同�
 
 ## 使用方法
 
+```groovy
+compile 'com.qfxl:xViewPager:1.0.0'
+```
 ### xml
 
 ```xml
