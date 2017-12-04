@@ -4,7 +4,7 @@
 
 XViewPager封装了ViewPager提供了多页面切换的统一解决方案
 
-==|假装有效果图==|
+![1]![2]![3]![4]![5]
 
 ## 主要功能
 
@@ -141,7 +141,11 @@ public class TextPagerIndicator extends XViewPagerBaseIndicator {
 }
 ```
 
-
+  [1]: https://github.com/qfxl/XViewPager/blob/master/gif/sample1.gif
+  [2]: https://github.com/qfxl/XViewPager/blob/master/gif/sample2.gif
+  [3]: https://github.com/qfxl/XViewPager/blob/master/gif/sample3.gif
+  [4]: https://github.com/qfxl/XViewPager/blob/master/gif/sample4.gif
+  [5]: https://github.com/qfxl/XViewPager/blob/master/gif/sample5.gif
 
 
 
