@@ -21,8 +21,7 @@
         app:XViewPager_enableInfinityLoop="true"
         app:XViewPager_indicatorBackgroundColor="@android:color/transparent"
         app:XViewPager_indicatorPosition="bottom"
-        app:XViewPager_loopInterval="2000"
-        app:XViewPager_pageMargin="10dp"
+        app:XViewPager_loopInterval="1000"
         app:XViewPager_pageOffscreenLimit="1"
         app:XViewPager_scrollDuration="500"
         app:XViewPager_touchEnable="true" />
