@@ -26,20 +26,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "click position = " + position, Toast.LENGTH_SHORT).show();
             }
         });
-        XViewPager bannerViewPager = (XViewPager) findViewById(R.id.xvp_banner);
+        XViewPager bannerViewPager = findViewById(R.id.xvp_banner);
         bannerViewPager.setAdapter(mBannerAdapter);
 
 
-        Button bannerBtn = (Button) findViewById(R.id.btn_base);
+        Button bannerBtn = findViewById(R.id.btn_base);
         bannerBtn.setOnClickListener(this);
 
-        Button indicatorBtn = (Button) findViewById(R.id.btn_indicator);
+        Button indicatorBtn = findViewById(R.id.btn_indicator);
         indicatorBtn.setOnClickListener(this);
 
-        Button transformBtn = (Button) findViewById(R.id.btn_transform);
+        Button transformBtn = findViewById(R.id.btn_transform);
         transformBtn.setOnClickListener(this);
 
-        Button othersBtn = (Button) findViewById(R.id.btn_others);
+        Button othersBtn = findViewById(R.id.btn_others);
         othersBtn.setOnClickListener(this);
     }
 

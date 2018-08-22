@@ -39,13 +39,12 @@ public class BasicUseActivity extends AppCompatActivity {
                 .setOffscreenPageLimit(1)
                 .setUseDefaultIndicator(true)
                 .setDefaultIndicatorGravity(Gravity.CENTER)
-                .setDefaultIndicatorNormalResId(R.drawable.shape_default_indicator_normal)
+                .setIndicatorNormalResId(R.drawable.shape_default_indicator_normal)
                 .setDefaultIndicatorSelectResId(R.drawable.shape_default_indicator_select)
-                .setDefaultIndicatorSize(20)
                 .setDefaultIndicatorMargin(10)
                 .setAdapter(mBannerAdapter);
 
-        XViewPager shortcutViewPager = (XViewPager) findViewById(R.id.xvp_shortcut);
+        XViewPager shortcutViewPager = findViewById(R.id.xvp_shortcut);
         shortcutViewPager.setAdapter(new ShortcutPagerAdapter());
     }
 

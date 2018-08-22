@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2018 Frank Xu.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.qfxl.view.indicator;
 
 import android.content.Context;
@@ -6,8 +21,6 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.qfxl.view.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +28,7 @@ import java.util.List;
 /**
  * @author qfxl
  */
-public class DefaultPagerIndicator extends XViewPagerBaseIndicator {
+public class DefaultIndicator extends BaseIndicator {
     /**
      * 指示器集合
      */
@@ -33,23 +46,27 @@ public class DefaultPagerIndicator extends XViewPagerBaseIndicator {
      */
     private int selectResId;
     /**
-     * 指示器默认的尺寸
+     * 指示器默认的宽
      */
-    private int indicatorDefaultSize;
+    private int indicatorItemWidth;
+    /**
+     * 指示器默认高
+     */
+    private int indicatorItemHeight;
     /**
      * 指示器默认的间距
      */
     private int indicatorDefaultMargin;
 
-    public DefaultPagerIndicator(Context context) {
+    public DefaultIndicator(Context context) {
         this(context, null);
     }
 
-    public DefaultPagerIndicator(Context context, @Nullable AttributeSet attrs) {
+    public DefaultIndicator(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public DefaultPagerIndicator(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public DefaultIndicator(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         indicatorList = new ArrayList<>();
     }
@@ -73,20 +90,32 @@ public class DefaultPagerIndicator extends XViewPagerBaseIndicator {
     }
 
     /**
-     * 指示器默认的大小
-     * @param defaultSize
+     * 设置指示器宽度
+     *
+     * @param indicatorItemWidth
      */
-    public void setIndicatorDefaultSize(int defaultSize) {
-        indicatorDefaultSize = defaultSize;
+    public void setIndicatorItemWidth(int indicatorItemWidth) {
+        this.indicatorItemWidth = indicatorItemWidth;
+    }
+
+    /**
+     * 设置指示器高度
+     *
+     * @param indicatorItemHeight
+     */
+    public void setIndicatorItemHeight(int indicatorItemHeight) {
+        this.indicatorItemHeight = indicatorItemHeight;
     }
 
     /**
      * 设置指示器的外间距
+     *
      * @param defaultMargin
      */
     public void setIndicatorDefaultMargin(int defaultMargin) {
         indicatorDefaultMargin = defaultMargin;
     }
+
     @Override
     protected void onItemSelected(int position) {
         for (int i = 0; i < indicatorList.size(); i++) {
@@ -104,8 +133,9 @@ public class DefaultPagerIndicator extends XViewPagerBaseIndicator {
             indicatorList.clear();
             removeAllViews();
         }
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(indicatorDefaultSize, indicatorDefaultSize);
-        lp.setMargins(indicatorDefaultMargin,indicatorDefaultMargin,indicatorDefaultMargin,indicatorDefaultMargin);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(indicatorItemWidth == 0 ? LayoutParams.WRAP_CONTENT : indicatorItemWidth,
+                indicatorItemHeight == 0 ? LayoutParams.WRAP_CONTENT : indicatorItemHeight);
+        lp.setMargins(indicatorDefaultMargin, indicatorDefaultMargin, indicatorDefaultMargin, indicatorDefaultMargin);
         for (int i = 0; i < itemCount; i++) {
             ImageView mImageView = new ImageView(getContext());
             mImageView.setLayoutParams(lp);

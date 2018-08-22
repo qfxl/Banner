@@ -4,13 +4,13 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.qfxl.view.indicator.XViewPagerBaseIndicator;
+import com.qfxl.view.indicator.BaseIndicator;
 
 
 /**
  * @author qfxl
  */
-public class LineIndicator extends XViewPagerBaseIndicator {
+public class LineIndicator extends BaseIndicator {
     private LineIndicatorView indicatorView;
 
     public LineIndicator(Context context) {

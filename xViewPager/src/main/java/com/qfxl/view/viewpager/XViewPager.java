@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2018 Frank Xu.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.qfxl.view.viewpager;
 
 import android.content.Context;
@@ -13,18 +28,18 @@ import android.view.Gravity;
 import android.widget.RelativeLayout;
 
 import com.qfxl.view.R;
-import com.qfxl.view.indicator.DefaultPagerIndicator;
-import com.qfxl.view.indicator.XViewPagerBaseIndicator;
+import com.qfxl.view.indicator.DefaultIndicator;
+import com.qfxl.view.indicator.BaseIndicator;
 
 
 /**
  * @author qfxl
- *         1，支持自动轮播
- *         2，支持循环轮播
- *         3，支持设置滑动速率
- *         4，支持设置是否可以手动滑动
- *         5，支持设置指示器及自定义指示器
- *         6，其他所有ViewPager的特性
+ * 1，支持自动轮播
+ * 2，支持循环轮播
+ * 3，支持设置滑动速率
+ * 4，支持设置是否可以手动滑动
+ * 5，支持设置指示器及自定义指示器
+ * 6，其他所有ViewPager的特性
  */
 public class XViewPager extends RelativeLayout {
     /**
@@ -34,19 +49,11 @@ public class XViewPager extends RelativeLayout {
     /**
      * 指示器
      */
-    private XViewPagerBaseIndicator mPagerIndicator;
+    private BaseIndicator mPagerIndicator;
     /**
      * 是否使用默认的指示器，默认true
      */
     private boolean useDefaultIndicator = true;
-    /**
-     * 指示器的高度
-     */
-    private int indicatorLayoutWidth;
-    /**
-     * 指示器的高度
-     */
-    private int indicatorLayoutHeight;
     /**
      * 指示器的背景色
      */
@@ -56,21 +63,29 @@ public class XViewPager extends RelativeLayout {
      */
     private IndicatorPosition mIndicatorPosition;
     /**
-     * 指示器的默认lp
-     */
-    private LayoutParams mIndicatorLayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-    /**
      * 默认值指示器选中时的指示器资源id
      */
-    private int defaultIndicatorSelectedResId;
+    private int indicatorSelectedResId;
     /**
      * 默认值指示器正常情况下的指示器资源id
      */
-    private int defaultIndicatorNormalResId;
+    private int indicatorNormalResId;
     /**
-     * 设置默认指示器的大小
+     * 指示器宽度
      */
-    private int defaultIndicatorSize;
+    private int indicatorWidth;
+    /**
+     * 指示器高度
+     */
+    private int indicatorHeight;
+    /**
+     * 指示器item宽
+     */
+    private int indicatorItemWidth;
+    /**
+     * 指示器item高
+     */
+    private int indicatorItemHeight;
     /**
      * 默认指示器的margin
      */
@@ -125,19 +140,22 @@ public class XViewPager extends RelativeLayout {
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         xViewPagerView = new XViewPagerView(getContext());
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.XViewPager);
-        setEnableInfinityLoop(a.getBoolean(R.styleable.XViewPager_XViewPager_enableInfinityLoop, true));
-        setLoopInterval(a.getInteger(R.styleable.XViewPager_XViewPager_loopInterval, 3000));
-        setAutoLoop(a.getBoolean(R.styleable.XViewPager_XViewPager_autoLoop, false));
-        setScrollDuration(a.getInteger(R.styleable.XViewPager_XViewPager_scrollDuration, 600));
-        setTouchScrollable(a.getBoolean(R.styleable.XViewPager_XViewPager_touchEnable, true));
-        setIndicatorLayoutBackgroundColor(a.getColor(R.styleable.XViewPager_XViewPager_indicatorBackgroundColor, getBackgroundColor()));
-        setDefaultIndicatorNormalResId(a.getResourceId(R.styleable.XViewPager_XViewPager_defaultIndicatorNormalResId, R.drawable.shape_default_indicator_normal));
-        setDefaultIndicatorSelectResId(a.getResourceId(R.styleable.XViewPager_XViewPager_defaultIndicatorSelectResId, R.drawable.shape_default_indicator_select));
-        setDefaultIndicatorMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_defaultIndicatorMargin, (int) dp2px(2)));
-        setDefaultIndicatorSize(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_defaultIndicatorSize, (int) dp2px(6)));
-        setPageMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_XViewPager_pageMargin, 0));
-        setOffscreenPageLimit(a.getInteger(R.styleable.XViewPager_XViewPager_pageOffscreenLimit,1));
-        int defaultGravity = a.getInt(R.styleable.XViewPager_XViewPager_defaultIndicatorGravity, 1);
+        setEnableInfinityLoop(a.getBoolean(R.styleable.XViewPager_xvp_enableInfinityLoop, true));
+        setLoopInterval(a.getInteger(R.styleable.XViewPager_xvp_loopInterval, 3000));
+        setAutoLoop(a.getBoolean(R.styleable.XViewPager_xvp_autoLoop, false));
+        setScrollDuration(a.getInteger(R.styleable.XViewPager_xvp_scrollDuration, 600));
+        setTouchScrollable(a.getBoolean(R.styleable.XViewPager_xvp_touchEnable, true));
+        setIndicatorLayoutBackgroundColor(a.getColor(R.styleable.XViewPager_xvp_indicatorBackgroundColor, getBackgroundColor()));
+        setIndicatorNormalResId(a.getResourceId(R.styleable.XViewPager_xvp_indicatorNormalResId, R.drawable.shape_default_indicator_normal));
+        setDefaultIndicatorSelectResId(a.getResourceId(R.styleable.XViewPager_xvp_indicatorSelectResId, R.drawable.shape_default_indicator_select));
+        setDefaultIndicatorMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_xvp_indicatorMargin, (int) dp2px(2)));
+        setIndicatorWidth(a.getDimensionPixelOffset(R.styleable.XViewPager_xvp_indicatorWidth, 0));
+        setIndicatorHeight(a.getDimensionPixelOffset(R.styleable.XViewPager_xvp_indicatorHeight, 0));
+        setIndicatorItemWidth(a.getDimensionPixelOffset(R.styleable.XViewPager_xvp_indicatorItemWidth, (int) dp2px(6)));
+        setIndicatorItemHeight(a.getDimensionPixelOffset(R.styleable.XViewPager_xvp_indicatorItemHeight, (int) dp2px(6)));
+        setPageMargin(a.getDimensionPixelOffset(R.styleable.XViewPager_xvp_pageMargin, 0));
+        setOffscreenPageLimit(a.getInteger(R.styleable.XViewPager_xvp_pageOffscreenLimit, 1));
+        int defaultGravity = a.getInt(R.styleable.XViewPager_xvp_indicatorGravity, 1);
         switch (defaultGravity) {
             case 0:
                 setDefaultIndicatorGravity(Gravity.LEFT);
@@ -151,7 +169,7 @@ public class XViewPager extends RelativeLayout {
             default:
                 setDefaultIndicatorGravity(Gravity.CENTER);
         }
-        setIndicatorPosition(mIndicatorPositions[a.getInt(R.styleable.XViewPager_XViewPager_indicatorPosition, 2)]);
+        setIndicatorPosition(mIndicatorPositions[a.getInt(R.styleable.XViewPager_xvp_indicatorPosition, 2)]);
         a.recycle();
         addView(xViewPagerView, lp);
     }
@@ -210,30 +228,27 @@ public class XViewPager extends RelativeLayout {
      * @return this
      */
     public XViewPager setAdapter(PagerAdapter pagerAdapter) {
+        if (mPagerIndicator != null) {
+            removeView(mPagerIndicator);
+        }
         if (xViewPagerView != null) {
             xViewPagerView.setAdapter(pagerAdapter);
             //如果使用默认的指示器adapter.getCount()必须>1
             if (useDefaultIndicator && pagerAdapter.getCount() > 1) {
-                mPagerIndicator = new DefaultPagerIndicator(getContext());
+                mPagerIndicator = new DefaultIndicator(getContext());
                 //指示器资源设置
-                if (defaultIndicatorSelectedResId != 0) {
-                    ((DefaultPagerIndicator) mPagerIndicator).setIndicatorSelectResId(defaultIndicatorSelectedResId);
+                if (indicatorSelectedResId != 0) {
+                    ((DefaultIndicator) mPagerIndicator).setIndicatorSelectResId(indicatorSelectedResId);
                 }
-                if (defaultIndicatorNormalResId != 0) {
-                    ((DefaultPagerIndicator) mPagerIndicator).setIndicatorNormalResId(defaultIndicatorNormalResId);
+                if (indicatorNormalResId != 0) {
+                    ((DefaultIndicator) mPagerIndicator).setIndicatorNormalResId(indicatorNormalResId);
                 }
                 //设置默认指示器item的大小
-                if (defaultIndicatorSize > 0) {
-                    ((DefaultPagerIndicator) mPagerIndicator).setIndicatorDefaultSize(defaultIndicatorSize);
-                }
+                ((DefaultIndicator) mPagerIndicator).setIndicatorItemWidth(indicatorItemWidth);
+                ((DefaultIndicator) mPagerIndicator).setIndicatorItemHeight(indicatorItemHeight);
+                mPagerIndicator.setGravity(Gravity.CENTER_VERTICAL | defaultIndicatorGravity);
                 //设置默认指示器item的左右边距
-                if (defaultIndicatorSize > 0) {
-                    ((DefaultPagerIndicator) mPagerIndicator).setIndicatorDefaultMargin(defaultIndicatorMargin);
-                }
-                //设置默认指示器的gravity，默认垂直居中
-                if (defaultIndicatorSize > 0) {
-                    mPagerIndicator.setGravity(Gravity.CENTER_VERTICAL | defaultIndicatorGravity);
-                }
+                ((DefaultIndicator) mPagerIndicator).setIndicatorDefaultMargin(defaultIndicatorMargin);
                 setPagerIndicator(mPagerIndicator);
             }
         }
@@ -292,42 +307,8 @@ public class XViewPager extends RelativeLayout {
         return this;
     }
 
-    /**
-     * 指示器的高度
-     *
-     * @param height
-     * @return this
-     */
-    public XViewPager setIndicatorLayoutParams(int width, int height) {
-        indicatorLayoutWidth = width;
-        indicatorLayoutHeight = height;
-        return this;
-    }
-
     public XViewPager setIndicatorPosition(IndicatorPosition indicatorPosition) {
         mIndicatorPosition = indicatorPosition;
-        return this;
-    }
-
-    /**
-     * 设置指示器的layoutParams
-     *
-     * @param layoutParams
-     * @return
-     */
-    public XViewPager setIndicatorLayoutParams(LayoutParams layoutParams) {
-        mIndicatorLayoutParams = layoutParams;
-        return this;
-    }
-
-    /**
-     * 设置默认指示器的大小
-     *
-     * @param size
-     * @return
-     */
-    public XViewPager setDefaultIndicatorSize(int size) {
-        defaultIndicatorSize = size;
         return this;
     }
 
@@ -379,6 +360,7 @@ public class XViewPager extends RelativeLayout {
 
     /**
      * 设置ViewPager 离屏缓存的数量
+     *
      * @param limit
      * @return
      */
@@ -388,18 +370,34 @@ public class XViewPager extends RelativeLayout {
         }
         return this;
     }
+
+    public void setIndicatorWidth(int indicatorWidth) {
+        this.indicatorWidth = indicatorWidth;
+    }
+
+    public void setIndicatorHeight(int indicatorHeight) {
+        this.indicatorHeight = indicatorHeight;
+    }
+
+    public XViewPager setIndicatorItemWidth(int indicatorItemWidth) {
+        this.indicatorItemWidth = indicatorItemWidth;
+        return this;
+    }
+
+    public XViewPager setIndicatorItemHeight(int indicatorItemHeight) {
+        this.indicatorItemHeight = indicatorItemHeight;
+        return this;
+    }
+
     /**
      * 指示器初始化
      */
     private void createIndicators() {
         mPagerIndicator.setViewPager(xViewPagerView);
         LayoutParams indicatorLp;
-        //如果宽高有一为0则启用LayoutParams
-        if (indicatorLayoutWidth == 0 || indicatorLayoutHeight == 0) {
-            indicatorLp = mIndicatorLayoutParams;
-        } else {
-            indicatorLp = new LayoutParams(indicatorLayoutWidth, indicatorLayoutHeight);
-        }
+        //如果宽高有一为0则使用默认LayoutParams
+        indicatorLp = new LayoutParams(indicatorWidth == 0 ? LayoutParams.MATCH_PARENT : indicatorWidth,
+                indicatorHeight == 0 ? LayoutParams.WRAP_CONTENT : indicatorHeight);
         //设置indicator的位置
         switch (mIndicatorPosition) {
             case TOP:
@@ -421,17 +419,17 @@ public class XViewPager extends RelativeLayout {
     /**
      * 设置指示器
      *
-     * @param xViewPagerBaseIndicator
+     * @param baseIndicator
      */
-    public void setPagerIndicator(XViewPagerBaseIndicator xViewPagerBaseIndicator) {
+    public void setPagerIndicator(BaseIndicator baseIndicator) {
         if (getViewPager().getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have a adapter");
         }
         if (mPagerIndicator != null) {
             removeView(mPagerIndicator);
         }
-        if (xViewPagerBaseIndicator != null) {
-            mPagerIndicator = xViewPagerBaseIndicator;
+        if (baseIndicator != null) {
+            mPagerIndicator = baseIndicator;
         }
         //设置背景色
         if (mPagerIndicator != null && indicatorBackgroundColor != 0) {
@@ -445,8 +443,8 @@ public class XViewPager extends RelativeLayout {
      *
      * @return this
      */
-    public XViewPager setDefaultIndicatorNormalResId(int resId) {
-        defaultIndicatorNormalResId = resId;
+    public XViewPager setIndicatorNormalResId(int resId) {
+        indicatorNormalResId = resId;
         return this;
     }
 
@@ -456,7 +454,7 @@ public class XViewPager extends RelativeLayout {
      * @return this
      */
     public XViewPager setDefaultIndicatorSelectResId(int resId) {
-        defaultIndicatorSelectedResId = resId;
+        indicatorSelectedResId = resId;
         return this;
     }
 
@@ -474,7 +472,7 @@ public class XViewPager extends RelativeLayout {
      *
      * @return
      */
-    public XViewPagerBaseIndicator getPagerIndicator() {
+    public BaseIndicator getPagerIndicator() {
         return mPagerIndicator;
     }
 

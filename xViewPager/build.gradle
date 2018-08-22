@@ -1,21 +1,21 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.0.0"
+version = "1.0.2-beta"
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
 }
 allprojects {
     tasks.withType(Javadoc) {

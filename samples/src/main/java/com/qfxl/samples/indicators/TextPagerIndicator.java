@@ -4,19 +4,17 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.qfxl.samples.R;
-import com.qfxl.view.indicator.XViewPagerBaseIndicator;
+import com.qfxl.view.indicator.BaseIndicator;
 
 
 /**
  * @author qfxl
  */
-public class TextPagerIndicator extends XViewPagerBaseIndicator {
+public class TextPagerIndicator extends BaseIndicator {
 
     private TextView textView;
 

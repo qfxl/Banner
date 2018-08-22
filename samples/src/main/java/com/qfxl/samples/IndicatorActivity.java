@@ -18,29 +18,31 @@ public class IndicatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indicator);
-        XViewPager xViewPager1 = (XViewPager) findViewById(R.id.xvp_indicator_1);
+        XViewPager xViewPager1 = findViewById(R.id.xvp_indicator_1);
         xViewPager1.setAutoLoop(true)
-                .setDefaultIndicatorSize(30)
-                .setDefaultIndicatorNormalResId(R.drawable.indicator_pentagram_normal)
+                .setIndicatorItemWidth(30)
+                .setIndicatorItemHeight(30)
+                .setIndicatorNormalResId(R.drawable.indicator_pentagram_normal)
                 .setDefaultIndicatorSelectResId(R.drawable.indicator_pentagram_selected)
                 .setAdapter(new BannerAdapter());
 
-        XViewPager xViewPager2 = (XViewPager) findViewById(R.id.xvp_indicator_2);
+        XViewPager xViewPager2 = findViewById(R.id.xvp_indicator_2);
         xViewPager2.setAutoLoop(true)
-                .setDefaultIndicatorSize(40)
+                .setIndicatorItemWidth(30)
+                .setIndicatorItemHeight(30)
                 .setIndicatorPosition(XViewPager.IndicatorPosition.TOP)
                 .setDefaultIndicatorGravity(Gravity.RIGHT)
-                .setDefaultIndicatorNormalResId(R.drawable.indicator_flights_normal)
+                .setIndicatorNormalResId(R.drawable.indicator_flights_normal)
                 .setDefaultIndicatorSelectResId(R.drawable.indicator_flights_selected)
                 .setAdapter(new BannerAdapter());
 
-        XViewPager xViewPager3 = (XViewPager) findViewById(R.id.xvp_indicator_3);
+        XViewPager xViewPager3 = findViewById(R.id.xvp_indicator_3);
         xViewPager3.setAutoLoop(true)
                 .setAdapter(new BannerAdapter())
                 //自定义指示器务必在setAdapter之后调用
                 .setPagerIndicator(new TextPagerIndicator(this));
 
-        XViewPager xViewPager4 = (XViewPager) findViewById(R.id.xvp_indicator_4);
+        XViewPager xViewPager4 = findViewById(R.id.xvp_indicator_4);
         xViewPager4.setAutoLoop(false)
                 .setEnableInfinityLoop(false)
                 .setAdapter(new BannerAdapter())
