@@ -266,18 +266,6 @@ public class Banner extends RelativeLayout {
     }
 
     /**
-     * 设置pathList
-     *
-     * @param pathList
-     */
-    public void setImagePathList(List<?> pathList, IBannerImageLoader imageLoader, BannerDefaultAdapter.OnBannerClickListener onBannerClickListener) {
-        BannerDefaultAdapter defaultAdapter = new BannerDefaultAdapter(pathList);
-        defaultAdapter.setBannerImageLoader(imageLoader);
-        defaultAdapter.setBannerClickListener(onBannerClickListener);
-        setAdapter(defaultAdapter);
-    }
-
-    /**
      * 设置是否可以手动滑动
      *
      * @param scrollable
@@ -520,6 +508,18 @@ public class Banner extends RelativeLayout {
         } else {
             return 0;
         }
+    }
+
+    /**
+     * 设置数据源
+     *
+     * @param pathList
+     */
+    public void setImagePathList(List<?> pathList, IBannerImageLoader imageLoader, BannerDefaultAdapter.OnBannerClickListener onBannerClickListener) {
+        BannerDefaultAdapter defaultAdapter = new BannerDefaultAdapter(pathList);
+        defaultAdapter.setBannerImageLoader(imageLoader);
+        defaultAdapter.setBannerClickListener(onBannerClickListener);
+        setAdapter(defaultAdapter);
     }
 
     /**

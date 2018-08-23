@@ -3,6 +3,7 @@ package com.qfxl.samples.activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ public class BasicSampleActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
-        List<String> urls = new ArrayList<>();
+        final List<String> urls = new ArrayList<>();
         urls.add("https://i0.hdslb.com/bfs/archive/9fff0328cbfec3e16a8de0af570399e4870f0fa8.jpg");
         urls.add("https://i0.hdslb.com/bfs/archive/b8efabf3031888db680f39dda98a41a7f987e4a9.jpg");
         urls.add("https://i0.hdslb.com/bfs/archive/a6be3a5d4a4adc4193a09b748d2d8266c56b118b.jpg");
@@ -51,6 +52,7 @@ public class BasicSampleActivity extends BaseActivity {
                 Toast.makeText(BasicSampleActivity.this, "click position = " + position, Toast.LENGTH_SHORT).show();
             }
         });
+
 
         bannerViewPager2.setAutoStart(true)
                 .setInfinityLoop(true)

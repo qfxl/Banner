@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.0.2-beta"
+version = "1.0.1-beta"
 android {
     compileSdkVersion 27
 
@@ -24,8 +24,8 @@ allprojects {
         }
     }
 }
-def siteUrl = "https://github.com/qfxl/XViewPager"
-def gitUrl = "https://github.com/qfxl/XViewPager.git"
+def siteUrl = "https://github.com/qfxl/Banner"
+def gitUrl = "https://github.com/qfxl/Banner.git"
 
 group = "com.qfxl"
 
@@ -36,7 +36,7 @@ install {
             packaging 'aar'
 
             // Add your description here
-            name 'XViewPager'
+            name 'Banner'
             url siteUrl
 
             // Set your license
@@ -84,7 +84,7 @@ bintray {
 
     pkg {
         repo = "maven"
-        name = "XViewPager"
+        name = "Banner"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

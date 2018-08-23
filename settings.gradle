@@ -1,1 +1,1 @@
-include ':Banner', ':samples'
+include ':banner', ':samples'

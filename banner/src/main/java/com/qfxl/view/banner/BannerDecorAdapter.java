@@ -16,6 +16,7 @@
 package com.qfxl.view.banner;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,7 @@ public class BannerDecorAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         int realPosition = position;
         if (enableInfinityLoop && pagerAdapter.getCount() != 0) {
             realPosition = position % pagerAdapter.getCount();
@@ -88,7 +89,7 @@ public class BannerDecorAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         int realPosition = position;
         if (enableInfinityLoop && pagerAdapter.getCount() != 0) {
             realPosition = position % pagerAdapter.getCount();
@@ -113,12 +114,12 @@ public class BannerDecorAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return pagerAdapter.isViewFromObject(view, object);
     }
 
     @Override
-    public void finishUpdate(ViewGroup container) {
+    public void finishUpdate(@NonNull ViewGroup container) {
         if (!hasCentered && enableInfinityLoop) {
             if (centerListener != null) {
                 centerListener.center();
@@ -148,7 +149,7 @@ public class BannerDecorAdapter extends PagerAdapter {
     }
 
     @Override
-    public int getItemPosition(Object object) {
+    public int getItemPosition(@NonNull Object object) {
         return pagerAdapter.getItemPosition(object);
     }
 
