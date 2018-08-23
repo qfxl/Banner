@@ -1,1 +1,1 @@
-include ':xViewPager', ':samples'
+include ':Banner', ':samples'

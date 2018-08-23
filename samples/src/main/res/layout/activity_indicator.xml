@@ -4,47 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.qfxl.samples.IndicatorActivity">
+    tools:context="com.qfxl.samples.activity.IndicatorSampleActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.qfxl.view.viewpager.XViewPager
-            android:id="@+id/xvp_indicator_1"
+        <com.qfxl.view.banner.Banner
+            android:id="@+id/banner_indicator_1"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            app:xvp_loopInterval="1000" />
+            android:layout_height="130dp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <com.qfxl.view.viewpager.XViewPager
-            android:id="@+id/xvp_indicator_2"
+        <com.qfxl.view.banner.Banner
+            android:id="@+id/banner_indicator_2"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            app:xvp_loopInterval="1000" />
+            android:layout_height="130dp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <com.qfxl.view.viewpager.XViewPager
-            android:id="@+id/xvp_indicator_3"
+        <com.qfxl.view.banner.Banner
+            android:id="@+id/banner_indicator_3"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            app:xvp_loopInterval="1000" />
-
+            android:layout_height="130dp" />
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <com.qfxl.view.viewpager.XViewPager
-            android:id="@+id/xvp_indicator_4"
+        <com.qfxl.view.banner.Banner
+            android:id="@+id/banner_indicator_4"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            app:xvp_loopInterval="1000" />
+            android:layout_height="130dp"
+            app:banner_autoStart="true"
+            app:banner_infinityLoop="true"
+            app:banner_indicatorGravity="right"
+            app:banner_indicatorHeight="20dp"
+            app:banner_loopInterval="1000"
+            app:banner_indicatorItemHeight="10dp"
+            app:banner_indicatorItemWidth="10dp"
+            app:banner_indicatorNormalResId="@drawable/indicator_pentagram_normal"
+            app:banner_indicatorPosition="bottom"
+            app:banner_indicatorSelectResId="@drawable/indicator_pentagram_selected" />
+
     </LinearLayout>
 </ScrollView>

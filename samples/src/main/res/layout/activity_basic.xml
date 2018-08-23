@@ -6,44 +6,42 @@
     android:layout_height="match_parent"
     android:background="#faf8f8"
     android:orientation="vertical"
-    tools:context="com.qfxl.samples.BasicUseActivity">
+    tools:context="com.qfxl.samples.activity.BasicSampleActivity">
 
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_basic_banner"
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_basic_banner"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        app:xvp_autoLoop="true"
-        app:xvp_enableInfinityLoop="true"
-        app:xvp_indicatorHeight="20dp"
-        app:xvp_indicatorItemHeight="2dp"
-        app:xvp_indicatorItemWidth="10dp"
-        app:xvp_indicatorGravity="center"
-        app:xvp_indicatorMargin="3dp"
-        app:xvp_indicatorNormalResId="@drawable/sp_line_indicator_normal"
-        app:xvp_indicatorSelectResId="@drawable/sp_line_indicator_selected"
-        app:xvp_loopInterval="1000"
-        app:xvp_pageOffscreenLimit="1"
-        app:xvp_scrollDuration="500"
-        app:xvp_touchEnable="true" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
-
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_basic_banner2"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="#fff" />
+        android:layout_height="120dp"
+        app:banner_autoStart="true"
+        app:banner_infinityLoop="true"
+        app:banner_indicatorGravity="center"
+        app:banner_indicatorHeight="16dp"
+        app:banner_indicatorItemHeight="2dp"
+        app:banner_indicatorItemWidth="10dp"
+        app:banner_indicatorMargin="3dp"
+        app:banner_indicatorNormalResId="@drawable/sp_line_indicator_normal"
+        app:banner_indicatorSelectResId="@drawable/sp_line_indicator_selected"
+        app:banner_loopInterval="1000"
+        app:banner_pageOffscreenLimit="1"
+        app:banner_touchEnable="true" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_shortcut"
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_basic_banner2"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="#fff" />
+        android:layout_height="120dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_shortcut"
+        android:layout_width="match_parent"
+        app:banner_infinityLoop="true"
+        android:layout_height="160dp" />
 
 </LinearLayout>

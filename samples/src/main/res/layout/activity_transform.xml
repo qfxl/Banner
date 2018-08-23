@@ -5,28 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.qfxl.samples.TransformActivity">
+    tools:context="com.qfxl.samples.activity.TransformSampleActivity">
 
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_transform_banner1"
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_transform_1"
         android:layout_width="match_parent"
-        android:layout_height="140dp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
-
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_transform_banner2"
-        android:layout_width="match_parent"
-        android:layout_height="140dp" />
+        android:layout_height="140dp"
+        app:banner_infinityLoop="true" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="20dp" />
 
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_transform_banner3"
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_transform_2"
         android:layout_width="match_parent"
-        android:layout_height="140dp" />
+        android:layout_height="140dp"
+        app:banner_infinityLoop="true" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_transform_3"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        app:banner_infinityLoop="true" />
 </LinearLayout>

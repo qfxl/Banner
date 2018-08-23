@@ -5,31 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.qfxl.samples.OthersActivity">
+    tools:context="com.qfxl.samples.activity.OtherSampleActivity">
 
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_others1"
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_others1"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:clipChildren="false" />
+        android:clipChildren="false"
+        app:banner_autoStart="true"
+        app:banner_infinityLoop="true"
+        app:banner_loopInterval="1000" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="20dp" />
 
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_others2"
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_others2"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:clipChildren="false" />
+        android:clipChildren="false"
+        app:banner_autoStart="true"
+        app:banner_infinityLoop="true"
+        app:banner_loopInterval="1000" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="20dp" />
 
-    <com.qfxl.view.viewpager.XViewPager
-        android:id="@+id/xvp_others3"
+    <com.qfxl.view.banner.Banner
+        android:id="@+id/banner_others3"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:clipChildren="false" />
+        android:clipChildren="false"
+        app:banner_autoStart="true"
+        app:banner_infinityLoop="true"
+        app:banner_loopInterval="1000" />
 </LinearLayout>

@@ -58,8 +58,8 @@ public class GridViewAdapter extends BaseAdapter {
         ImageView shortcutIcon;
 
         ViewHolder(View view) {
-            shortcutLabel = (TextView) view.findViewById(R.id.tv_shortcut_label);
-            shortcutIcon = (ImageView) view.findViewById(R.id.iv_shortcut_icon);
+            shortcutLabel = view.findViewById(R.id.tv_shortcut_label);
+            shortcutIcon = view.findViewById(R.id.iv_shortcut_icon);
         }
     }
 }
