@@ -6,13 +6,15 @@
 
 ## 效果图
 ![此处输入图片的描述][5]
-![此处输入图片的描述][2]![此处输入图片的描述][3]![此处输入图片的描述][4]
+![此处输入图片的描述][2]
+![此处输入图片的描述][3]
+![此处输入图片的描述][4]
 
 
 ## Attributes属性
 
 |attr|format|default|描述|
-|:-:|:-:|:-|
+|:-:|:-:|:-:|:-|
 |banner_infinityLoop|boolean|true|是否支持循环|
 |banner_autoLoop|boolean|true|是否自动轮播|
 |banner_loopInterval|integer|3000|轮播间隔|
