@@ -47,7 +47,7 @@ implementation 'com.qfxl:banner:1.0.1'
 ```
 或者使用本地lib
 ```groovy
-  implementation project(':banner')
+implementation project(':banner')
 ```
 ### 2，xml声明Banner
 ```xml
@@ -136,7 +136,9 @@ banner.autoReady(urls, imageLoader, new BannerDefaultAdapter.OnBannerClickListen
 Banner内置了一个指示器，提供选中、未选中资源设置，大小设置，背景色设置，间距设置。如果默认指示器不能满足，可以自己实现想要的指示器，或者使用其他开源指示器。
 
 ### 如何自定义指示器
-以[PageIndicatorView][6]为例，如果想使用该库作为指示器，[BaseIndicator][7]是继承自LinearLayout，需要做的操作是将指自定义的Indicator添进去即可，在Banner的`createIndicators()`方法中与内部的ViewPager关联。
+以[PageIndicatorView][6]为例，如果想使用该库作为指示器，可以参考以下代码。
+**说明：**[BaseIndicator][7]是继承自LinearLayout，需要做的操作是将指自定义的Indicator通过`addView()`添加进去即可，Banner会在`setAdapter()`之后自动调用`createIndicators()`方法中与内部的ViewPager关联。
+
 ```java
 public class PagerIndicatorViewIndicator extends BaseIndicator {
     private PageIndicatorView pageIndicatorView;
