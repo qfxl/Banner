@@ -153,7 +153,7 @@ public abstract class BaseIndicator extends LinearLayout implements ViewPager.On
         /**
          * 手指拖动ViewPager的时候停止滚动
          */
-        if (mBannerView != null && mBannerView.isAutoStart()) {
+        if (mBannerView != null && mBannerView.isAutoLoop()) {
             if (state == ViewPager.SCROLL_STATE_DRAGGING) {
                 mBannerView.stopLoop();
             } else if (state == ViewPager.SCROLL_STATE_IDLE) {

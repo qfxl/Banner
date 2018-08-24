@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Banner">
+        <!--是否可以无限循环-->
+        <attr name="banner_infinityLoop" format="boolean" />
+        <!--是否自动滚动-->
+        <attr name="banner_autoLoop" format="boolean" />
+        <!--自动轮播时间(ms)-->
+        <attr name="banner_loopInterval" format="integer" />
+        <!--是否使用默认的指示器-->
+        <attr name="banner_isDefaultIndicator" format="boolean" />
+        <!--是否可以手动滑动-->
+        <attr name="banner_touchEnable" format="boolean" />
+        <!--滑动的速率(ms)-->
+        <attr name="banner_scrollDuration" format="integer" />
+        <!--viewPager的pageMargin-->
+        <attr name="banner_pageMargin" format="dimension" />
+        <!--viewPager离屏缓存item个数-->
+        <attr name="banner_pageOffscreenLimit" format="integer" />
+        <!--指示器的背景色-->
+        <attr name="banner_indicatorBackgroundColor" format="color" />
+        <!--指示器的位置(上中下)-->
+        <attr name="banner_indicatorPosition" format="enum">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+        <!--以下是默认的指示器设置-->
+        <!--指示器宽度-->
+        <attr name="banner_indicatorWidth" format="dimension" />
+        <!--指示器高度-->
+        <attr name="banner_indicatorHeight" format="dimension" />
+        <!--默认指示器的选中资源id-->
+        <attr name="banner_indicatorSelectResId" format="reference" />
+        <!--默认指示器的正常资源id-->
+        <attr name="banner_indicatorNormalResId" format="reference" />
+        <!--默认指示器item的间距-->
+        <attr name="banner_indicatorItemMargin" format="dimension" />
+        <!--默认指示器item宽度-->
+        <attr name="banner_indicatorItemWidth" format="dimension" />
+        <!--默认指示器item高度-->
+        <attr name="banner_indicatorItemHeight" format="dimension" />
+        <!--默认指示器的gravity-->
+        <attr name="banner_indicatorGravity" format="enum">
+            <enum name="left" value="0" />
+            <enum name="center" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

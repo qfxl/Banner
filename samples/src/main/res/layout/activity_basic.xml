@@ -12,17 +12,22 @@
         android:id="@+id/banner_basic_banner"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        app:banner_autoStart="true"
-        app:banner_infinityLoop="true"
+        app:banner_autoLoop="true"
+        app:banner_indicatorBackgroundColor="@android:color/transparent"
         app:banner_indicatorGravity="center"
         app:banner_indicatorHeight="16dp"
         app:banner_indicatorItemHeight="2dp"
+        app:banner_indicatorItemMargin="3dp"
         app:banner_indicatorItemWidth="10dp"
-        app:banner_indicatorMargin="3dp"
         app:banner_indicatorNormalResId="@drawable/sp_line_indicator_normal"
+        app:banner_indicatorPosition="bottom"
         app:banner_indicatorSelectResId="@drawable/sp_line_indicator_selected"
+        app:banner_infinityLoop="true"
+        app:banner_isDefaultIndicator="true"
         app:banner_loopInterval="1000"
-        app:banner_pageOffscreenLimit="1"
+        app:banner_pageMargin="0dp"
+        app:banner_pageOffscreenLimit="3"
+        app:banner_scrollDuration="600"
         app:banner_touchEnable="true" />
 
     <Space
@@ -41,7 +46,6 @@
     <com.qfxl.view.banner.Banner
         android:id="@+id/banner_shortcut"
         android:layout_width="match_parent"
-        app:banner_infinityLoop="true"
         android:layout_height="160dp" />
 
 </LinearLayout>

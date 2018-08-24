@@ -45,7 +45,8 @@ public class OtherSampleActivity extends BaseActivity {
         otherBanner2.getViewPager().setLayoutParams(lp2);
         otherBanner2.setPageMargin(20)
                 .setOffscreenPageLimit(3)
-                .setAdapter(new BannerAdapter()).setPageTransformer(false, new RotateDownPageTransform());
+                .setPageTransformer(false, new RotateDownPageTransform())
+                .setAdapter(new BannerAdapter());
 
         //如果api < 18 记得手动设置clipChildren
         otherBanner3.getViewPager().setClipChildren(false);
@@ -53,7 +54,8 @@ public class OtherSampleActivity extends BaseActivity {
         lp3.setMargins(Utils.dp2px(this, 50), 0, Utils.dp2px(this, 50), 0);
         otherBanner3.getViewPager().setLayoutParams(lp3);
         otherBanner3.setOffscreenPageLimit(3)
-                .setAutoStart(true)
-                .setAdapter(new BannerAdapter()).setPageTransformer(false, new CardPageTransform());
+                .setPageTransformer(false, new CardPageTransform())
+                .setAdapter(new BannerAdapter());
+
     }
 }

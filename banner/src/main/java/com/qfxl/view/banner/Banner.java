@@ -29,8 +29,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.qfxl.view.R;
-import com.qfxl.view.indicator.DefaultIndicator;
 import com.qfxl.view.indicator.BaseIndicator;
+import com.qfxl.view.indicator.DefaultIndicator;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ import java.util.List;
  *     author : qfxl
  *     e-mail : xuyonghong0822@gmail.com
  *     time   : 2017/07/19
- *     desc   : XViewPager
+ *     desc   : Banner
  * 1，支持自动轮播
  * 2，支持循环轮播
  * 3，支持设置滑动速率
@@ -88,6 +88,10 @@ public class Banner extends RelativeLayout {
      */
     private int indicatorHeight;
     /**
+     * 默认指示器的gravity
+     */
+    private int indicatorGravity;
+    /**
      * 指示器item宽
      */
     private int indicatorItemWidth;
@@ -96,13 +100,10 @@ public class Banner extends RelativeLayout {
      */
     private int indicatorItemHeight;
     /**
-     * 默认指示器的margin
+     * 指示器item的margin
      */
-    private int defaultIndicatorMargin;
-    /**
-     * 默认指示器的gravity
-     */
-    private int defaultIndicatorGravity;
+    private int indicatorItemMargin;
+
     /**
      * 指示器的位置集合，用于获取xml定义的枚举
      */
@@ -136,6 +137,19 @@ public class Banner extends RelativeLayout {
         final int nativeInt;
     }
 
+    /**
+     * 默认Banner适配器的图片路径集合
+     */
+    private List<?> pathList;
+    /**
+     * 默认Banner适配器的图片加载器
+     */
+    private IBannerImageLoader imageLoader;
+    /**
+     * 默认Banner点击监听
+     */
+    private BannerDefaultAdapter.OnBannerClickListener onBannerClickListener;
+
     public Banner(Context context) {
         this(context, null);
     }
@@ -149,16 +163,16 @@ public class Banner extends RelativeLayout {
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         bannerView = new BannerView(getContext());
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Banner);
-        setInfinityLoop(a.getBoolean(R.styleable.Banner_banner_infinityLoop, false));
+        setInfinityLoop(a.getBoolean(R.styleable.Banner_banner_infinityLoop, true));
         setLoopInterval(a.getInteger(R.styleable.Banner_banner_loopInterval, 3000));
-        setAutoStart(a.getBoolean(R.styleable.Banner_banner_autoStart, false));
+        setAutoLoop(a.getBoolean(R.styleable.Banner_banner_autoLoop, true));
         setScrollDuration(a.getInteger(R.styleable.Banner_banner_scrollDuration, 600));
         setTouchScrollable(a.getBoolean(R.styleable.Banner_banner_touchEnable, true));
         setIsDefaultIndicator(a.getBoolean(R.styleable.Banner_banner_isDefaultIndicator, true));
         setIndicatorLayoutBackgroundColor(a.getColor(R.styleable.Banner_banner_indicatorBackgroundColor, getBackgroundColor()));
         setIndicatorNormalResId(a.getResourceId(R.styleable.Banner_banner_indicatorNormalResId, R.drawable.shape_default_indicator_normal));
-        setDefaultIndicatorSelectResId(a.getResourceId(R.styleable.Banner_banner_indicatorSelectResId, R.drawable.shape_default_indicator_select));
-        setDefaultIndicatorMargin(a.getDimensionPixelOffset(R.styleable.Banner_banner_indicatorMargin, (int) dp2px(2)));
+        setIndicatorSelectResId(a.getResourceId(R.styleable.Banner_banner_indicatorSelectResId, R.drawable.shape_default_indicator_select));
+        setIndicatorItemMargin(a.getDimensionPixelOffset(R.styleable.Banner_banner_indicatorItemMargin, (int) dp2px(2)));
         setIndicatorWidth(a.getDimensionPixelOffset(R.styleable.Banner_banner_indicatorWidth, 0));
         setIndicatorHeight(a.getDimensionPixelOffset(R.styleable.Banner_banner_indicatorHeight, 0));
         setIndicatorItemWidth(a.getDimensionPixelOffset(R.styleable.Banner_banner_indicatorItemWidth, (int) dp2px(6)));
@@ -168,16 +182,16 @@ public class Banner extends RelativeLayout {
         int defaultGravity = a.getInt(R.styleable.Banner_banner_indicatorGravity, 1);
         switch (defaultGravity) {
             case 0:
-                setDefaultIndicatorGravity(Gravity.LEFT);
+                setIndicatorGravity(Gravity.LEFT);
                 break;
             case 1:
-                setDefaultIndicatorGravity(Gravity.CENTER);
+                setIndicatorGravity(Gravity.CENTER);
                 break;
             case 2:
-                setDefaultIndicatorGravity(Gravity.RIGHT);
+                setIndicatorGravity(Gravity.RIGHT);
                 break;
             default:
-                setDefaultIndicatorGravity(Gravity.CENTER);
+                setIndicatorGravity(Gravity.CENTER);
         }
         setIndicatorPosition(mIndicatorPositions[a.getInt(R.styleable.Banner_banner_indicatorPosition, 2)]);
         a.recycle();
@@ -199,22 +213,18 @@ public class Banner extends RelativeLayout {
      * @return this
      */
     public Banner setInfinityLoop(boolean enableInfinityLoop) {
-        if (bannerView != null) {
-            bannerView.setEnableInfinityLoop(enableInfinityLoop);
-        }
+        bannerView.setEnableInfinityLoop(enableInfinityLoop);
         return this;
     }
 
     /**
      * 设置是否自动滚动
      *
-     * @param autoStart
+     * @param autoLoop
      * @return this
      */
-    public Banner setAutoStart(boolean autoStart) {
-        if (bannerView != null) {
-            bannerView.setAutoStart(autoStart);
-        }
+    public Banner setAutoLoop(boolean autoLoop) {
+        bannerView.setAutoLoop(autoLoop);
         return this;
     }
 
@@ -225,9 +235,7 @@ public class Banner extends RelativeLayout {
      * @return this
      */
     public Banner setLoopInterval(int timeMillis) {
-        if (bannerView != null) {
-            bannerView.setLoopInterval(timeMillis);
-        }
+        bannerView.setLoopInterval(timeMillis);
         return this;
     }
 
@@ -241,26 +249,27 @@ public class Banner extends RelativeLayout {
         if (mPagerIndicator != null) {
             removeView(mPagerIndicator);
         }
-        if (bannerView != null) {
-            bannerView.setAdapter(pagerAdapter);
-            //如果使用默认的指示器adapter.getCount()必须>1
-            if (isDefaultIndicator && pagerAdapter.getCount() > 1) {
-                mPagerIndicator = new DefaultIndicator(getContext());
-                //指示器资源设置
-                if (indicatorSelectedResId != 0) {
-                    ((DefaultIndicator) mPagerIndicator).setIndicatorSelectResId(indicatorSelectedResId);
-                }
-                if (indicatorNormalResId != 0) {
-                    ((DefaultIndicator) mPagerIndicator).setIndicatorNormalResId(indicatorNormalResId);
-                }
-                //设置默认指示器item的大小
-                ((DefaultIndicator) mPagerIndicator).setIndicatorItemWidth(indicatorItemWidth);
-                ((DefaultIndicator) mPagerIndicator).setIndicatorItemHeight(indicatorItemHeight);
-                mPagerIndicator.setGravity(Gravity.CENTER_VERTICAL | defaultIndicatorGravity);
-                //设置默认指示器item的左右边距
-                ((DefaultIndicator) mPagerIndicator).setIndicatorDefaultMargin(defaultIndicatorMargin);
-                setPagerIndicator(mPagerIndicator);
+        bannerView.setAdapter(pagerAdapter);
+        //如果使用默认的指示器adapter.getCount()必须>1
+        if (isDefaultIndicator) {
+            mPagerIndicator = new DefaultIndicator(getContext());
+            //指示器资源设置
+            if (indicatorSelectedResId != 0) {
+                ((DefaultIndicator) mPagerIndicator).setIndicatorSelectResId(indicatorSelectedResId);
             }
+            if (indicatorNormalResId != 0) {
+                ((DefaultIndicator) mPagerIndicator).setIndicatorNormalResId(indicatorNormalResId);
+            }
+            //设置默认指示器item的大小
+            ((DefaultIndicator) mPagerIndicator).setIndicatorItemWidth(indicatorItemWidth);
+            ((DefaultIndicator) mPagerIndicator).setIndicatorItemHeight(indicatorItemHeight);
+            mPagerIndicator.setGravity(Gravity.CENTER_VERTICAL | indicatorGravity);
+            //设置默认指示器item的左右边距
+            ((DefaultIndicator) mPagerIndicator).setIndicatorItemMargin(indicatorItemMargin);
+            setPagerIndicator(mPagerIndicator);
+        }
+        if (pagerAdapter.getCount() > 1) {
+            createIndicators();
         }
         return this;
     }
@@ -272,9 +281,7 @@ public class Banner extends RelativeLayout {
      * @return this
      */
     public Banner setTouchScrollable(boolean scrollable) {
-        if (bannerView != null) {
-            bannerView.setTouchScrollable(scrollable);
-        }
+        bannerView.setTouchScrollable(scrollable);
         return this;
     }
 
@@ -299,9 +306,7 @@ public class Banner extends RelativeLayout {
      * @return
      */
     public Banner setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer pageTransformer) {
-        if (bannerView != null) {
-            bannerView.setPageTransformer(reverseDrawingOrder, pageTransformer);
-        }
+        bannerView.setPageTransformer(reverseDrawingOrder, pageTransformer);
         return this;
     }
 
@@ -327,19 +332,19 @@ public class Banner extends RelativeLayout {
      * @param gravity
      * @return
      */
-    public Banner setDefaultIndicatorGravity(int gravity) {
-        defaultIndicatorGravity = gravity;
+    public Banner setIndicatorGravity(int gravity) {
+        indicatorGravity = gravity;
         return this;
     }
 
     /**
-     * 设置默认指示器的大小
+     * 设置默认指示器的间距
      *
      * @param margin
      * @return
      */
-    public Banner setDefaultIndicatorMargin(int margin) {
-        defaultIndicatorMargin = margin;
+    public Banner setIndicatorItemMargin(int margin) {
+        indicatorItemMargin = margin;
         return this;
     }
 
@@ -361,9 +366,7 @@ public class Banner extends RelativeLayout {
      * @return
      */
     public Banner setPageMargin(int margin) {
-        if (bannerView != null) {
-            bannerView.setPageMargin(margin);
-        }
+        bannerView.setPageMargin(margin);
         return this;
     }
 
@@ -374,9 +377,7 @@ public class Banner extends RelativeLayout {
      * @return
      */
     public Banner setOffscreenPageLimit(int limit) {
-        if (bannerView != null) {
-            bannerView.setOffscreenPageLimit(limit);
-        }
+        bannerView.setOffscreenPageLimit(limit);
         return this;
     }
 
@@ -404,27 +405,29 @@ public class Banner extends RelativeLayout {
      * 指示器初始化
      */
     private void createIndicators() {
-        mPagerIndicator.setViewPager(bannerView);
-        LayoutParams indicatorLp;
-        //如果宽高有一为0则使用默认LayoutParams
-        indicatorLp = new LayoutParams(indicatorWidth == 0 ? LayoutParams.MATCH_PARENT : indicatorWidth,
-                indicatorHeight == 0 ? LayoutParams.WRAP_CONTENT : indicatorHeight);
-        //设置indicator的位置
-        switch (mIndicatorPosition) {
-            case TOP:
-                indicatorLp.addRule(ALIGN_PARENT_TOP);
-                break;
-            case CENTER:
-                indicatorLp.addRule(CENTER_IN_PARENT);
-                break;
-            case BOTTOM:
-                indicatorLp.addRule(ALIGN_PARENT_BOTTOM);
-                break;
-            default:
-                indicatorLp.addRule(ALIGN_PARENT_BOTTOM);
+        if (mPagerIndicator != null) {
+            mPagerIndicator.setViewPager(bannerView);
+            LayoutParams indicatorLp;
+            //如果宽高有一为0则使用默认LayoutParams
+            indicatorLp = new LayoutParams(indicatorWidth == 0 ? LayoutParams.MATCH_PARENT : indicatorWidth,
+                    indicatorHeight == 0 ? LayoutParams.WRAP_CONTENT : indicatorHeight);
+            //设置indicator的位置
+            switch (mIndicatorPosition) {
+                case TOP:
+                    indicatorLp.addRule(ALIGN_PARENT_TOP);
+                    break;
+                case CENTER:
+                    indicatorLp.addRule(CENTER_IN_PARENT);
+                    break;
+                case BOTTOM:
+                    indicatorLp.addRule(ALIGN_PARENT_BOTTOM);
+                    break;
+                default:
+                    indicatorLp.addRule(ALIGN_PARENT_BOTTOM);
+            }
+            mPagerIndicator.setLayoutParams(indicatorLp);
+            addView(mPagerIndicator);
         }
-        mPagerIndicator.setLayoutParams(indicatorLp);
-        addView(mPagerIndicator);
     }
 
     /**
@@ -432,21 +435,18 @@ public class Banner extends RelativeLayout {
      *
      * @param baseIndicator
      */
-    public void setPagerIndicator(BaseIndicator baseIndicator) {
-        if (getViewPager().getAdapter() == null) {
-            throw new IllegalStateException("ViewPager does not have a adapter");
-        }
+    public Banner setPagerIndicator(BaseIndicator baseIndicator) {
         if (mPagerIndicator != null) {
             removeView(mPagerIndicator);
         }
         if (baseIndicator != null) {
             mPagerIndicator = baseIndicator;
+            //设置背景色
+            if (indicatorBackgroundColor != 0) {
+                mPagerIndicator.setBackgroundColor(indicatorBackgroundColor);
+            }
         }
-        //设置背景色
-        if (mPagerIndicator != null && indicatorBackgroundColor != 0) {
-            mPagerIndicator.setBackgroundColor(indicatorBackgroundColor);
-        }
-        createIndicators();
+        return this;
     }
 
     /**
@@ -454,8 +454,9 @@ public class Banner extends RelativeLayout {
      *
      * @param indicatorView
      */
-    public void setPagerIndicator(View indicatorView) {
+    public Banner setPagerIndicator(View indicatorView) {
         addView(indicatorView);
+        return this;
     }
 
     /**
@@ -473,7 +474,7 @@ public class Banner extends RelativeLayout {
      *
      * @return this
      */
-    public Banner setDefaultIndicatorSelectResId(int resId) {
+    public Banner setIndicatorSelectResId(int resId) {
         indicatorSelectedResId = resId;
         return this;
     }
@@ -510,12 +511,44 @@ public class Banner extends RelativeLayout {
         }
     }
 
+    public Banner setImageResources(List<?> pathList) {
+        this.pathList = pathList;
+        return this;
+    }
+
+    public Banner setImageLoader(IBannerImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
+        return this;
+    }
+
+    public Banner setBannerCLickListener(BannerDefaultAdapter.OnBannerClickListener onBannerClickListener) {
+        this.onBannerClickListener = onBannerClickListener;
+        return this;
+    }
+
+    /**
+     * 所有设置完毕。
+     */
+    public void ready() {
+        if (pathList == null) {
+            throw new RuntimeException("请在ready()之前调用setImagePaths()");
+        }
+
+        if (imageLoader == null) {
+            throw new RuntimeException("请在ready()之前调用setImageLoader()");
+        }
+        BannerDefaultAdapter defaultAdapter = new BannerDefaultAdapter(pathList);
+        defaultAdapter.setBannerImageLoader(imageLoader);
+        defaultAdapter.setBannerClickListener(onBannerClickListener);
+        setAdapter(defaultAdapter);
+    }
+
     /**
      * 设置数据源
      *
      * @param pathList
      */
-    public void setImagePathList(List<?> pathList, IBannerImageLoader imageLoader, BannerDefaultAdapter.OnBannerClickListener onBannerClickListener) {
+    public void autoReady(List<?> pathList, IBannerImageLoader imageLoader, BannerDefaultAdapter.OnBannerClickListener onBannerClickListener) {
         BannerDefaultAdapter defaultAdapter = new BannerDefaultAdapter(pathList);
         defaultAdapter.setBannerImageLoader(imageLoader);
         defaultAdapter.setBannerClickListener(onBannerClickListener);

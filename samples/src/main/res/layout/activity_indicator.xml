@@ -33,6 +33,7 @@
             android:id="@+id/banner_indicator_3"
             android:layout_width="match_parent"
             android:layout_height="130dp" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
@@ -41,16 +42,9 @@
             android:id="@+id/banner_indicator_4"
             android:layout_width="match_parent"
             android:layout_height="130dp"
-            app:banner_autoStart="true"
-            app:banner_infinityLoop="true"
-            app:banner_indicatorGravity="right"
             app:banner_indicatorHeight="20dp"
-            app:banner_loopInterval="1000"
-            app:banner_indicatorItemHeight="10dp"
-            app:banner_indicatorItemWidth="10dp"
-            app:banner_indicatorNormalResId="@drawable/indicator_pentagram_normal"
-            app:banner_indicatorPosition="bottom"
-            app:banner_indicatorSelectResId="@drawable/indicator_pentagram_selected" />
+            app:banner_isDefaultIndicator="false"
+            app:banner_loopInterval="1000" />
 
     </LinearLayout>
 </ScrollView>

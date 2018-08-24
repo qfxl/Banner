@@ -51,7 +51,7 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
     /**
      * 是否自动滚动(默认不自动)
      */
-    private boolean isAutoStart;
+    private boolean isAutoLoop;
     /**
      * viewPager是否可以手动滑动(默认可以滚动)
      */
@@ -71,8 +71,8 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
      *
      * @return
      */
-    public boolean isAutoStart() {
-        return isAutoStart;
+    public boolean isAutoLoop() {
+        return isAutoLoop;
     }
 
     @Override
@@ -111,10 +111,10 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
     /**
      * 设置是否自动滚动
      *
-     * @param autoStart
+     * @param autoLoop
      */
-    public void setAutoStart(boolean autoStart) {
-        isAutoStart = autoStart;
+    public void setAutoLoop(boolean autoLoop) {
+        isAutoLoop = autoLoop;
     }
 
     /**
@@ -147,7 +147,7 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
      * 开始自动轮播任务
      */
     public void startLoop() {
-        if (isAutoStart) {
+        if (isAutoLoop) {
             stopLoop();
             postDelayed(intervalRunnable, loopInterval);
         }
@@ -178,7 +178,7 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
     @Override
     protected void onVisibilityChanged(View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
-        if (isAutoStart) {
+        if (isAutoLoop) {
             if (visibility == VISIBLE) {
                 startLoop();
             } else {

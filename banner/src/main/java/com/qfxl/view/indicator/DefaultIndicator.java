@@ -62,7 +62,7 @@ public class DefaultIndicator extends BaseIndicator {
     /**
      * 指示器默认的间距
      */
-    private int indicatorDefaultMargin;
+    private int indicatorItemMargin;
 
     public DefaultIndicator(Context context) {
         this(context, null);
@@ -116,10 +116,10 @@ public class DefaultIndicator extends BaseIndicator {
     /**
      * 设置指示器的外间距
      *
-     * @param defaultMargin
+     * @param itemMargin
      */
-    public void setIndicatorDefaultMargin(int defaultMargin) {
-        indicatorDefaultMargin = defaultMargin;
+    public void setIndicatorItemMargin(int itemMargin) {
+        indicatorItemMargin = itemMargin;
     }
 
     @Override
@@ -141,7 +141,7 @@ public class DefaultIndicator extends BaseIndicator {
         }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(indicatorItemWidth == 0 ? LayoutParams.WRAP_CONTENT : indicatorItemWidth,
                 indicatorItemHeight == 0 ? LayoutParams.WRAP_CONTENT : indicatorItemHeight);
-        lp.setMargins(indicatorDefaultMargin, indicatorDefaultMargin, indicatorDefaultMargin, indicatorDefaultMargin);
+        lp.setMargins(indicatorItemMargin, indicatorItemMargin, indicatorItemMargin, indicatorItemMargin);
         for (int i = 0; i < itemCount; i++) {
             ImageView mImageView = new ImageView(getContext());
             mImageView.setLayoutParams(lp);

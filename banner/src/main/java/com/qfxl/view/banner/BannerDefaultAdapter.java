@@ -14,6 +14,7 @@ package com.qfxl.view.banner;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.util.List;
+
 /**
  * <pre>
  *     author : qfxl
@@ -46,20 +48,24 @@ public class BannerDefaultAdapter extends PagerAdapter {
     private OnBannerClickListener onBannerClickListener;
 
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
-        ImageView mImageView = new ImageView(container.getContext());
-        mImageView.setOnClickListener(new View.OnClickListener() {
+    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
+        ImageView sImageView = bannerImageLoader.createImageViewView(container.getContext());
+        if (sImageView == null) {
+            sImageView = new ImageView(container.getContext());
+            sImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        }
+        sImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onBannerClickListener != null) {
-                    onBannerClickListener.onBannerClick(position);
+                    onBannerClickListener.onBannerClick(position, paths.get(position));
                 }
             }
         });
-        mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        bannerImageLoader.displayImage(mImageView.getContext(), mImageView, paths.get(position));
-        container.addView(mImageView);
-        return mImageView;
+
+        bannerImageLoader.displayImage(sImageView.getContext(), sImageView, paths.get(position));
+        container.addView(sImageView);
+        return sImageView;
     }
 
     @Override
@@ -86,7 +92,8 @@ public class BannerDefaultAdapter extends PagerAdapter {
          * banner点击监听
          *
          * @param position
+         * @param resource
          */
-        void onBannerClick(int position);
+        void onBannerClick(int position, Object resource);
     }
 }

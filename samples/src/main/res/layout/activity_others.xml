@@ -12,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:clipChildren="false"
-        app:banner_autoStart="true"
-        app:banner_infinityLoop="true"
         app:banner_loopInterval="1000" />
 
     <Space
@@ -25,8 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:clipChildren="false"
-        app:banner_autoStart="true"
-        app:banner_infinityLoop="true"
         app:banner_loopInterval="1000" />
 
     <Space
@@ -38,7 +34,5 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:clipChildren="false"
-        app:banner_autoStart="true"
-        app:banner_infinityLoop="true"
         app:banner_loopInterval="1000" />
 </LinearLayout>
