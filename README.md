@@ -31,6 +31,7 @@
 |banner_indicatorItemWidth|dimension|6dp|默认指示器item宽度|
 |banner_indicatorItemHeight|dimension|6dp|默认指示器item高度|
 |banner_indicatorGravity|enum|center|默认值指示器内部的gravity(left,center,right)|
+
 属性都有对应的java api。
 
 ## 使用步骤
