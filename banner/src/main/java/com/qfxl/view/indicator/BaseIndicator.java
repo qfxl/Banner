@@ -19,6 +19,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 
@@ -150,15 +151,6 @@ public abstract class BaseIndicator extends LinearLayout implements ViewPager.On
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        /**
-         * 手指拖动ViewPager的时候停止滚动
-         */
-        if (mBannerView != null && mBannerView.isAutoLoop()) {
-            if (state == ViewPager.SCROLL_STATE_DRAGGING) {
-                mBannerView.stopLoop();
-            } else if (state == ViewPager.SCROLL_STATE_IDLE) {
-                mBannerView.startLoop();
-            }
-        }
+
     }
 }

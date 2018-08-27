@@ -43,7 +43,7 @@
 ## 使用步骤
 ### 1，Gradle
 ```groovy
-implementation 'com.qfxl:banner:1.0.1'
+implementation 'com.qfxl:banner:1.0.1-release'
 ```
 或者使用本地lib
 ```groovy

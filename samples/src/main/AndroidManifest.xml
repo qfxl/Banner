@@ -20,6 +20,7 @@
         <activity android:name=".activity.IndicatorSampleActivity" />
         <activity android:name=".activity.TransformSampleActivity" />
         <activity android:name=".activity.OtherSampleActivity"/>
+        <activity android:name=".activity.IndexActivity"/>
     </application>
 
 </manifest>

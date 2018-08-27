@@ -38,5 +38,12 @@
         android:id="@+id/btn_others"
         style="@style/BaseButton"
         android:text="其他效果" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
+    <Button
+        android:id="@+id/btn_recyclerView"
+        style="@style/BaseButton"
+        android:text="RecyclerView" />
 </LinearLayout>

@@ -37,6 +37,11 @@ public class MainActivity extends BaseActivity {
         startActivity(OtherSampleActivity.class);
     }
 
+    @OnClick(R.id.btn_recyclerView)
+    private void openRecyclerViewActivity() {
+        startActivity(IndexActivity.class);
+    }
+
     private void startActivity(Class<?> clazz) {
         Intent mIntent = new Intent(this, clazz);
         startActivity(mIntent);

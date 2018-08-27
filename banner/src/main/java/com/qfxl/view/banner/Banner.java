@@ -531,9 +531,8 @@ public class Banner extends RelativeLayout {
      */
     public void ready() {
         if (pathList == null) {
-            throw new RuntimeException("请在ready()之前调用setImagePaths()");
+            throw new RuntimeException("请在ready()之前调用setImageResources()");
         }
-
         if (imageLoader == null) {
             throw new RuntimeException("请在ready()之前调用setImageLoader()");
         }
@@ -553,6 +552,14 @@ public class Banner extends RelativeLayout {
         defaultAdapter.setBannerImageLoader(imageLoader);
         defaultAdapter.setBannerClickListener(onBannerClickListener);
         setAdapter(defaultAdapter);
+    }
+
+    /**
+     * 是否调用过ready()
+     * @return
+     */
+    public boolean isReady() {
+        return bannerView.getAdapter() != null;
     }
 
     /**

@@ -21,8 +21,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':banner')
+//    implementation project(':banner')
+    implementation 'com.qfxl:banner:1.0.1-release'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.romandanylyk:pageindicatorview:1.0.1'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 }

@@ -57,8 +57,18 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
      */
     private boolean touchScrollable;
 
+    /**
+     * 滑动监听，用于控制手指按下时候停止轮播
+     */
+    private OnPageChangeListener simpleOnPageChangeListener;
+
+    /**
+     * 正在循环播放中
+     */
+    private boolean isLooping = false;
+
     public BannerView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public BannerView(Context context, AttributeSet attrs) {
@@ -66,6 +76,7 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
     }
 
     private PagerAdapter originAdapter;
+
     /**
      * 是否是自动滚动
      *
@@ -73,6 +84,10 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
      */
     public boolean isAutoLoop() {
         return isAutoLoop;
+    }
+
+    public boolean isLooping() {
+        return isLooping;
     }
 
     @Override
@@ -115,6 +130,24 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
      */
     public void setAutoLoop(boolean autoLoop) {
         isAutoLoop = autoLoop;
+        if (simpleOnPageChangeListener == null) {
+            simpleOnPageChangeListener = new SimpleOnPageChangeListener() {
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    /**
+                     * 手指拖动ViewPager的时候停止滚动
+                     */
+                    if (isAutoLoop) {
+                        if (state == ViewPager.SCROLL_STATE_DRAGGING && isLooping) {
+                            stopLoop();
+                        } else if (state == ViewPager.SCROLL_STATE_IDLE && !isLooping) {
+                            startLoop();
+                        }
+                    }
+                }
+            };
+            addOnPageChangeListener(simpleOnPageChangeListener);
+        }
     }
 
     /**
@@ -149,6 +182,7 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
     public void startLoop() {
         if (isAutoLoop) {
             stopLoop();
+            isLooping = true;
             postDelayed(intervalRunnable, loopInterval);
         }
     }
@@ -157,6 +191,7 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
      * 停止自动轮播任务
      */
     public void stopLoop() {
+        isLooping = false;
         removeCallbacks(intervalRunnable);
     }
 
@@ -167,6 +202,16 @@ public class BannerView extends ViewPager implements BannerDecorAdapter.LoopView
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         removeCallbacks(intervalRunnable);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        //mFirstLayout=true导致了无法平顺滑动
+        requestLayout();
+        if (isAutoLoop) {
+            startLoop();
+        }
     }
 
     /**
