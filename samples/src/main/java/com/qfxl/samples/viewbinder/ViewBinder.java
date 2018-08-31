@@ -9,7 +9,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 public class ViewBinder {
-
+    /**
+     * https://blog.csdn.net/xuyonghong1122/article/details/80347201
+     *
+     * @param activity
+     */
     public static void bind(final Activity activity) {
         Class clazz = activity.getClass();
         Field[] fields = clazz.getDeclaredFields();
