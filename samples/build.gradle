@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
 
     defaultConfig {
         applicationId "com.qfxl.samples"
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -21,10 +21,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    implementation project(':banner')
-    implementation 'com.qfxl:banner:1.0.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.romandanylyk:pageindicatorview:1.0.1'
+    implementation project(':banner')
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }

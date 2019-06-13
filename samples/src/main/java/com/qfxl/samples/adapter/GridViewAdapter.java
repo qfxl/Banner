@@ -1,6 +1,6 @@
 package com.qfxl.samples.adapter;
 
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

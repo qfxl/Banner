@@ -1,11 +1,10 @@
 package com.qfxl.samples.indicators;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.qfxl.samples.R;
 import com.qfxl.samples.Utils;

@@ -45,6 +45,12 @@
 ```groovy
 implementation 'com.qfxl:banner:1.0.1'
 ```
+
+for androidX
+```groovy
+implementation 'com.qfxl:banner:1.0.2'
+```
+
 或者使用本地lib
 ```groovy
 implementation project(':banner')

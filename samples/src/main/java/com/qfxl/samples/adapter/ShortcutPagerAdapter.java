@@ -1,8 +1,7 @@
 package com.qfxl.samples.adapter;
 
-import android.support.v4.util.Pair;
-import android.util.Log;
-import android.view.View;
+import androidx.core.util.Pair;
+
 import android.view.ViewGroup;
 import android.widget.GridView;
 
