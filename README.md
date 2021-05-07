@@ -43,18 +43,24 @@
 ## 使用步骤
 ### 1，Gradle
 ```groovy
-implementation 'com.qfxl:banner:1.0.1'
-```
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
 
-for androidX
-```groovy
-implementation 'com.qfxl:banner:1.0.2'
+dependencies {
+     // only support AndroidX
+    implementation 'com.github.qfxl:Banner:1.0.0'
+}
 ```
 
 或者使用本地lib
 ```groovy
 implementation project(':banner')
 ```
+
 ### 2，xml声明Banner
 ```xml
     <com.qfxl.view.banner.Banner
