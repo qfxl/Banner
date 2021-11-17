@@ -1,49 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context="com.qfxl.samples.activity.MainActivity">
+    android:gravity="center">
 
     <Button
-        android:id="@+id/btn_base"
-        style="@style/BaseButton"
-        android:text="基本使用" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
-
-    <Button
-        android:id="@+id/btn_indicator"
-        style="@style/BaseButton"
-        android:text="自定义指示器" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
-
-    <Button
-        android:id="@+id/btn_transform"
-        style="@style/BaseButton"
-        android:text="动画" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
-
-    <Button
-        android:id="@+id/btn_others"
-        style="@style/BaseButton"
-        android:text="其他效果" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
-
-    <Button
-        android:id="@+id/btn_recyclerView"
-        style="@style/BaseButton"
-        android:text="RecyclerView" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="basic"
+        android:onClick="onBasicClick"/>
 </LinearLayout>

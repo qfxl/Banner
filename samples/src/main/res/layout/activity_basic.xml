@@ -1,51 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#faf8f8"
     android:orientation="vertical"
-    tools:context="com.qfxl.samples.activity.BasicSampleActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.qfxl.view.banner.Banner
-        android:id="@+id/banner_basic_banner"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        app:banner_autoLoop="true"
-        app:banner_indicatorBackgroundColor="@android:color/transparent"
-        app:banner_indicatorGravity="center"
-        app:banner_indicatorHeight="16dp"
-        app:banner_indicatorItemHeight="2dp"
-        app:banner_indicatorItemMargin="3dp"
-        app:banner_indicatorItemWidth="10dp"
-        app:banner_indicatorNormalResId="@drawable/sp_line_indicator_normal"
-        app:banner_indicatorPosition="bottom"
-        app:banner_indicatorSelectResId="@drawable/sp_line_indicator_selected"
-        app:banner_infinityLoop="true"
-        app:banner_isDefaultIndicator="true"
-        app:banner_loopInterval="1000"
-        app:banner_pageMargin="0dp"
-        app:banner_pageOffscreenLimit="3"
-        app:banner_scrollDuration="600"
-        app:banner_touchEnable="true" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
-
-    <com.qfxl.view.banner.Banner
-        android:id="@+id/banner_basic_banner2"
-        android:layout_width="match_parent"
-        android:layout_height="120dp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
-
-    <com.qfxl.view.banner.Banner
-        android:id="@+id/banner_shortcut"
-        android:layout_width="match_parent"
-        android:layout_height="160dp" />
-
-</LinearLayout>
+    <com.github.banner.Banner
+        android:id="@+id/banner_basic_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

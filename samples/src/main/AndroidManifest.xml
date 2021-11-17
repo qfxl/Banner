@@ -16,11 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.BasicSampleActivity" />
-        <activity android:name=".activity.IndicatorSampleActivity" />
-        <activity android:name=".activity.TransformSampleActivity" />
-        <activity android:name=".activity.OtherSampleActivity"/>
-        <activity android:name=".activity.IndexActivity"/>
+        <activity android:name=".activity.BasicActivity" />
     </application>
 
 </manifest>
