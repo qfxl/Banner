@@ -1,16 +1,14 @@
 package com.github.banner.callback
 
-import androidx.viewpager2.widget.ViewPager2
-
 /**
  * author : qfxl
  * e-mail : xuyonghong0822@gmail.com
  * time   : 2021/11/17
- * desc   : decor for ViewPager2#OnPageChangeCallback, override nothing.
+ * desc   : callback for banner page changed
  * version: 1.0
  */
 
-abstract class OnBannerPageChangeCallback : ViewPager2.OnPageChangeCallback() {
+ open class OnBannerPageChangeCallback {
 
     /**
      * This method will be invoked when the current page is scrolled,
@@ -20,7 +18,7 @@ abstract class OnBannerPageChangeCallback : ViewPager2.OnPageChangeCallback() {
      * @param positionOffset – Value from [0, 1) indicating the offset from the page at position.
      *@param positionOffsetPixels – Value in pixels indicating the offset from position
      */
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+    fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
     }
 
@@ -29,7 +27,7 @@ abstract class OnBannerPageChangeCallback : ViewPager2.OnPageChangeCallback() {
      * Animation is not necessarily complete.
      * @param position – Position index of the new selected page.
      */
-    override fun onPageSelected(position: Int) {
+    fun onPageSelected(position: Int) {
 
     }
 
@@ -40,7 +38,7 @@ abstract class OnBannerPageChangeCallback : ViewPager2.OnPageChangeCallback() {
      * or when it is fully stopped/idle.
      * state can be one of SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING or SCROLL_STATE_SETTLING.
      */
-    override fun onPageScrollStateChanged(state: Int) {
+    fun onPageScrollStateChanged(state: Int) {
 
     }
 }

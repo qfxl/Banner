@@ -7,7 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
  * author : qfxl
  * e-mail : xuyonghong0822@gmail.com
  * time   : 2021/11/17
- * desc   : ViewPager2 fakeDrag animator listener
+ * desc   : ViewPager2 fakeDrag animator listener, used for control ViewPager2 scroll duration
  * version: 1.0
  */
 
