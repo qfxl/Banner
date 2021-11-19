@@ -20,7 +20,7 @@ class DepthPageTransformer(private val minScale: Float = MIN_SCALE) : BasePageTr
         page.alpha = 0f
     }
 
-    override fun transformLeftPage(page: View, position: Float) {
+    override fun transformPreviousPage(page: View, position: Float) {
         page.apply {
             alpha = 1f
             translationX = 0f
@@ -30,7 +30,7 @@ class DepthPageTransformer(private val minScale: Float = MIN_SCALE) : BasePageTr
         }
     }
 
-    override fun transformRightPage(page: View, position: Float) {
+    override fun transformNextPage(page: View, position: Float) {
         page.apply {
             // Fade the page out.
             alpha = 1 - position

@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".activity.BasicActivity" />
         <activity android:name=".activity.GestureConflictActivity" />
+        <activity android:name=".activity.TransformActivity" />
     </application>
 
 </manifest>

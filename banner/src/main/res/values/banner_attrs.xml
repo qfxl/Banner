@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Banner">
-        <!--是否可以无限循环-->
+        <!--banner orientation-->
+        <attr name="banner_orientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <!--can loop indefinitely-->
         <attr name="banner_infinityLoop" format="boolean" />
-        <!--是否自动滚动-->
-        <attr name="banner_autoLoop" format="boolean" />
-        <!--自动轮播时间(ms)-->
-        <attr name="banner_loopInterval" format="integer" />
+        <!--whether to scroll automatically-->
+        <attr name="banner_autoScroll" format="boolean" />
+        <!--auto scroll interval (ms)-->
+        <attr name="banner_autoScrollInterval" format="integer" />
+        <!--auto scroll duration-->
+        <attr name="banner_autoScrollDuration" format="integer" />
+        <!--whether to receive user gestures-->
+        <attr name="banner_userInputEnable" format="boolean" />
+        <!--banner inner viewPager2 page margin-->
+        <attr name="banner_pageMargin" format="dimension" />
+        <!--banner inner viewPager2 page offscreen limit-->
+        <attr name="banner_pageOffscreenLimit" format="integer" />
         <!--是否使用默认的指示器-->
         <attr name="banner_isDefaultIndicator" format="boolean" />
-        <!--是否可以手动滑动-->
-        <attr name="banner_touchEnable" format="boolean" />
-        <!--滑动的速率(ms)-->
-        <attr name="banner_scrollDuration" format="integer" />
-        <!--viewPager的pageMargin-->
-        <attr name="banner_pageMargin" format="dimension" />
-        <!--viewPager离屏缓存item个数-->
-        <attr name="banner_pageOffscreenLimit" format="integer" />
         <!--指示器的背景色-->
         <attr name="banner_indicatorBackgroundColor" format="color" />
         <!--指示器的位置(上中下)-->
@@ -46,5 +51,6 @@
             <enum name="center" value="1" />
             <enum name="right" value="2" />
         </attr>
+
     </declare-styleable>
 </resources>

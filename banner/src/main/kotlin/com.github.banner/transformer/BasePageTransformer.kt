@@ -14,18 +14,19 @@ import androidx.viewpager2.widget.ViewPager2
 abstract class BasePageTransformer : ViewPager2.PageTransformer {
 
     override fun transformPage(page: View, position: Float) {
+        startTransform(page, position)
         when {
             position < -1 -> { // [-Infinity,-1)
                 // This page is way off-screen to the left.
                 transformInvisiblePage(page, position)
             }
             position <= 0 -> { // [-1,0]
-                // scroll to left page
-                transformLeftPage(page, position)
+                // scroll to previous page
+                transformPreviousPage(page, position)
             }
             position <= 1 -> { // (0,1]
-                // scroll to right page
-                transformRightPage(page, position)
+                // scroll to next page
+                transformNextPage(page, position)
             }
             else -> { // (1,+Infinity]
                 // This page is way off-screen to the right.
@@ -35,23 +36,34 @@ abstract class BasePageTransformer : ViewPager2.PageTransformer {
     }
 
     /**
+     * Apply a property transformation to the given page.
+     *
+     *@param page – Apply the transformation to this page
+     *@param position – Position of page relative to the current front-and-center position of the pager.
+     * 0 is front and center. 1 is one full page position to the right,
+     * and -2 is two pages to the left. Minimum / maximum observed values depend on how many pages we keep attached,
+     * which depends on offscreenPageLimit
+     */
+    open fun startTransform(page: View, position: Float) {}
+
+    /**
      * handle page for invisible
      * @param page target
      * @param position
      */
-    abstract fun transformInvisiblePage(page: View, position: Float)
+    open fun transformInvisiblePage(page: View, position: Float) {}
 
     /**
-     * handle page scroll to left
+     * handle page scroll to previous
      * @param page target
      * @param position
      */
-    abstract fun transformLeftPage(page: View, position: Float)
+    open fun transformPreviousPage(page: View, position: Float) {}
 
     /**
-     * handle page scroll to right
+     * handle page scroll to next
      * @param page target
      * @param position
      */
-    abstract fun transformRightPage(page: View, position: Float)
+    open fun transformNextPage(page: View, position: Float) {}
 }

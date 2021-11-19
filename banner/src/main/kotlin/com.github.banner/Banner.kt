@@ -5,16 +5,23 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.*
 import android.widget.RelativeLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.github.banner.adapter.BannerAdapter
 import com.github.banner.adapter.BannerDecorAdapter
+import com.github.banner.adapter.BaseBannerAdapter
 import com.github.banner.callback.FakeDragAnimatorListener
 import com.github.banner.callback.FakeDragAnimatorUpdateListener
 import com.github.banner.callback.OnBannerPageChangeCallback
-import com.github.banner.transformer.BasePageTransformer
+import com.github.banner.transformer.OverlapSliderTransformer
+import com.github.banner.transformer.ScaleInTransform
 import com.qfxl.view.R
 import kotlin.math.abs
 
@@ -30,12 +37,15 @@ class Banner @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) : RelativeLayout(context, attrs, defStyle) {
+) : RelativeLayout(context, attrs, defStyle), LifecycleObserver {
 
     companion object {
         private const val TAG = "Banner"
-        private const val DEFAULT_SCROLL_DURATION = 0L
-        private const val DEFAULT_LOOP_INTERVAL = 3000L
+        private const val DEFAULT_SCROLL_DURATION = 500L
+        private const val DEFAULT_AUTO_SCROLL_INTERVAL = 3000L
+
+        const val HORIZONTAL = ViewPager2.ORIENTATION_HORIZONTAL
+        const val VERTICAL = ViewPager2.ORIENTATION_VERTICAL
     }
 
     private val bannerCore by lazy(LazyThreadSafetyMode.NONE) {
@@ -46,7 +56,7 @@ class Banner @JvmOverloads constructor(
      * orientation
      */
     @ViewPager2.Orientation
-    var bannerOrientation = ViewPager2.ORIENTATION_HORIZONTAL
+    var orientation = HORIZONTAL
         set(value) {
             field = value
             bannerCore.orientation = value
@@ -64,16 +74,43 @@ class Banner @JvmOverloads constructor(
     /**
      * offscreenPageLimit
      */
-    var offscreenPage = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
+    var offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         set(value) {
             field = value
             bannerCore.offscreenPageLimit = value
         }
-    /* -- for loop start -- */
+
+    /**
+     * page margin
+     */
+    var pageMargin = 0
+        set(value) {
+            field = value
+            if (field > 0) {
+                setPageTransformer(MarginPageTransformer(field))
+            }
+        }
+
+    /* -- for auto scroll -- */
+    /**
+     * auto scroll or not
+     */
+    var autoScroll = false
+
+    /**
+     * auto scroll duration, default is -1
+     */
+    var autoScrollDuration = DEFAULT_SCROLL_DURATION
+
+    /**
+     * isLooping or not
+     */
+    private var isLooping = false
+
     /**
      * loop interval
      */
-    var loopInterval = DEFAULT_LOOP_INTERVAL
+    var autoScrollInterval = DEFAULT_AUTO_SCROLL_INTERVAL
 
     /**
      * loop runnable
@@ -86,33 +123,14 @@ class Banner @JvmOverloads constructor(
     }
 
     /**
-     * enable loop or not
+     * enable infinity loop or not,
+     * this is actually an illusion,it is just multiplied by 300 when returning itemCount.
      */
-    var enableLoop = false
+    var enableInfinityLoop = true
         set(value) {
             require(bannerCore.adapter == null) { "Banner Adapter is not null, you must invoke reset() first!" }
             field = value
         }
-
-    /**
-     * auto loop or not
-     */
-    var autoLoop = false
-
-    /**
-     * isLooping or not
-     */
-    private var isLooping = false
-
-    /**
-     * auto scroll duration, default is -1
-     */
-    var autoScrollDuration = DEFAULT_SCROLL_DURATION
-
-    /**
-     * auto scroll interpolator
-     */
-    var autoScrollInterpolator = AccelerateDecelerateInterpolator()
 
     /**
      * fake drag animator, for scroll duration
@@ -137,7 +155,7 @@ class Banner @JvmOverloads constructor(
     private val fakeDragAnimatorUpdateListener by lazy(LazyThreadSafetyMode.NONE) {
         FakeDragAnimatorUpdateListener(bannerCore)
     }
-    /* -- for loop end-- */
+    /* -- for auto scroll end-- */
 
     /**
      * banner page change callback
@@ -148,41 +166,66 @@ class Banner @JvmOverloads constructor(
     private var mDownX = 0f
     private var mDownY = 0f
 
+
     init {
         with(context.obtainStyledAttributes(attrs, R.styleable.Banner)) {
             bannerCore.apply {
-                orientation = bannerOrientation
+                orientation = getInt(R.styleable.Banner_banner_orientation, this@Banner.orientation)
                 isUserInputEnabled =
-                    getBoolean(R.styleable.Banner_banner_touchEnable, enableUserInput)
+                    getBoolean(R.styleable.Banner_banner_userInputEnable, enableUserInput)
                 offscreenPageLimit =
-                    getInt(R.styleable.Banner_banner_pageOffscreenLimit, offscreenPage)
-
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageScrolled(
-                        position: Int,
-                        positionOffset: Float,
-                        positionOffsetPixels: Int
-                    ) {
-                        onBannerPageScrolled(position, positionOffset, positionOffsetPixels)
-                    }
-
-                    override fun onPageSelected(position: Int) {
-                        onBannerPageSelect(position)
-                    }
-
-                    override fun onPageScrollStateChanged(state: Int) {
-                        onBannerPageScrollStateChanged(state)
-                    }
-                })
-            }
-            val bannerInnerRv = bannerCore.getChildAt(0)
-            if (bannerInnerRv is RecyclerView) {
-                bannerInnerRv.overScrollMode = OVER_SCROLL_NEVER
+                    getInt(
+                        R.styleable.Banner_banner_pageOffscreenLimit,
+                        this@Banner.offscreenPageLimit
+                    )
+                autoScroll = getBoolean(R.styleable.Banner_banner_autoScroll, true)
+                enableInfinityLoop = getBoolean(R.styleable.Banner_banner_infinityLoop, true)
+                autoScrollDuration =
+                    getInt(R.styleable.Banner_banner_autoScrollDuration, 500).toLong()
+                autoScrollInterval =
+                    getInt(
+                        R.styleable.Banner_banner_autoScrollInterval,
+                        DEFAULT_AUTO_SCROLL_INTERVAL.toInt()
+                    ).toLong()
+                pageMargin = getInt(R.styleable.Banner_banner_pageMargin, 0)
             }
             recycle()
         }
-        autoScrollDuration = 500L
+
+        bannerCore.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                onBannerPageScrolled(position, positionOffset, positionOffsetPixels)
+            }
+
+            override fun onPageSelected(position: Int) {
+                onBannerPageSelect(position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                onBannerPageScrollStateChanged(state)
+            }
+        })
+
+        getRecyclerView().overScrollMode = OVER_SCROLL_NEVER
+
         addView(bannerCore, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+
+        //register lifecycle
+        if (context is LifecycleOwner) {
+            context.lifecycle.addObserver(this)
+        }
+    }
+
+    /**
+     * set auto scroll interpolator, only used for auto scroll.
+     * @param interpolator
+     */
+    fun setAutoScrollInterpolator(interpolator: Interpolator) {
+        fakeDragAnimator.interpolator = interpolator
     }
 
     /**
@@ -190,16 +233,16 @@ class Banner @JvmOverloads constructor(
      * Note that the adapter must implement BaseBannerAdapter
      * @param adapter
      */
-    fun <T> setAdapter(adapter: BannerAdapter<T>) {
+    fun <T> setAdapter(adapter: BaseBannerAdapter<T>) {
         val decorAdapter = BannerDecorAdapter<T>(adapter).also { decor ->
-            decor.enableLoop = enableLoop
+            decor.enableLoop = enableInfinityLoop
         }
         bannerCore.adapter = decorAdapter
-        if (enableLoop) {
+        if (enableInfinityLoop) {
             setCurrentItem(0, false)
         }
         createIndicators()
-        if (autoLoop) {
+        if (autoScroll) {
             startLoop()
         }
     }
@@ -210,13 +253,6 @@ class Banner @JvmOverloads constructor(
      */
     fun getAdapter() = bannerCore.adapter
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        if (isLooping) {
-            stopLoop()
-        }
-    }
-
     /**
      * start loop，if is looping, do nothing.
      */
@@ -224,8 +260,10 @@ class Banner @JvmOverloads constructor(
         if (isLooping) {
             Log.w(TAG, "Banner is already looping.")
         } else {
-            looping()
-            isLooping = true
+            if (enableInfinityLoop) {
+                looping()
+                isLooping = true
+            }
         }
     }
 
@@ -243,7 +281,7 @@ class Banner @JvmOverloads constructor(
      * looping
      */
     private fun looping() {
-        postDelayed(loopRunnable, loopInterval)
+        postDelayed(loopRunnable, autoScrollInterval)
     }
 
     /**
@@ -257,19 +295,18 @@ class Banner @JvmOverloads constructor(
                 if (currentItem < adapter.itemCount - 1) {
                     nextItem = currentItem + 1
                 }
-                if (autoScrollDuration == DEFAULT_SCROLL_DURATION) {
+                if (autoScrollDuration == 0L) {
                     bannerCore.currentItem = nextItem
                 } else {
                     val pxToDrag: Int =
-                        if (bannerOrientation == ViewPager2.ORIENTATION_HORIZONTAL) {
-                            bannerCore.width * (nextItem - currentItem)
+                        if (orientation == HORIZONTAL) {
+                            bannerCore.width * (nextItem - currentItem) - getRecyclerView().paddingLeft - getRecyclerView().paddingRight
                         } else {
-                            bannerCore.height * (nextItem - currentItem)
+                            bannerCore.height * (nextItem - currentItem) - getRecyclerView().paddingTop - getRecyclerView().paddingTop
                         }
                     fakeDragAnimatorUpdateListener.reset()
                     fakeDragAnimator.apply {
                         setIntValues(0, pxToDrag)
-                        interpolator = autoScrollInterpolator
                         duration = autoScrollDuration
                         start()
                     }
@@ -300,7 +337,7 @@ class Banner @JvmOverloads constructor(
         bannerCore.adapter?.also { adapter ->
             require(adapter is BannerDecorAdapter<*>) { "Banner adapter must be BannerDecorAdapter!" }
             if (adapter.itemCount > 0) {
-                val currentItem = if (enableLoop) {
+                val currentItem = if (enableInfinityLoop) {
                     adapter.itemCount shr 1 + item % adapter.realAdapter.itemCount
                 } else {
                     item
@@ -317,13 +354,19 @@ class Banner @JvmOverloads constructor(
     fun getViewPager() = bannerCore
 
     /**
+     * get ViewPager2 inner RecyclerView
+     * @return RecyclerView
+     */
+    fun getRecyclerView() = bannerCore.getChildAt(0) as RecyclerView
+
+    /**
      * Sets a ViewPager2.PageTransformer that will be called for each attached page whenever the scroll position is changed.
      * This allows the application to apply custom property transformations to each page, overriding the default sliding behavior.
      * Note: setting a ViewPager2.PageTransformer disables data-set change animations to prevent conflicts between the two animation systems.
      * Setting a null transformer will restore data-set change animations.
      * @param transformer – PageTransformer that will modify each page's animation properties
      */
-    fun setPageTransformer(transformer: BasePageTransformer?) {
+    fun setPageTransformer(transformer: ViewPager2.PageTransformer?) {
         bannerCore.setPageTransformer(transformer)
     }
 
@@ -363,7 +406,7 @@ class Banner @JvmOverloads constructor(
                 MotionEvent.ACTION_MOVE -> {
                     val disX = abs(event.x - mDownX)
                     val disY = abs(event.y - mDownY)
-                    if (bannerOrientation == ViewPager2.ORIENTATION_HORIZONTAL) {
+                    if (orientation == HORIZONTAL) {
                         interceptHorizontalGesture(event.x, disX, disY)
                     } else {
                         interceptVerticalGesture(event.y, disX, disY)
@@ -388,12 +431,12 @@ class Banner @JvmOverloads constructor(
         ev?.action?.let { action ->
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
-                    if (isLooping) {
+                    if (enableInfinityLoop && isLooping) {
                         stopLoop()
                     }
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_OUTSIDE -> {
-                    if (enableLoop) {
+                    if (enableInfinityLoop && autoScroll) {
                         startLoop()
                     }
                 }
@@ -499,7 +542,7 @@ class Banner @JvmOverloads constructor(
     private fun getRealPosition(position: Int): Int {
         return bannerCore.adapter?.let { adapter ->
             require(adapter is BannerDecorAdapter<*>) { "Banner adapter must be BannerDecorAdapter!" }
-            if (enableLoop && adapter.itemCount > 0) {
+            if (enableInfinityLoop && adapter.itemCount > 0) {
                 position % adapter.realAdapter.itemCount
             } else {
                 position
@@ -507,11 +550,112 @@ class Banner @JvmOverloads constructor(
         } ?: position
     }
 
-
     /**
      * create Banner indicators
      */
     private fun createIndicators() {
 
     }
+
+    /**
+     * support display overlap page
+     * @param minScale In addition to the minimum zoom value of the current page,
+     * it can be understood as a default value for the minimum scale.
+     * The minimum scale value provided by OverlapSliderTransformer is 0.8f.
+     * @param unSelectedItemRotation rotation of unselected pages
+     * @param unSelectedItemAlpha alpha of unselected pages
+     * @param itemGap item gap
+     * @param revealWidthOrHeight The distance that can be displayed between the current page and other pages
+     */
+    fun supportPageOverlap(
+        minScale: Float = 0.8f,
+        unSelectedItemRotation: Float = 0f,
+        unSelectedItemAlpha: Float = 1f,
+        itemGap: Float = 0f,
+        revealWidthOrHeight: Int = 20.dp
+    ) {
+        getRecyclerView().apply {
+            if (orientation == HORIZONTAL) {
+                setPadding(revealWidthOrHeight, 0, revealWidthOrHeight, 0)
+            } else {
+                setPadding(0, revealWidthOrHeight, 0, revealWidthOrHeight)
+            }
+            clipToPadding = false
+        }
+        val overlapTransformer = OverlapSliderTransformer(
+            orientation,
+            minScale,
+            unSelectedItemRotation,
+            unSelectedItemAlpha,
+            itemGap
+        )
+        setPageTransformer(overlapTransformer)
+    }
+
+    /**
+     * support one screen and multiple pages.
+     * @param itemMargin each page margin
+     * @param revealWidthOrHeight The distance that can be displayed between the current page and other pages
+     */
+    fun supportMultiPage(itemMargin: Int = 10.dp, revealWidthOrHeight: Int = 20.dp) {
+        getRecyclerView().apply {
+            if (orientation == HORIZONTAL) {
+                setPadding(revealWidthOrHeight, 0, revealWidthOrHeight, 0)
+            } else {
+                setPadding(0, revealWidthOrHeight, 0, revealWidthOrHeight)
+            }
+            clipToPadding = false
+        }
+        setPageTransformer(MarginPageTransformer(itemMargin))
+    }
+
+    /**
+     * support one screen and multiple pages with scale.
+     * @param minScale page min scale
+     * @param itemMargin each page margin
+     * @param revealWidthOrHeight The distance that can be displayed between the current page and other pages
+     */
+    fun supportMultiScalePage(
+        minScale: Float = 0.8f,
+        itemMargin: Int = 10.dp,
+        revealWidthOrHeight: Int = 20.dp
+    ) {
+        getRecyclerView().apply {
+            if (orientation == HORIZONTAL) {
+                setPadding(revealWidthOrHeight, 0, revealWidthOrHeight, 0)
+            } else {
+                setPadding(0, revealWidthOrHeight, 0, revealWidthOrHeight)
+            }
+            clipToPadding = false
+        }
+        setPageTransformer(CompositePageTransformer().apply {
+            addTransformer(ScaleInTransform(minScale, orientation))
+            addTransformer(MarginPageTransformer(itemMargin))
+        })
+    }
+
+    /* -- for lifecycle -- */
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPause() {
+        stopLoop()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun onResume() {
+        startLoop()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy() {
+        stopLoop()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        if (isLooping) {
+            stopLoop()
+        }
+    }
+
 }

@@ -141,9 +141,9 @@ class GestureConflictActivity : AppCompatActivity() {
                             headerLayoutId = R.layout.recycler_item_fragment_demo1_header,
                             headerRenderScope = {
                                 getView<Banner>(R.id.banner_recycler_item_fragment_demo1)?.apply {
-                                    bannerOrientation = ViewPager2.ORIENTATION_VERTICAL
-                                    setAdapter(BannerAdapter<Int>(R.layout.banner_item_basic_1) { holder, t ->
-                                        (holder.itemView as ImageView).setImageResource(t)
+                                    orientation = ViewPager2.ORIENTATION_VERTICAL
+                                    setAdapter(BannerAdapter<Int>(R.layout.banner_item_basic) { t ->
+                                        getView<ImageView>(R.id.iv_basic_page)?.setImageResource(t)
                                     }.apply {
                                         submitList(
                                             listOf(
@@ -167,8 +167,8 @@ class GestureConflictActivity : AppCompatActivity() {
                 }
                 1 -> {
                     view.findViewById<Banner>(R.id.banner_fragment_demo2).apply {
-                        setAdapter(BannerAdapter<Int>(R.layout.banner_item_basic_1) { holder, t ->
-                            (holder.itemView as ImageView).setImageResource(t)
+                        setAdapter(BannerAdapter<Int>(R.layout.banner_item_basic) { t ->
+                            getView<ImageView>(R.id.iv_basic_page)?.setImageResource(t)
                         }.apply {
                             submitList(
                                 listOf(
