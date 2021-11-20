@@ -20,6 +20,8 @@ import com.github.banner.adapter.BaseBannerAdapter
 import com.github.banner.callback.FakeDragAnimatorListener
 import com.github.banner.callback.FakeDragAnimatorUpdateListener
 import com.github.banner.callback.OnBannerPageChangeCallback
+import com.github.banner.indicator.BaseIndicator
+import com.github.banner.indicator.CircleIndicator
 import com.github.banner.transformer.OverlapSliderTransformer
 import com.github.banner.transformer.ScaleInTransform
 import com.qfxl.view.R
@@ -92,10 +94,26 @@ class Banner @JvmOverloads constructor(
         }
 
     /* -- for auto scroll -- */
+
     /**
-     * auto scroll or not
+     * enable infinity loop or not,
+     * this is actually an illusion,it is just multiplied by 300 when returning itemCount.
      */
-    var autoScroll = false
+    var enableInfinityLoop = true
+        set(value) {
+            require(bannerCore.adapter == null) { "Banner Adapter is not null, you must invoke reset() first!" }
+            field = value
+        }
+
+    /**
+     * enable auto scroll or not
+     */
+    var enableAutoScroll = true
+
+    /**
+     * auto scroll when attached or not
+     */
+    var autoScrollWhenAttached = true
 
     /**
      * auto scroll duration, default is -1
@@ -121,16 +139,6 @@ class Banner @JvmOverloads constructor(
             looping()
         }
     }
-
-    /**
-     * enable infinity loop or not,
-     * this is actually an illusion,it is just multiplied by 300 when returning itemCount.
-     */
-    var enableInfinityLoop = true
-        set(value) {
-            require(bannerCore.adapter == null) { "Banner Adapter is not null, you must invoke reset() first!" }
-            field = value
-        }
 
     /**
      * fake drag animator, for scroll duration
@@ -166,6 +174,10 @@ class Banner @JvmOverloads constructor(
     private var mDownX = 0f
     private var mDownY = 0f
 
+    /* -- for indicators -- */
+
+    private var mIndicator: BaseIndicator? = null
+
 
     init {
         with(context.obtainStyledAttributes(attrs, R.styleable.Banner)) {
@@ -178,8 +190,10 @@ class Banner @JvmOverloads constructor(
                         R.styleable.Banner_banner_pageOffscreenLimit,
                         this@Banner.offscreenPageLimit
                     )
-                autoScroll = getBoolean(R.styleable.Banner_banner_autoScroll, true)
-                enableInfinityLoop = getBoolean(R.styleable.Banner_banner_infinityLoop, true)
+                enableAutoScroll = getBoolean(R.styleable.Banner_banner_enableAutoLoop, true)
+                autoScrollWhenAttached =
+                    getBoolean(R.styleable.Banner_banner_autoScrollWhenAttached, true)
+                enableInfinityLoop = getBoolean(R.styleable.Banner_banner_enableInfinityLoop, true)
                 autoScrollDuration =
                     getInt(R.styleable.Banner_banner_autoScrollDuration, 500).toLong()
                 autoScrollInterval =
@@ -221,6 +235,23 @@ class Banner @JvmOverloads constructor(
     }
 
     /**
+     * register lifecycle owner manually
+     * if Banner#Context is LifecycleOwner, it will automatically register.
+     * @param owner
+     */
+    fun registerLifecycleOwner(owner: LifecycleOwner) {
+        if (context is LifecycleOwner) {
+            Log.d(
+                TAG,
+                "registerLifecycleOwner failed, observer is already attached to ${context.javaClass.simpleName}!"
+            )
+        } else {
+            owner.lifecycle.addObserver(this)
+        }
+
+    }
+
+    /**
      * set auto scroll interpolator, only used for auto scroll.
      * @param interpolator
      */
@@ -234,16 +265,17 @@ class Banner @JvmOverloads constructor(
      * @param adapter
      */
     fun <T> setAdapter(adapter: BaseBannerAdapter<T>) {
-        val decorAdapter = BannerDecorAdapter<T>(adapter).also { decor ->
-            decor.enableLoop = enableInfinityLoop
+        val decorAdapter = BannerDecorAdapter(adapter).also { decor ->
+            decor.enableInfinityLoop = enableInfinityLoop
         }
         bannerCore.adapter = decorAdapter
         if (enableInfinityLoop) {
             setCurrentItem(0, false)
         }
+        //create indicators
         createIndicators()
-        if (autoScroll) {
-            startLoop()
+        if (autoScrollWhenAttached) {
+            startAutoScroll()
         }
     }
 
@@ -254,13 +286,13 @@ class Banner @JvmOverloads constructor(
     fun getAdapter() = bannerCore.adapter
 
     /**
-     * start loop，if is looping, do nothing.
+     * start auto scroll, Banner will automatically switch to the next page, if is looping, do nothing.
      */
-    fun startLoop() {
-        if (isLooping) {
-            Log.w(TAG, "Banner is already looping.")
-        } else {
-            if (enableInfinityLoop) {
+    fun startAutoScroll() {
+        if (enableAutoScroll) {
+            if (isLooping) {
+                Log.w(TAG, "Banner is already looping.")
+            } else {
                 looping()
                 isLooping = true
             }
@@ -268,9 +300,9 @@ class Banner @JvmOverloads constructor(
     }
 
     /**
-     * stop loop
+     * stop auto scroll
      */
-    fun stopLoop() {
+    fun stopAutoScroll() {
         if (isLooping) {
             removeCallbacks(loopRunnable)
         }
@@ -335,7 +367,7 @@ class Banner @JvmOverloads constructor(
      */
     fun setCurrentItem(item: Int, smoothScroll: Boolean = true) {
         bannerCore.adapter?.also { adapter ->
-            require(adapter is BannerDecorAdapter<*>) { "Banner adapter must be BannerDecorAdapter!" }
+            require(adapter is BannerDecorAdapter) { "Banner adapter must be BannerDecorAdapter!" }
             if (adapter.itemCount > 0) {
                 val currentItem = if (enableInfinityLoop) {
                     adapter.itemCount shr 1 + item % adapter.realAdapter.itemCount
@@ -431,14 +463,10 @@ class Banner @JvmOverloads constructor(
         ev?.action?.let { action ->
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
-                    if (enableInfinityLoop && isLooping) {
-                        stopLoop()
-                    }
+                    stopAutoScroll()
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_OUTSIDE -> {
-                    if (enableInfinityLoop && autoScroll) {
-                        startLoop()
-                    }
+                    startAutoScroll()
                 }
             }
         }
@@ -512,6 +540,11 @@ class Banner @JvmOverloads constructor(
             positionOffset,
             positionOffsetPixels
         )
+        mIndicator?.onPageScrolled(
+            getRealPosition(position),
+            positionOffset,
+            positionOffsetPixels
+        )
     }
 
     /**
@@ -520,6 +553,7 @@ class Banner @JvmOverloads constructor(
      */
     private fun onBannerPageSelect(position: Int) {
         onBannerPageChangeCallback?.onPageSelected(getRealPosition(position))
+        mIndicator?.onPageSelected(getRealPosition(position))
     }
 
     /**
@@ -531,17 +565,17 @@ class Banner @JvmOverloads constructor(
      * @param state can be one of SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING or SCROLL_STATE_SETTLING.
      */
     private fun onBannerPageScrollStateChanged(@ViewPager2.ScrollState state: Int) {
-
+        mIndicator?.onPageScrollStateChanged(state)
     }
 
     /**
-     * If the loop is turned on, position needs to be subtracted by the corresponding coefficient.
+     * If enableInfinityLoop is turned on, position needs to be subtracted by the corresponding coefficient.
      * @param position currentPosition
      * @return real position
      */
     private fun getRealPosition(position: Int): Int {
         return bannerCore.adapter?.let { adapter ->
-            require(adapter is BannerDecorAdapter<*>) { "Banner adapter must be BannerDecorAdapter!" }
+            require(adapter is BannerDecorAdapter) { "Banner adapter must be BannerDecorAdapter!" }
             if (enableInfinityLoop && adapter.itemCount > 0) {
                 position % adapter.realAdapter.itemCount
             } else {
@@ -554,8 +588,26 @@ class Banner @JvmOverloads constructor(
      * create Banner indicators
      */
     private fun createIndicators() {
-
+        addView(CircleIndicator(context).apply {
+            mIndicator = this
+            orientation = this@Banner.orientation
+            bannerCore.adapter?.also { adapter ->
+                require(adapter is BannerDecorAdapter) { "Banner adapter must be BannerDecorAdapter!" }
+                itemCount = adapter.realAdapter.itemCount
+            }
+        }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).also {
+            if (orientation == HORIZONTAL) {
+                it.addRule(CENTER_HORIZONTAL)
+                it.addRule(ALIGN_PARENT_BOTTOM)
+                it.setMargins(0, 0, 0, 8.dp)
+            } else {
+                it.addRule(CENTER_VERTICAL)
+                it.setMargins(8.dp, 0, 0, 0)
+            }
+        })
     }
+
+    /* -- support page styles -- */
 
     /**
      * support display overlap page
@@ -638,23 +690,23 @@ class Banner @JvmOverloads constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause() {
-        stopLoop()
+        stopAutoScroll()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
-        startLoop()
+        startAutoScroll()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
-        stopLoop()
+        stopAutoScroll()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         if (isLooping) {
-            stopLoop()
+            stopAutoScroll()
         }
     }
 

@@ -1,22 +1,22 @@
 package com.github.banner.adapter
 
-import androidx.annotation.LayoutRes
-
 /**
  * author : qfxl
  * e-mail : xuyonghong0822@gmail.com
  * time   : 2021/11/18
- * desc   :
+ * desc   : This class is the basic implementation of BaseBannerAdapter
  * version: 1.0
  */
 
 class BannerAdapter<T>(
-    @LayoutRes private val itemLayoutId: Int,
-    private val renderScope: BaseBannerViewHolder.(T) -> Unit
+    private val createLayoutId: (Int) -> Int,
+    private val renderScope: BannerViewHolder.(Int, Int, T) -> Unit
 ) : BaseBannerAdapter<T>() {
-    override fun getLayoutId(viewType: Int): Int = itemLayoutId
 
-    override fun bindViewHolder(holder: BaseBannerViewHolder, t: T) {
-        renderScope(holder, t)
+    override fun getLayoutId(viewType: Int): Int = createLayoutId(viewType)
+
+    override fun bindViewHolder(holder: BannerViewHolder, position: Int, t: T) {
+        renderScope(holder, position, getItemViewType(position), t)
     }
+
 }

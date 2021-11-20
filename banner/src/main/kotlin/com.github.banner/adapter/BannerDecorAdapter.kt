@@ -7,32 +7,34 @@ import androidx.recyclerview.widget.RecyclerView
  * author : qfxl
  * e-mail : xuyonghong0822@gmail.com
  * time   : 2021/11/17
- * desc   :
+ * desc   : This class is a wrapper class of Banner#Adapter.
+ *          In order to achieve an infinite loop,
+ *          the principle of implementation is to multiply realItemCount by a coefficient when getItemCount.
  * version: 1.0
  */
 
-class BannerDecorAdapter<T>(val realAdapter: RecyclerView.Adapter<BaseBannerViewHolder>) :
-    RecyclerView.Adapter<BaseBannerViewHolder>() {
+class BannerDecorAdapter(val realAdapter: RecyclerView.Adapter<BannerViewHolder>) :
+    RecyclerView.Adapter<BannerViewHolder>() {
 
-    var enableLoop = false
+    var enableInfinityLoop = false
 
     companion object {
         /**
-         * if enableLoop, adapter will return realCount*ratio
+         * if enableInfinityLoop, adapter getItemCount() will return realCount*ratio
          */
         private const val FAKE_PAGE_RATIO = 300
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBannerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
         return realAdapter.createViewHolder(parent, viewType)
     }
 
-    override fun onBindViewHolder(holder: BaseBannerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
         realAdapter.onBindViewHolder(holder, position % realAdapter.itemCount)
     }
 
     override fun getItemCount(): Int {
-        return if (enableLoop && realAdapter.itemCount > 1) {
+        return if (enableInfinityLoop && realAdapter.itemCount > 1) {
             realAdapter.itemCount * FAKE_PAGE_RATIO
         } else {
             realAdapter.itemCount

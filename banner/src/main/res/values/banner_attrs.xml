@@ -7,9 +7,10 @@
             <enum name="vertical" value="1" />
         </attr>
         <!--can loop indefinitely-->
-        <attr name="banner_infinityLoop" format="boolean" />
-        <!--whether to scroll automatically-->
-        <attr name="banner_autoScroll" format="boolean" />
+        <attr name="banner_enableInfinityLoop" format="boolean" />
+        <attr name="banner_enableAutoLoop" format="boolean" />
+        <!--whether to scroll automatically when adapter is set-->
+        <attr name="banner_autoScrollWhenAttached" format="boolean" />
         <!--auto scroll interval (ms)-->
         <attr name="banner_autoScrollInterval" format="integer" />
         <!--auto scroll duration-->

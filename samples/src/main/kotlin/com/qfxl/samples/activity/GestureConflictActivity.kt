@@ -14,6 +14,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.github.banner.Banner
 import com.github.banner.adapter.BannerAdapter
+import com.github.banner.render
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.qfxl.samples.R
 import com.qfxl.samples.renderAdapter
@@ -142,19 +143,15 @@ class GestureConflictActivity : AppCompatActivity() {
                             headerRenderScope = {
                                 getView<Banner>(R.id.banner_recycler_item_fragment_demo1)?.apply {
                                     orientation = ViewPager2.ORIENTATION_VERTICAL
-                                    setAdapter(BannerAdapter<Int>(R.layout.banner_item_basic) { t ->
+                                    render(R.layout.banner_item_basic, listOf(
+                                        R.drawable.img_banner_0,
+                                        R.drawable.img_banner_1,
+                                        R.drawable.img_banner_2,
+                                        R.drawable.img_banner_3,
+                                        R.drawable.img_banner_4
+                                    )) { position, t ->
                                         getView<ImageView>(R.id.iv_basic_page)?.setImageResource(t)
-                                    }.apply {
-                                        submitList(
-                                            listOf(
-                                                R.drawable.img_banner_0,
-                                                R.drawable.img_banner_1,
-                                                R.drawable.img_banner_2,
-                                                R.drawable.img_banner_3,
-                                                R.drawable.img_banner_4
-                                            )
-                                        )
-                                    })
+                                    }
                                 }
                             }) {
                             val dataList = LinkedList<String>()
@@ -167,19 +164,15 @@ class GestureConflictActivity : AppCompatActivity() {
                 }
                 1 -> {
                     view.findViewById<Banner>(R.id.banner_fragment_demo2).apply {
-                        setAdapter(BannerAdapter<Int>(R.layout.banner_item_basic) { t ->
+                        render(R.layout.banner_item_basic, listOf(
+                            R.drawable.img_banner_0,
+                            R.drawable.img_banner_1,
+                            R.drawable.img_banner_2,
+                            R.drawable.img_banner_3,
+                            R.drawable.img_banner_4
+                        )) { position, t ->
                             getView<ImageView>(R.id.iv_basic_page)?.setImageResource(t)
-                        }.apply {
-                            submitList(
-                                listOf(
-                                    R.drawable.img_banner_0,
-                                    R.drawable.img_banner_1,
-                                    R.drawable.img_banner_2,
-                                    R.drawable.img_banner_3,
-                                    R.drawable.img_banner_4
-                                )
-                            )
-                        })
+                        }
                     }
                 }
                 2 -> {

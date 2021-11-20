@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.github.banner.Banner
 import com.github.banner.adapter.BannerAdapter
+import com.github.banner.render
 import com.qfxl.samples.R
 
 /**
@@ -22,107 +23,84 @@ class TransformActivity : AppCompatActivity() {
 
         findViewById<Banner>(R.id.banner_transform_1).apply {
             supportPageOverlap()
-            setAdapter(BannerAdapter<Int>(R.layout.banner_item_tansform) { t ->
+            render(R.layout.banner_item_tansform, listOf(
+                R.drawable.img_banner_0,
+                R.drawable.img_banner_1,
+                R.drawable.img_banner_2,
+                R.drawable.img_banner_3,
+                R.drawable.img_banner_4
+            )) { position, t ->
                 getView<ImageView>(R.id.iv_transform_page)?.setImageResource(t)
-            }.apply {
-                submitList(
-                    listOf(
-                        R.drawable.img_banner_0,
-                        R.drawable.img_banner_1,
-                        R.drawable.img_banner_2,
-                        R.drawable.img_banner_3,
-                        R.drawable.img_banner_4
-                    )
-                )
-            })
+            }
         }
 
         findViewById<Banner>(R.id.banner_transform_2).apply {
-            supportMultiPage()
-            setAdapter(BannerAdapter<Int>(R.layout.banner_item_tansform) { t ->
+            orientation = Banner.VERTICAL
+            supportPageOverlap()
+            render(R.layout.banner_item_tansform, listOf(
+                R.drawable.img_banner_0,
+                R.drawable.img_banner_1,
+                R.drawable.img_banner_2,
+                R.drawable.img_banner_3,
+                R.drawable.img_banner_4
+            )) { position, t ->
                 getView<ImageView>(R.id.iv_transform_page)?.setImageResource(t)
-            }.apply {
-                submitList(
-                    listOf(
-                        R.drawable.img_banner_0,
-                        R.drawable.img_banner_1,
-                        R.drawable.img_banner_2,
-                        R.drawable.img_banner_3,
-                        R.drawable.img_banner_4
-                    )
-                )
-            })
+            }
         }
 
         findViewById<Banner>(R.id.banner_transform_3).apply {
-            supportMultiScalePage()
-            setAdapter(BannerAdapter<Int>(R.layout.banner_item_tansform) { t ->
+            supportMultiPage()
+            render(R.layout.banner_item_tansform, listOf(
+                R.drawable.img_banner_0,
+                R.drawable.img_banner_1,
+                R.drawable.img_banner_2,
+                R.drawable.img_banner_3,
+                R.drawable.img_banner_4
+            )) { position, t ->
                 getView<ImageView>(R.id.iv_transform_page)?.setImageResource(t)
-            }.apply {
-                submitList(
-                    listOf(
-                        R.drawable.img_banner_0,
-                        R.drawable.img_banner_1,
-                        R.drawable.img_banner_2,
-                        R.drawable.img_banner_3,
-                        R.drawable.img_banner_4
-                    )
-                )
-            })
+            }
         }
 
         findViewById<Banner>(R.id.banner_transform_4).apply {
             orientation = Banner.VERTICAL
-            supportPageOverlap()
-            setAdapter(BannerAdapter<Int>(R.layout.banner_item_tansform) { t ->
-                getView<ImageView>(R.id.iv_transform_page)?.setImageResource(t)
-            }.apply {
-                submitList(
-                    listOf(
-                        R.drawable.img_banner_0,
-                        R.drawable.img_banner_1,
-                        R.drawable.img_banner_2,
-                        R.drawable.img_banner_3,
-                        R.drawable.img_banner_4
-                    )
-                )
-            })
-        }
-
-        findViewById<Banner>(R.id.banner_transform_5).apply {
-            orientation = Banner.VERTICAL
             supportMultiPage()
-            setAdapter(BannerAdapter<Int>(R.layout.banner_item_tansform) { t ->
+            render(R.layout.banner_item_tansform, listOf(
+                R.drawable.img_banner_0,
+                R.drawable.img_banner_1,
+                R.drawable.img_banner_2,
+                R.drawable.img_banner_3,
+                R.drawable.img_banner_4
+            )) { position, t ->
                 getView<ImageView>(R.id.iv_transform_page)?.setImageResource(t)
-            }.apply {
-                submitList(
-                    listOf(
-                        R.drawable.img_banner_0,
-                        R.drawable.img_banner_1,
-                        R.drawable.img_banner_2,
-                        R.drawable.img_banner_3,
-                        R.drawable.img_banner_4
-                    )
-                )
-            })
+            }
+        }
+        findViewById<Banner>(R.id.banner_transform_5).apply {
+            supportMultiScalePage()
+            render(R.layout.banner_item_tansform, listOf(
+                R.drawable.img_banner_0,
+                R.drawable.img_banner_1,
+                R.drawable.img_banner_2,
+                R.drawable.img_banner_3,
+                R.drawable.img_banner_4
+            )) { position, t ->
+                getView<ImageView>(R.id.iv_transform_page)?.setImageResource(t)
+            }
         }
 
         findViewById<Banner>(R.id.banner_transform_6).apply {
             orientation = Banner.VERTICAL
             supportMultiScalePage()
-            setAdapter(BannerAdapter<Int>(R.layout.banner_item_tansform) { t ->
+            render(R.layout.banner_item_tansform, listOf(
+                R.drawable.img_banner_0,
+                R.drawable.img_banner_1,
+                R.drawable.img_banner_2,
+                R.drawable.img_banner_3,
+                R.drawable.img_banner_4
+            )) { position, t ->
                 getView<ImageView>(R.id.iv_transform_page)?.setImageResource(t)
-            }.apply {
-                submitList(
-                    listOf(
-                        R.drawable.img_banner_0,
-                        R.drawable.img_banner_1,
-                        R.drawable.img_banner_2,
-                        R.drawable.img_banner_3,
-                        R.drawable.img_banner_4
-                    )
-                )
-            })
+            }
         }
+
+
     }
 }

@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
  * version: 1.0
  */
 
-class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val mViews: SparseArray<View> = SparseArray()
 
     fun <T : View> getView(@IdRes id: Int): T? {
@@ -40,7 +40,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param resId
      * @return
      */
-    fun setImageResource(@IdRes viewId: Int, @DrawableRes resId: Int): BaseBannerViewHolder {
+    fun setImageResource(@IdRes viewId: Int, @DrawableRes resId: Int): BannerViewHolder {
         getView<ImageView>(viewId)?.apply {
             setImageResource(resId)
         }
@@ -54,7 +54,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param bitmap
      * @return
      */
-    fun setImageBitmap(@IdRes viewId: Int, bitmap: Bitmap): BaseBannerViewHolder {
+    fun setImageBitmap(@IdRes viewId: Int, bitmap: Bitmap): BannerViewHolder {
         getView<ImageView>(viewId)?.apply {
             setImageBitmap(bitmap)
         }
@@ -68,7 +68,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param drawable
      * @return
      */
-    fun setImageDrawable(@IdRes viewId: Int, drawable: Drawable): BaseBannerViewHolder {
+    fun setImageDrawable(@IdRes viewId: Int, drawable: Drawable): BannerViewHolder {
         getView<ImageView>(viewId)?.apply {
             setImageDrawable(drawable)
         }
@@ -82,7 +82,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param url
      * @return
      */
-    fun setImageUrl(@IdRes viewId: Int, url: String): BaseBannerViewHolder {
+    fun setImageUrl(@IdRes viewId: Int, url: String): BannerViewHolder {
         getView<ImageView>(viewId)?.apply {
             //TODO
         }
@@ -96,7 +96,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param alpha
      * @return
      */
-    fun setImageAlpha(@IdRes viewId: Int, alpha: Int): BaseBannerViewHolder {
+    fun setImageAlpha(@IdRes viewId: Int, alpha: Int): BannerViewHolder {
         getView<ImageView>(viewId)?.apply {
             val animation = AlphaAnimation(alpha.toFloat(), alpha.toFloat())
             animation.duration = 0
@@ -113,7 +113,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param color
      * @return
      */
-    fun setBackgroundColor(@IdRes viewId: Int, @ColorInt color: Int): BaseBannerViewHolder {
+    fun setBackgroundColor(@IdRes viewId: Int, @ColorInt color: Int): BannerViewHolder {
         getView<View>(viewId)?.apply {
             setBackgroundColor(color)
         }
@@ -127,7 +127,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param visible
      * @return
      */
-    fun setVisibility(@IdRes viewId: Int, visible: Boolean): BaseBannerViewHolder {
+    fun setVisibility(@IdRes viewId: Int, visible: Boolean): BannerViewHolder {
         getView<View>(viewId)?.apply {
             visibility = if (visible) View.VISIBLE else View.INVISIBLE
         }
@@ -141,7 +141,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param visible
      * @return
      */
-    fun setGone(@IdRes viewId: Int, visible: Boolean): BaseBannerViewHolder {
+    fun setGone(@IdRes viewId: Int, visible: Boolean): BannerViewHolder {
         getView<View>(viewId)?.apply {
             visibility = if (visible) View.VISIBLE else View.GONE
         }
@@ -155,7 +155,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param newTag
      * @return
      */
-    fun setTag(@IdRes viewId: Int, newTag: Any): BaseBannerViewHolder {
+    fun setTag(@IdRes viewId: Int, newTag: Any): BannerViewHolder {
         getView<View>(viewId)?.apply {
             tag = newTag
         }
@@ -170,7 +170,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param tagValue
      * @return
      */
-    fun setTag(@IdRes viewId: Int, tagKey: Int, tagValue: Any): BaseBannerViewHolder {
+    fun setTag(@IdRes viewId: Int, tagKey: Int, tagValue: Any): BannerViewHolder {
         getView<View>(viewId)?.apply {
             setTag(tagKey, tagValue)
         }
@@ -187,7 +187,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun setOnClickListener(
         @IdRes viewId: Int,
         onClickListener: View.OnClickListener
-    ): BaseBannerViewHolder {
+    ): BannerViewHolder {
         getView<View>(viewId)?.apply {
             setOnClickListener(onClickListener)
         }
@@ -204,7 +204,7 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun setOnLongClickListener(
         @IdRes viewId: Int,
         onLongClickListener: View.OnLongClickListener
-    ): BaseBannerViewHolder {
+    ): BannerViewHolder {
         getView<View>(viewId)?.apply {
             setOnLongClickListener(onLongClickListener)
         }
@@ -212,9 +212,9 @@ class BaseBannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     companion object {
-        operator fun get(parent: ViewGroup, layoutId: Int): BaseBannerViewHolder {
+        operator fun get(parent: ViewGroup, layoutId: Int): BannerViewHolder {
             val convertView = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
-            return BaseBannerViewHolder(convertView)
+            return BannerViewHolder(convertView)
         }
     }
 }
