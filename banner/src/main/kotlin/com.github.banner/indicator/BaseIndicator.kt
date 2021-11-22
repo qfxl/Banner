@@ -2,12 +2,13 @@ package com.github.banner.indicator
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import com.github.banner.Banner
 import com.github.banner.callback.OnBannerPageChangeCallback
 import com.github.banner.dp
-import kotlin.math.max
 
 /**
  * author : qfxl
@@ -22,20 +23,69 @@ abstract class BaseIndicator @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ) : View(context, attrs, defStyle), OnBannerPageChangeCallback {
+    /**
+     * gap between each indicator
+     */
+    var itemSpace = 0
 
-    var itemSpace = 4.dp
+    /**
+     * width of each indicator
+     */
+    var itemWidth = 0
 
-    var itemWidth = 8.dp
+    /**
+     * width of each selected indicator
+     */
+    var itemSelectWidth = itemWidth
 
-    var itemHeight = 8.dp
+    /**
+     * height of each indicator
+     */
+    var itemHeight = 0
 
+    /**
+     * height of each selected indicator
+     */
+    var itemSelectHeight = itemHeight
+
+    /**
+     * number of indicators, this number is the realCount of Banner#adapter
+     */
     var itemCount = 0
 
+    /**
+     * default color of the indicator
+     */
+    var defaultColor = 0
+
+    /**
+     * selected color of the indicator
+     */
+    var selectedColor = 0
+
+    /**
+     * orientation associated with Banner
+     */
     var orientation = Banner.HORIZONTAL
 
+    /**
+     * current page
+     */
     private var currentPage = 0
 
+    /**
+     * indicator offset
+     */
     private var offset = 0f
+
+    /**
+     * indicator paint
+     */
+    val indicatorPaint by lazy(LazyThreadSafetyMode.NONE) {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = defaultColor
+        }
+    }
 
     init {
         require(orientation == Banner.HORIZONTAL || orientation == Banner.VERTICAL) { "Indicator orientation must be Banner.HORIZONTAL or Banner.VERTICAL" }
@@ -50,18 +100,6 @@ abstract class BaseIndicator @JvmOverloads constructor(
         invalidate()
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if (orientation == Banner.HORIZONTAL) {
-            val measuredWidth = (itemCount - 1) * itemSpace + itemCount * itemWidth
-            val measuredHeight = max(itemWidth, itemHeight)
-            setMeasuredDimension(measuredWidth, measuredHeight)
-        } else {
-            val measuredWidth = max(itemWidth, itemHeight)
-            val measuredHeight = (itemCount - 1) * itemSpace + itemCount * itemHeight
-            setMeasuredDimension(measuredWidth, measuredHeight)
-        }
-    }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -77,18 +115,25 @@ abstract class BaseIndicator @JvmOverloads constructor(
     }
 
     /**
+     * Check if need to set default values
+     */
+    open fun setDefaultValue() {
+
+    }
+
+    /**
      * draw horizontal indicators
      * @param canvas
-     * @param currentBannerItem
+     * @param currentPage
      * @param offset
      */
-    abstract fun drawHorizontal(canvas: Canvas?, currentBannerItem: Int, offset: Float)
+    abstract fun drawHorizontal(canvas: Canvas?, currentPage: Int, offset: Float)
 
     /**
      * draw vertical indicators
      * @param canvas
-     * @param currentBannerItem
+     * @param currentPage
      * @param offset
      */
-    abstract fun drawVertical(canvas: Canvas?, currentBannerItem: Int, offset: Float)
+    abstract fun drawVertical(canvas: Canvas?, currentPage: Int, offset: Float)
 }

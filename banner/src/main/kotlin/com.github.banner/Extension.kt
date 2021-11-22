@@ -1,10 +1,16 @@
 package com.github.banner
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.util.TypedValue
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.annotation.LayoutRes
 import com.github.banner.adapter.BannerAdapter
 import com.github.banner.adapter.BannerViewHolder
+import com.qfxl.view.R
 
 /**
  * author : qfxl
@@ -36,6 +42,19 @@ inline val Int.sp
 
 fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
+fun String.bannerLog() {
+    Log.d("Banner", this)
+}
+
+@ColorInt
+@SuppressLint("Recycle")
+fun Context.themeColor(
+    @AttrRes themeAttrId: Int
+): Int {
+    val typedValue = TypedValue()
+    theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+    return typedValue.data
+}
 
 fun <T> Banner.render(
     @LayoutRes pageLayoutId: Int,

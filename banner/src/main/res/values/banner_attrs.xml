@@ -21,37 +21,42 @@
         <attr name="banner_pageMargin" format="dimension" />
         <!--banner inner viewPager2 page offscreen limit-->
         <attr name="banner_pageOffscreenLimit" format="integer" />
-        <!--是否使用默认的指示器-->
-        <attr name="banner_isDefaultIndicator" format="boolean" />
-        <!--指示器的背景色-->
-        <attr name="banner_indicatorBackgroundColor" format="color" />
-        <!--指示器的位置(上中下)-->
-        <attr name="banner_indicatorPosition" format="enum">
-            <enum name="top" value="0" />
-            <enum name="center" value="1" />
-            <enum name="bottom" value="2" />
+        <!--for indicators -->
+        <!--banner indicator style-->
+        <attr name="banner_indicatorStyle" format="enum">
+            <enum name="NONE" value="0" />
+            <enum name="CIRCLE" value="1" />
+            <enum name="RECT" value="2" />
+            <enum name="ROUND_RECT" value="3" />
         </attr>
-        <!--以下是默认的指示器设置-->
-        <!--指示器宽度-->
-        <attr name="banner_indicatorWidth" format="dimension" />
-        <!--指示器高度-->
-        <attr name="banner_indicatorHeight" format="dimension" />
-        <!--默认指示器的选中资源id-->
-        <attr name="banner_indicatorSelectResId" format="reference" />
-        <!--默认指示器的正常资源id-->
-        <attr name="banner_indicatorNormalResId" format="reference" />
-        <!--默认指示器item的间距-->
-        <attr name="banner_indicatorItemMargin" format="dimension" />
-        <!--默认指示器item宽度-->
+        <!--default color of the indicator -->
+        <attr name="banner_indicatorDefaultColor" format="color" />
+        <!--selected color of the indicator -->
+        <attr name="banner_indicatorSelectColor" format="color" />
+        <!--default space between each indicator-->
+        <attr name="banner_indicatorItemSpace" format="dimension" />
+        <!--width of indicator-->
         <attr name="banner_indicatorItemWidth" format="dimension" />
-        <!--默认指示器item高度-->
+        <!--selected width of indicator-->
+        <attr name="banner_indicatorItemSelectWidth" format="dimension" />
+        <!--height of indicator-->
         <attr name="banner_indicatorItemHeight" format="dimension" />
-        <!--默认指示器的gravity-->
-        <attr name="banner_indicatorGravity" format="enum">
-            <enum name="left" value="0" />
-            <enum name="center" value="1" />
-            <enum name="right" value="2" />
-        </attr>
-
+        <!--select height of indicator-->
+        <attr name="banner_indicatorItemSelectHeight" format="dimension" />
+        <!--round rect radius of indicator, only for RoundRectIndicator-->
+        <attr name="banner_indicatorRoundRectRadius" format="dimension" />
+        <!--banner layout rules, depend on RelativeLayout-->
+        <attr name="banner_indicatorCenterInParent" format="boolean" />
+        <attr name="banner_indicatorAlignParentStart" format="boolean" />
+        <attr name="banner_indicatorAlignParentTop" format="boolean" />
+        <attr name="banner_indicatorAlignParentEnd" format="boolean" />
+        <attr name="banner_indicatorAlignParentBottom" format="boolean" />
+        <attr name="banner_indicatorCenterHorizontal" format="boolean" />
+        <attr name="banner_indicatorCenterVertical" format="boolean" />
+        <!--banner indicator margins-->
+        <attr name="banner_marginStart" format="dimension" />
+        <attr name="banner_marginTop" format="dimension" />
+        <attr name="banner_marginEnd" format="dimension" />
+        <attr name="banner_marginBottom" format="dimension" />
     </declare-styleable>
 </resources>

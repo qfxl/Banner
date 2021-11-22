@@ -2,6 +2,7 @@ package com.github.banner.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.github.banner.callback.OnBannerItemClickListener
 
 /**
  * author : qfxl
@@ -18,6 +19,8 @@ class BannerDecorAdapter(val realAdapter: RecyclerView.Adapter<BannerViewHolder>
 
     var enableInfinityLoop = false
 
+    var onBannerItemClickListener: OnBannerItemClickListener? = null
+
     companion object {
         /**
          * if enableInfinityLoop, adapter getItemCount() will return realCount*ratio
@@ -31,6 +34,9 @@ class BannerDecorAdapter(val realAdapter: RecyclerView.Adapter<BannerViewHolder>
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
         realAdapter.onBindViewHolder(holder, position % realAdapter.itemCount)
+        holder.itemView.setOnClickListener {
+            onBannerItemClickListener?.onBannerItemClick(position % realAdapter.itemCount)
+        }
     }
 
     override fun getItemCount(): Int {
