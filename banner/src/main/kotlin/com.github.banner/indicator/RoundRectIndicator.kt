@@ -5,9 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.RectF
 import com.github.banner.Banner
+import com.github.banner.R
 import com.github.banner.dp
 import com.github.banner.themeColor
-import com.qfxl.view.R
 import kotlin.math.max
 
 /**

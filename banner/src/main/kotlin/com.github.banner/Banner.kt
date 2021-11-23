@@ -29,7 +29,6 @@ import com.github.banner.callback.OnBannerPageChangeCallback
 import com.github.banner.indicator.*
 import com.github.banner.transformer.OverlapSliderTransformer
 import com.github.banner.transformer.ScaleInTransform
-import com.qfxl.view.R
 import java.util.*
 import kotlin.math.abs
 

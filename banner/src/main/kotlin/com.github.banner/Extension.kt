@@ -7,10 +7,6 @@ import android.util.Log
 import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
-import androidx.annotation.LayoutRes
-import com.github.banner.adapter.BannerAdapter
-import com.github.banner.adapter.BannerViewHolder
-import com.qfxl.view.R
 
 /**
  * author : qfxl
