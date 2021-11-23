@@ -8,8 +8,8 @@
 
     <com.github.banner.Banner
         android:id="@+id/banner_basic_1"
-        android:layout_width="300dp"
-        android:layout_height="180dp"
+        android:layout_width="248dp"
+        android:layout_height="140dp"
         android:layout_marginTop="16dp"
         app:banner_indicatorSelectColor="@color/colorAccent"
         app:banner_indicatorStyle="CIRCLE"
@@ -18,25 +18,11 @@
 
     <com.github.banner.Banner
         android:id="@+id/banner_basic_2"
-        android:layout_width="300dp"
-        android:layout_height="180dp"
+        android:layout_width="248dp"
+        android:layout_height="140dp"
         android:layout_marginTop="16dp"
-        app:banner_indicatorItemWidth="12dp"
-        app:banner_indicatorItemHeight="2dp"
+        app:banner_orientation="vertical"
         app:banner_indicatorSelectColor="@color/colorAccent"
-        app:banner_indicatorStyle="RECT"
+        app:banner_indicatorStyle="CIRCLE"
         app:banner_indicatorCenterVertical="true" />
-
-    <com.github.banner.Banner
-        android:id="@+id/banner_basic_3"
-        android:layout_width="300dp"
-        android:layout_height="180dp"
-        android:layout_marginTop="16dp"
-        app:banner_indicatorItemWidth="12dp"
-        app:banner_indicatorItemHeight="3dp"
-        app:banner_indicatorRoundRectRadius="6dp"
-        app:banner_indicatorSelectColor="@color/colorAccent"
-        app:banner_indicatorStyle="ROUND_RECT"
-        app:banner_indicatorAlignParentBottom="true"
-        app:banner_indicatorCenterHorizontal="true" />
 </LinearLayout>

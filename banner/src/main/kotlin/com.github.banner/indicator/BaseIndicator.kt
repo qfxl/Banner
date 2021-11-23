@@ -2,13 +2,11 @@ package com.github.banner.indicator
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import com.github.banner.Banner
 import com.github.banner.callback.OnBannerPageChangeCallback
-import com.github.banner.dp
 
 /**
  * author : qfxl
@@ -71,12 +69,17 @@ abstract class BaseIndicator @JvmOverloads constructor(
     /**
      * current page
      */
-    private var currentPage = 0
+    var currentPage = 0
 
     /**
      * indicator offset
      */
-    private var offset = 0f
+    var offset = 0f
+
+    /**
+     * indicator offset pixels
+     */
+    var offsetPixels = 0
 
     /**
      * indicator paint
@@ -93,6 +96,7 @@ abstract class BaseIndicator @JvmOverloads constructor(
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
         offset = positionOffset
+        offsetPixels = positionOffsetPixels
     }
 
     override fun onPageSelected(position: Int) {
@@ -104,9 +108,9 @@ abstract class BaseIndicator @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (orientation == Banner.HORIZONTAL) {
-            drawHorizontal(canvas, currentPage, offset)
+            drawHorizontal(canvas)
         } else {
-            drawVertical(canvas, currentPage, offset)
+            drawVertical(canvas)
         }
     }
 
@@ -124,16 +128,12 @@ abstract class BaseIndicator @JvmOverloads constructor(
     /**
      * draw horizontal indicators
      * @param canvas
-     * @param currentPage
-     * @param offset
      */
-    abstract fun drawHorizontal(canvas: Canvas?, currentPage: Int, offset: Float)
+    abstract fun drawHorizontal(canvas: Canvas?)
 
     /**
      * draw vertical indicators
      * @param canvas
-     * @param currentPage
-     * @param offset
      */
-    abstract fun drawVertical(canvas: Canvas?, currentPage: Int, offset: Float)
+    abstract fun drawVertical(canvas: Canvas?)
 }

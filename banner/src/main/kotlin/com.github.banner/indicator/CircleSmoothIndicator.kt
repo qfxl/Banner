@@ -8,6 +8,7 @@ import com.github.banner.dp
 import com.github.banner.themeColor
 import com.qfxl.view.R
 import kotlin.math.max
+import kotlin.math.min
 
 /**
  * author : qfxl
@@ -17,7 +18,8 @@ import kotlin.math.max
  * version: 1.0
  */
 
-class CircleIndicator(context: Context) : BaseIndicator(context) {
+class CircleSmoothIndicator(context: Context) : BaseIndicator(context) {
+
     /**
      * indicator radius
      */
@@ -25,15 +27,15 @@ class CircleIndicator(context: Context) : BaseIndicator(context) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val requiredItemWidth = max(itemWidth, itemSelectWidth)
-        val requiredItemHeight = max(requiredItemWidth, max(itemHeight, itemSelectHeight))
         if (orientation == Banner.HORIZONTAL) {
             val measuredWidth =
-                (itemCount - 1) * (itemSpace + itemWidth) + itemSelectWidth
-            setMeasuredDimension(measuredWidth, requiredItemHeight)
+                (itemCount - 1) * itemSpace + itemCount * itemWidth
+            val measuredHeight = max(itemWidth, itemHeight)
+            setMeasuredDimension(measuredWidth, measuredHeight)
         } else {
-            val measuredHeight = (itemCount - 1) * (itemSpace + itemHeight) + itemSelectHeight
-            setMeasuredDimension(requiredItemWidth, measuredHeight)
+            val measuredWidth = max(itemWidth, itemHeight)
+            val measuredHeight = (itemCount - 1) * itemSpace + itemCount * itemHeight
+            setMeasuredDimension(measuredWidth, measuredHeight)
         }
     }
 
@@ -45,53 +47,35 @@ class CircleIndicator(context: Context) : BaseIndicator(context) {
     override fun drawHorizontal(canvas: Canvas?) {
         var left = 0f
         for (index in 0 until itemCount) {
-            if (index == currentPage) {
-                radius = itemSelectWidth / 2f
-                indicatorPaint.color = selectedColor
-            } else {
-                radius = itemWidth / 2f
-                indicatorPaint.color = defaultColor
-            }
+            indicatorPaint.color = defaultColor
             canvas?.drawCircle(left + radius, height / 2f, radius, indicatorPaint)
-            left += if (index == currentPage) {
-                itemSelectWidth + itemSpace
-            } else {
-                itemWidth + itemSpace
-            }
+            left += itemWidth + itemSpace
         }
+        var offsetLeft = radius + (itemSpace + radius * 2) * (currentPage + offset)
+        offsetLeft = min(offsetLeft, width - radius)
+        indicatorPaint.color = selectedColor
+        canvas?.drawCircle(offsetLeft, height / 2f, radius, indicatorPaint)
     }
 
     override fun drawVertical(canvas: Canvas?) {
         var top = 0f
+        var offsetTop = radius + (itemSpace + radius * 2) * (currentPage + offset)
         for (index in 0 until itemCount) {
-            if (index == currentPage) {
-                radius = itemSelectWidth / 2f
-                indicatorPaint.color = selectedColor
-            } else {
-                radius = itemWidth / 2f
-                indicatorPaint.color = defaultColor
-            }
+            indicatorPaint.color = defaultColor
             canvas?.drawCircle(width / 2f, top + radius, radius, indicatorPaint)
-            top += if (index == currentPage) {
-                itemSelectHeight + itemSpace
-            } else {
-                itemHeight + itemSpace
-            }
+            top += itemHeight + itemSpace
         }
+        offsetTop = min(offsetTop, height - radius)
+        indicatorPaint.color = selectedColor
+        canvas?.drawCircle(width / 2f, offsetTop, radius, indicatorPaint)
     }
 
     override fun setDefaultValue() {
         if (itemWidth == 0) {
             itemWidth = 6.dp
         }
-        if (itemSelectWidth == 0) {
-            itemSelectWidth = itemWidth
-        }
         if (itemHeight == 0) {
             itemHeight = 6.dp
-        }
-        if (itemSelectHeight == 0) {
-            itemSelectHeight = itemHeight
         }
         if (itemSpace == 0) {
             itemSpace = 4.dp
@@ -102,5 +86,15 @@ class CircleIndicator(context: Context) : BaseIndicator(context) {
         if (selectedColor == 0) {
             selectedColor = context.themeColor(R.attr.colorPrimary)
         }
+    }
+
+    override fun onPageSelected(position: Int) {
+
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+        currentPage = position
+        invalidate()
     }
 }

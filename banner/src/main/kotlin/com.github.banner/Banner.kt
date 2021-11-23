@@ -9,6 +9,7 @@ import android.view.animation.*
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.IntDef
+import androidx.annotation.LayoutRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -17,16 +18,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.github.banner.adapter.BannerAdapter
 import com.github.banner.adapter.BannerDecorAdapter
+import com.github.banner.adapter.BannerViewHolder
 import com.github.banner.adapter.BaseBannerAdapter
 import com.github.banner.callback.FakeDragAnimatorListener
 import com.github.banner.callback.FakeDragAnimatorUpdateListener
 import com.github.banner.callback.OnBannerItemClickListener
 import com.github.banner.callback.OnBannerPageChangeCallback
-import com.github.banner.indicator.BaseIndicator
-import com.github.banner.indicator.CircleIndicator
-import com.github.banner.indicator.RectIndicator
-import com.github.banner.indicator.RoundRectIndicator
+import com.github.banner.indicator.*
 import com.github.banner.transformer.OverlapSliderTransformer
 import com.github.banner.transformer.ScaleInTransform
 import com.qfxl.view.R
@@ -56,10 +56,13 @@ class Banner @JvmOverloads constructor(
         const val VERTICAL = ViewPager2.ORIENTATION_VERTICAL
 
 
-        const val INDICATOR_NONE = 0
-        const val INDICATOR_CIRCLE = 1
-        const val INDICATOR_RECT = 2
-        const val INDICATOR_ROUND_RECT = 3
+        const val INDICATOR_STYLE_NONE = 0
+        const val INDICATOR_STYLE_CIRCLE = 1
+        const val INDICATOR_STYLE_RECT = 2
+        const val INDICATOR_STYLE_ROUND_RECT = 3
+        const val INDICATOR_STYLE_CIRCLE_SMOOTH = 4
+        const val INDICATOR_STYLE_RECT_SMOOTH = 5
+        const val INDICATOR_STYLE_ROUND_RECT_SMOOTH = 6
 
         const val ALIGN_PARENT_START = RelativeLayout.ALIGN_PARENT_START
         const val ALIGN_PARENT_TOP = RelativeLayout.ALIGN_PARENT_TOP
@@ -259,7 +262,7 @@ class Banner @JvmOverloads constructor(
                 indicatorRoundRectRadius =
                     getDimensionPixelOffset(R.styleable.Banner_banner_indicatorRoundRectRadius, 0)
                 val indicatorStyle =
-                    getInt(R.styleable.Banner_banner_indicatorStyle, INDICATOR_NONE)
+                    getInt(R.styleable.Banner_banner_indicatorStyle, INDICATOR_STYLE_NONE)
                 val alignParentStart =
                     getBoolean(R.styleable.Banner_banner_indicatorAlignParentStart, false)
                 if (alignParentStart) {
@@ -305,9 +308,12 @@ class Banner @JvmOverloads constructor(
                     getDimensionPixelOffset(R.styleable.Banner_banner_marginBottom, 8.dp)
 
                 mIndicator = when (indicatorStyle) {
-                    INDICATOR_CIRCLE -> CircleIndicator(context)
-                    INDICATOR_RECT -> RectIndicator(context)
-                    INDICATOR_ROUND_RECT -> RoundRectIndicator(context)
+                    INDICATOR_STYLE_CIRCLE -> CircleIndicator(context)
+                    INDICATOR_STYLE_RECT -> RectIndicator(context)
+                    INDICATOR_STYLE_ROUND_RECT -> RoundRectIndicator(context)
+                    INDICATOR_STYLE_CIRCLE_SMOOTH -> CircleSmoothIndicator(context)
+                    INDICATOR_STYLE_RECT_SMOOTH -> RectSmoothIndicator(context)
+                    INDICATOR_STYLE_ROUND_RECT_SMOOTH -> RoundRectSmoothIndicator(context)
                     else -> {
                         null
                     }
@@ -723,6 +729,7 @@ class Banner @JvmOverloads constructor(
      * create Banner indicators
      */
     private fun createIndicators(layoutParams: LayoutParams? = null) {
+        removeView(mIndicator)
         mIndicator?.apply {
             defaultColor = indicatorDefaultColor
             selectedColor = indicatorSelectColor
@@ -732,6 +739,9 @@ class Banner @JvmOverloads constructor(
             itemSelectHeight = indicatorItemSelectHeight
             itemSpace = indicatorItemSpace
             if (this is RoundRectIndicator) {
+                roundRadius = indicatorRoundRectRadius
+            }
+            if (this is RoundRectSmoothIndicator) {
                 roundRadius = indicatorRoundRectRadius
             }
             setDefaultValue()
@@ -765,8 +775,8 @@ class Banner @JvmOverloads constructor(
      * @param indicator
      * @param layoutParams
      */
-    fun setIndicators(indicator: BaseIndicator, layoutParams: LayoutParams? = null) {
-        indicator.apply {
+    fun setIndicators(indicator: BaseIndicator?, layoutParams: LayoutParams? = null) {
+        indicator?.apply {
             mIndicator = this
             orientation = this@Banner.orientation
             bannerCore.adapter?.also { adapter ->
@@ -777,6 +787,25 @@ class Banner @JvmOverloads constructor(
         getAdapter()?.apply {
             createIndicators(layoutParams)
         }
+    }
+
+    /**
+     * set indicator style
+     * @param style
+     */
+    fun setIndicatorStyle(@IndicatorStyle style: Int) {
+        mIndicator = when (style) {
+            INDICATOR_STYLE_CIRCLE -> CircleIndicator(context)
+            INDICATOR_STYLE_RECT -> RectIndicator(context)
+            INDICATOR_STYLE_ROUND_RECT -> RoundRectIndicator(context)
+            INDICATOR_STYLE_CIRCLE_SMOOTH -> CircleSmoothIndicator(context)
+            INDICATOR_STYLE_RECT_SMOOTH -> RectSmoothIndicator(context)
+            INDICATOR_STYLE_ROUND_RECT_SMOOTH -> RoundRectSmoothIndicator(context)
+            else -> {
+                null
+            }
+        }
+        setIndicators(mIndicator)
     }
 
     /**
@@ -953,6 +982,48 @@ class Banner @JvmOverloads constructor(
     }
 
     @Retention(AnnotationRetention.SOURCE)
-    @IntDef(INDICATOR_NONE, INDICATOR_CIRCLE, INDICATOR_RECT, INDICATOR_ROUND_RECT)
+    @IntDef(
+        INDICATOR_STYLE_NONE,
+        INDICATOR_STYLE_CIRCLE,
+        INDICATOR_STYLE_RECT,
+        INDICATOR_STYLE_ROUND_RECT,
+        INDICATOR_STYLE_CIRCLE_SMOOTH,
+        INDICATOR_STYLE_RECT_SMOOTH,
+        INDICATOR_STYLE_ROUND_RECT_SMOOTH
+    )
     annotation class IndicatorStyle
+
+    /**
+     * render
+     */
+    fun <T> render(
+        @LayoutRes pageLayoutId: Int,
+        dataList: List<T>,
+        renderScope: BannerViewHolder.(Int, T) -> Unit
+    ) {
+        setAdapter(BannerAdapter<T>({ pageLayoutId }) { position, _, t ->
+            renderScope(position, t)
+        }.apply {
+            submitList(dataList)
+        })
+    }
+
+    /**
+     * render multiType
+     */
+    fun <T> renderMultiType(
+        getLayoutId: (Int) -> Int,
+        dataList: List<T>,
+        renderScope: BannerViewHolder.(Int, Int, T) -> Unit
+    ) {
+        setAdapter(BannerAdapter<T>(getLayoutId) { position, viewType, t ->
+            renderScope(position, viewType, t)
+        }.apply {
+            submitList(dataList)
+        })
+    }
+
+    fun refresh() {
+
+    }
 }

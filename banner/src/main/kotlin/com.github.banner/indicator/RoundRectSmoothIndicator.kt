@@ -8,7 +8,7 @@ import com.github.banner.Banner
 import com.github.banner.dp
 import com.github.banner.themeColor
 import com.qfxl.view.R
-import kotlin.math.max
+import kotlin.math.min
 
 /**
  * author : qfxl
@@ -18,7 +18,7 @@ import kotlin.math.max
  * version: 1.0
  */
 
-class RoundRectIndicator(context: Context) : BaseIndicator(context) {
+class RoundRectSmoothIndicator(context: Context) : BaseIndicator(context) {
 
     var roundRadius = 0
 
@@ -28,14 +28,12 @@ class RoundRectIndicator(context: Context) : BaseIndicator(context) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val requiredItemWidth = max(itemWidth, itemSelectWidth)
-        val requiredItemHeight = max(requiredItemWidth, max(itemHeight, itemSelectHeight))
         if (orientation == Banner.HORIZONTAL) {
-            val measuredWidth = (itemCount - 1) * (itemSpace + itemWidth) + itemSelectWidth
-            setMeasuredDimension(measuredWidth, requiredItemHeight)
+            val measuredWidth = (itemCount - 1) * itemSpace + itemCount * itemWidth
+            setMeasuredDimension(measuredWidth, itemHeight)
         } else {
-            val measuredHeight = (itemCount - 1) * (itemSpace + itemWidth) + itemSelectWidth
-            setMeasuredDimension(requiredItemWidth, measuredHeight)
+            val measuredHeight = (itemCount - 1) * itemSpace + itemCount * itemWidth
+            setMeasuredDimension(itemHeight, measuredHeight)
         }
     }
 
@@ -43,8 +41,10 @@ class RoundRectIndicator(context: Context) : BaseIndicator(context) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (orientation == Banner.HORIZONTAL) {
             indicatorRect.top = 0f
+            indicatorRect.bottom = itemHeight.toFloat()
         } else {
             indicatorRect.left = 0f
+            indicatorRect.right = itemHeight.toFloat()
         }
     }
 
@@ -52,54 +52,54 @@ class RoundRectIndicator(context: Context) : BaseIndicator(context) {
         var left = 0f
         for (index in 0 until itemCount) {
             indicatorRect.left = left
-            if (index == currentPage) {
-                indicatorRect.bottom = itemSelectHeight.toFloat()
-                indicatorRect.right = left + itemSelectWidth
-                indicatorPaint.color = selectedColor
-            } else {
-                indicatorRect.bottom = itemHeight.toFloat()
-                indicatorRect.right = left + itemWidth
-                indicatorPaint.color = defaultColor
-            }
+            indicatorRect.right = left + itemWidth
+            indicatorPaint.color = defaultColor
             canvas?.drawRoundRect(
                 indicatorRect,
                 roundRadius.toFloat(),
                 roundRadius.toFloat(),
                 indicatorPaint
             )
-            left += if (index == currentPage) {
-                itemSelectWidth + itemSpace
-            } else {
-                itemWidth + itemSpace
-            }
+            left += itemWidth + itemSpace
         }
+        indicatorPaint.color = selectedColor
+        var offsetLeft = (itemWidth + itemSpace) * (currentPage + offset)
+        offsetLeft = min(offsetLeft, (width - itemWidth).toFloat())
+        indicatorRect.left = offsetLeft
+        indicatorRect.right = offsetLeft + itemWidth
+        canvas?.drawRoundRect(
+            indicatorRect,
+            roundRadius.toFloat(),
+            roundRadius.toFloat(),
+            indicatorPaint
+        )
     }
 
     override fun drawVertical(canvas: Canvas?) {
         var top = 0f
         for (index in 0 until itemCount) {
             indicatorRect.top = top
-            if (index == currentPage) {
-                indicatorRect.right = itemSelectHeight.toFloat()
-                indicatorRect.bottom = top + itemSelectWidth
-                indicatorPaint.color = selectedColor
-            } else {
-                indicatorRect.right = itemHeight.toFloat()
-                indicatorRect.bottom = top + itemWidth
-                indicatorPaint.color = defaultColor
-            }
+            indicatorRect.bottom = top + itemWidth
+            indicatorPaint.color = defaultColor
             canvas?.drawRoundRect(
                 indicatorRect,
                 roundRadius.toFloat(),
                 roundRadius.toFloat(),
                 indicatorPaint
             )
-            top += if (index == currentPage) {
-                itemSelectWidth + itemSpace
-            } else {
-                itemWidth + itemSpace
-            }
+            top += itemWidth + itemSpace
         }
+        indicatorPaint.color = selectedColor
+        var offsetTop = (itemWidth + itemSpace) * (currentPage + offset)
+        offsetTop = min(offsetTop, (height - itemWidth).toFloat())
+        indicatorRect.top = offsetTop
+        indicatorRect.bottom = offsetTop + itemWidth
+        canvas?.drawRoundRect(
+            indicatorRect,
+            roundRadius.toFloat(),
+            roundRadius.toFloat(),
+            indicatorPaint
+        )
     }
 
     override fun setDefaultValue() {
@@ -127,5 +127,15 @@ class RoundRectIndicator(context: Context) : BaseIndicator(context) {
         if (roundRadius == 0) {
             roundRadius = itemWidth shr 1
         }
+    }
+
+    override fun onPageSelected(position: Int) {
+
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+        currentPage = position
+        invalidate()
     }
 }

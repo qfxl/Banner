@@ -1,12 +1,9 @@
 package com.qfxl.samples.activity
 
 import android.os.Bundle
-import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.banner.Banner
-import com.github.banner.bannerLog
-import com.github.banner.dp
-import com.github.banner.render
 import com.qfxl.samples.R
 import com.qfxl.samples.mockBasicColorData
 
@@ -27,22 +24,16 @@ class BasicActivity : AppCompatActivity() {
                 itemView.setBackgroundColor(t)
             }
 
-            setOnBannerItemClickListener {
-
+            setOnBannerItemClickListener { position ->
+                Toast.makeText(this@BasicActivity, "u clicked $position", Toast.LENGTH_SHORT).show()
             }
         }
 
-        findViewById<Banner>(R.id.banner_basic_2).apply {
-            orientation = Banner.VERTICAL
-            render(R.layout.banner_item_basic, mockBasicColorData()) { position, t ->
-                itemView.setBackgroundColor(t)
-            }
-        }
-
-        findViewById<Banner>(R.id.banner_basic_3).apply {
-            render(R.layout.banner_item_basic, mockBasicColorData()) { position, t ->
-                itemView.setBackgroundColor(t)
-            }
+        findViewById<Banner>(R.id.banner_basic_2).render(
+            R.layout.banner_item_basic,
+            mockBasicColorData()
+        ) { position, t ->
+            itemView.setBackgroundColor(t)
         }
     }
 }

@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.github.banner.Banner
-import com.github.banner.adapter.BannerAdapter
-import com.github.banner.render
 import com.qfxl.samples.R
 
 /**

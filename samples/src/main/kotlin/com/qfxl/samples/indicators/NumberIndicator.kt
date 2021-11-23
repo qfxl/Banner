@@ -46,14 +46,14 @@ class NumberIndicator(context: Context) : BaseIndicator(context) {
         setMeasuredDimension(measuredSize.toInt(), measuredSize.toInt())
     }
 
-    override fun drawHorizontal(canvas: Canvas?, currentPage: Int, offset: Float) {
+    override fun drawHorizontal(canvas: Canvas?) {
         canvas?.apply {
             drawCircle(width / 2f, height / 2f, width / 2f, bgPaint)
             drawText("${currentPage+1}/$itemCount", width / 2f, height / 2f - (indicatorPaint.descent() + indicatorPaint.ascent()) / 2, indicatorPaint)
         }
     }
 
-    override fun drawVertical(canvas: Canvas?, currentPage: Int, offset: Float) {
+    override fun drawVertical(canvas: Canvas?) {
         canvas?.apply {
             drawCircle(width / 2f, height / 2f, width / 2f, bgPaint)
             drawText("${currentPage+1}/$itemCount", width / 2f, height / 2f - (indicatorPaint.descent() + indicatorPaint.ascent()) / 2, indicatorPaint)

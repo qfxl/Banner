@@ -55,27 +55,3 @@ fun Context.themeColor(
     theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
     return typedValue.data
 }
-
-fun <T> Banner.render(
-    @LayoutRes pageLayoutId: Int,
-    dataList: List<T>,
-    renderScope: BannerViewHolder.(Int, T) -> Unit
-) {
-    setAdapter(BannerAdapter<T>({ pageLayoutId }) { position, _, t ->
-        renderScope(position, t)
-    }.apply {
-        submitList(dataList)
-    })
-}
-
-fun <T> Banner.renderMultiType(
-    getLayoutId: (Int) -> Int,
-    dataList: List<T>,
-    renderScope: BannerViewHolder.(Int, Int, T) -> Unit
-) {
-    setAdapter(BannerAdapter<T>(getLayoutId) { position, viewType, t ->
-        renderScope(position, viewType, t)
-    }.apply {
-        submitList(dataList)
-    })
-}
