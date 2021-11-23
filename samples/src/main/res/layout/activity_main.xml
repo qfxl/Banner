@@ -14,12 +14,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="transform"
-        android:onClick="onTransformClick"/>
+        android:text="indicator"
+        android:onClick="onIndicatorClick"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="gesture conflict"
-        android:onClick="onGestureConflictClick" />
+        android:text="transform"
+        android:onClick="onTransformClick"/>
+
 </LinearLayout>

@@ -18,8 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.BasicActivity" />
-        <activity android:name=".activity.GestureConflictActivity" />
         <activity android:name=".activity.TransformActivity" />
+        <activity android:name=".activity.IndicatorActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.github.banner.Banner
+        android:id="@+id/banner_indicator_1"
+        android:layout_width="300dp"
+        android:layout_height="180dp"
+        app:banner_indicatorAlignParentBottom="true"
+        app:banner_indicatorAlignParentEnd="true"
+        app:banner_indicatorItemSelectWidth="8dp"
+        app:banner_indicatorItemSpace="8dp"
+        app:banner_indicatorItemWidth="6dp"
+        app:banner_indicatorSelectColor="@color/colorAccent"
+        app:banner_indicatorStyle="CIRCLE" />
+
+
+    <com.github.banner.Banner
+        android:id="@+id/banner_indicator_2"
+        android:layout_marginTop="16dp"
+        android:layout_width="300dp"
+        android:layout_height="180dp" />
+
+</LinearLayout>

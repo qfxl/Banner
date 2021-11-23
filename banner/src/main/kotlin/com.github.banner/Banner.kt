@@ -30,6 +30,7 @@ import com.github.banner.indicator.RoundRectIndicator
 import com.github.banner.transformer.OverlapSliderTransformer
 import com.github.banner.transformer.ScaleInTransform
 import com.qfxl.view.R
+import java.util.*
 import kotlin.math.abs
 
 /**
@@ -54,10 +55,19 @@ class Banner @JvmOverloads constructor(
         const val HORIZONTAL = ViewPager2.ORIENTATION_HORIZONTAL
         const val VERTICAL = ViewPager2.ORIENTATION_VERTICAL
 
+
         const val INDICATOR_NONE = 0
         const val INDICATOR_CIRCLE = 1
         const val INDICATOR_RECT = 2
         const val INDICATOR_ROUND_RECT = 3
+
+        const val ALIGN_PARENT_START = RelativeLayout.ALIGN_PARENT_START
+        const val ALIGN_PARENT_TOP = RelativeLayout.ALIGN_PARENT_TOP
+        const val ALIGN_PARENT_END = RelativeLayout.ALIGN_PARENT_END
+        const val ALIGN_PARENT_BOTTOM = RelativeLayout.ALIGN_PARENT_BOTTOM
+        const val CENTER_HORIZONTAL = RelativeLayout.CENTER_HORIZONTAL
+        const val CENTER_VERTICAL = RelativeLayout.CENTER_VERTICAL
+        const val CENTER_IN_PARENT = RelativeLayout.CENTER_IN_PARENT
     }
 
     private val bannerCore by lazy(LazyThreadSafetyMode.NONE) {
@@ -203,176 +213,17 @@ class Banner @JvmOverloads constructor(
     @ColorInt
     private var indicatorSelectColor = 0
     private var mIndicator: BaseIndicator? = null
-
-    var indicatorCenterInParent = false
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.addRule(CENTER_IN_PARENT)
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorAlignParentStart = false
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.addRule(ALIGN_PARENT_START)
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorAlignParentTop = false
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.addRule(ALIGN_PARENT_TOP)
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorAlignParentEnd = false
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.addRule(ALIGN_PARENT_END)
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorAlignParentBottom = false
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.addRule(ALIGN_PARENT_BOTTOM)
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorCenterHorizontal = false
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.addRule(CENTER_HORIZONTAL)
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorCenterVertical = false
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.addRule(CENTER_VERTICAL)
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorMarginStart = 0
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.setMargins(
-                                value,
-                                indicatorMarginTop,
-                                indicatorMarginEnd,
-                                indicatorMarginBottom
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorMarginTop = 0
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.setMargins(
-                                indicatorMarginStart,
-                                value,
-                                indicatorMarginEnd,
-                                indicatorMarginBottom
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    var indicatorMarginEnd = 0
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.setMargins(
-                                indicatorMarginStart,
-                                indicatorMarginTop,
-                                value,
-                                indicatorMarginBottom
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-    var indicatorMarginBottom = 0
-        set(value) {
-            field = value
-            mIndicator?.let { indicator ->
-                if (indicator.parent != null) {
-                    indicator.layoutParams = indicator.layoutParams.also {
-                        if (it is LayoutParams) {
-                            it.setMargins(
-                                indicatorMarginStart,
-                                indicatorMarginTop,
-                                indicatorMarginBottom,
-                                value
-                            )
-                        }
-                    }
-                }
-            }
-        }
+    private val indicatorLayoutRules by lazy(LazyThreadSafetyMode.NONE) {
+        LinkedList<Int>()
+    }
+    private var indicatorMarginStart = 0
+    private var indicatorMarginTop = 0
+    private var indicatorMarginEnd = 0
+    private var indicatorMarginBottom = 0
 
     init {
         with(context.obtainStyledAttributes(attrs, R.styleable.Banner)) {
             bannerCore.apply {
-                orientation = getInt(R.styleable.Banner_banner_orientation, this@Banner.orientation)
                 isUserInputEnabled =
                     getBoolean(R.styleable.Banner_banner_userInputEnable, enableUserInput)
                 offscreenPageLimit =
@@ -409,26 +260,41 @@ class Banner @JvmOverloads constructor(
                     getDimensionPixelOffset(R.styleable.Banner_banner_indicatorRoundRectRadius, 0)
                 val indicatorStyle =
                     getInt(R.styleable.Banner_banner_indicatorStyle, INDICATOR_NONE)
-                indicatorCenterInParent =
-                    getBoolean(R.styleable.Banner_banner_indicatorCenterInParent, false)
-                indicatorAlignParentStart =
+                val alignParentStart =
                     getBoolean(R.styleable.Banner_banner_indicatorAlignParentStart, false)
-                indicatorAlignParentTop =
+                if (alignParentStart) {
+                    indicatorLayoutRules.add(ALIGN_PARENT_START)
+                }
+                val alignParentTop =
                     getBoolean(R.styleable.Banner_banner_indicatorAlignParentTop, false)
-                indicatorAlignParentEnd =
+                if (alignParentTop) {
+                    indicatorLayoutRules.add(ALIGN_PARENT_TOP)
+                }
+                val alignParentEnd =
                     getBoolean(R.styleable.Banner_banner_indicatorAlignParentEnd, false)
-                indicatorAlignParentBottom =
-                    getBoolean(
-                        R.styleable.Banner_banner_indicatorAlignParentBottom, false
-                    )
-                indicatorCenterHorizontal =
-                    getBoolean(
-                        R.styleable.Banner_banner_indicatorCenterHorizontal, false
-                    )
-                indicatorCenterVertical =
-                    getBoolean(
-                        R.styleable.Banner_banner_indicatorCenterVertical, false
-                    )
+                if (alignParentEnd) {
+                    indicatorLayoutRules.add(ALIGN_PARENT_END)
+                }
+                val alignParentBottom =
+                    getBoolean(R.styleable.Banner_banner_indicatorAlignParentBottom, false)
+                if (alignParentBottom) {
+                    indicatorLayoutRules.add(ALIGN_PARENT_BOTTOM)
+                }
+                val centerHorizontal =
+                    getBoolean(R.styleable.Banner_banner_indicatorCenterHorizontal, false)
+                if (centerHorizontal) {
+                    indicatorLayoutRules.add(CENTER_HORIZONTAL)
+                }
+                val centerVertical =
+                    getBoolean(R.styleable.Banner_banner_indicatorCenterVertical, false)
+                if (centerVertical) {
+                    indicatorLayoutRules.add(CENTER_VERTICAL)
+                }
+                val centerInParent =
+                    getBoolean(R.styleable.Banner_banner_indicatorCenterInParent, false)
+                if (centerInParent) {
+                    indicatorLayoutRules.add(CENTER_IN_PARENT)
+                }
                 indicatorMarginStart =
                     getDimensionPixelOffset(R.styleable.Banner_banner_marginStart, 8.dp)
                 indicatorMarginTop =
@@ -447,6 +313,7 @@ class Banner @JvmOverloads constructor(
                     }
                 }
             }
+            orientation = getInt(R.styleable.Banner_banner_orientation, HORIZONTAL)
             recycle()
         }
 
@@ -586,6 +453,11 @@ class Banner @JvmOverloads constructor(
                         duration = autoScrollDuration
                         start()
                     }
+                    //fake drag will delay onPageSelect, invoke manually.
+                    postDelayed({
+                        mIndicator?.onPageSelected(getRealPosition(nextItem))
+                    }, autoScrollDuration / 2)
+
                 }
             }
         }
@@ -663,11 +535,17 @@ class Banner @JvmOverloads constructor(
 
     /**
      * set banner itemClickListener
+     * @param itemClickAction
      */
     fun setOnBannerItemClickListener(itemClickAction: (Int) -> Unit) {
         mOnBannerItemClickListener = object : OnBannerItemClickListener {
             override fun onBannerItemClick(position: Int) {
                 itemClickAction(position)
+            }
+        }
+        bannerCore.adapter?.also {
+            if (it is BannerDecorAdapter) {
+                it.onBannerItemClickListener = mOnBannerItemClickListener
             }
         }
     }
@@ -862,35 +740,22 @@ class Banner @JvmOverloads constructor(
                 require(adapter is BannerDecorAdapter) { "Banner adapter must be BannerDecorAdapter!" }
                 itemCount = adapter.realAdapter.itemCount
             }
-            addView(this, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).also {
-                if (indicatorCenterInParent) {
-                    it.addRule(CENTER_IN_PARENT)
-                }
-                if (indicatorAlignParentStart) {
-                    it.addRule(ALIGN_PARENT_START)
-                }
-                if (indicatorAlignParentTop) {
-                    it.addRule(ALIGN_PARENT_TOP)
-                }
-                if (indicatorAlignParentEnd) {
-                    it.addRule(ALIGN_PARENT_END)
-                }
-                if (indicatorAlignParentBottom) {
-                    it.addRule(ALIGN_PARENT_BOTTOM)
-                }
-                if (indicatorCenterHorizontal) {
-                    it.addRule(CENTER_HORIZONTAL)
-                }
-                if (indicatorCenterVertical) {
-                    it.addRule(CENTER_VERTICAL)
-                }
-                it.setMargins(
-                    indicatorMarginStart,
-                    indicatorMarginTop,
-                    indicatorMarginEnd,
-                    indicatorMarginBottom
-                )
-            })
+            addView(
+                this,
+                layoutParams ?: LayoutParams(
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT
+                ).also { lp ->
+                    indicatorLayoutRules.forEach { rule ->
+                        lp.addRule(rule)
+                    }
+                    lp.setMargins(
+                        indicatorMarginStart,
+                        indicatorMarginTop,
+                        indicatorMarginEnd,
+                        indicatorMarginBottom
+                    )
+                })
         }
     }
 
@@ -900,7 +765,7 @@ class Banner @JvmOverloads constructor(
      * @param indicator
      * @param layoutParams
      */
-    fun setIndicators(indicator: BaseIndicator, layoutParams: LayoutParams) {
+    fun setIndicators(indicator: BaseIndicator, layoutParams: LayoutParams? = null) {
         indicator.apply {
             mIndicator = this
             orientation = this@Banner.orientation
@@ -909,9 +774,81 @@ class Banner @JvmOverloads constructor(
                 itemCount = adapter.realAdapter.itemCount
             }
         }
-        createIndicators(layoutParams)
+        getAdapter()?.apply {
+            createIndicators(layoutParams)
+        }
     }
 
+    /**
+     * add indicator layout rule, This is consistent with the rule usage of RelativeLayout
+     * @param rule
+     */
+    fun addIndicatorLayoutRule(rule: Int) {
+        require(
+            rule == ALIGN_PARENT_START
+                    || rule == ALIGN_PARENT_TOP
+                    || rule == ALIGN_PARENT_END
+                    || rule == ALIGN_PARENT_BOTTOM
+                    || rule == CENTER_HORIZONTAL
+                    || rule == CENTER_VERTICAL
+                    || rule == CENTER_IN_PARENT
+        ) { "unsupported rule $rule" }
+        indicatorLayoutRules.add(rule)
+        mIndicator?.parent?.let {
+            mIndicator?.layoutParams = mIndicator?.layoutParams?.also { lp ->
+                if (lp is LayoutParams) {
+                    indicatorLayoutRules.forEach { rule ->
+                        lp.addRule(rule)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * remove indicator layout rule, This is consistent with the rule usage of RelativeLayout
+     * @param rule
+     */
+    fun removeIndicatorLayoutRule(rule: Int) {
+        require(
+            rule == ALIGN_PARENT_START
+                    || rule == ALIGN_PARENT_TOP
+                    || rule == ALIGN_PARENT_END
+                    || rule == ALIGN_PARENT_BOTTOM
+                    || rule == CENTER_HORIZONTAL
+                    || rule == CENTER_VERTICAL
+                    || rule == CENTER_IN_PARENT
+        ) { "unsupported rule $rule" }
+        indicatorLayoutRules.remove(rule)
+    }
+
+    /**
+     * set indicator margins
+     * @param start
+     * @param top
+     * @param end
+     * @param bottom
+     */
+    fun setIndicatorMargins(start: Int = 0, top: Int = 0, end: Int = 0, bottom: Int = 0) {
+        indicatorMarginStart = start
+        indicatorMarginTop = top
+        indicatorMarginEnd = end
+        indicatorMarginBottom = bottom
+        mIndicator?.let { indicator ->
+            if (indicator.parent != null) {
+                indicator.layoutParams = indicator.layoutParams.also {
+                    if (it is LayoutParams) {
+                        it.setMargins(
+                            indicatorMarginStart,
+                            indicatorMarginTop,
+                            indicatorMarginEnd,
+                            indicatorMarginBottom
+                        )
+                    }
+                }
+            }
+        }
+    }
     /* -- support page styles -- */
 
     /**

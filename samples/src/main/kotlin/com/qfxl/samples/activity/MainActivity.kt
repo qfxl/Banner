@@ -26,14 +26,13 @@ class MainActivity : AppCompatActivity() {
         next(BasicActivity::class.java)
     }
 
-    fun onGestureConflictClick(v: View) {
-        next(GestureConflictActivity::class.java)
+    fun onIndicatorClick(v: View) {
+        next(IndicatorActivity::class.java)
     }
 
     fun onTransformClick(v: View) {
         next(TransformActivity::class.java)
     }
-
 }
 
 fun <T> Activity.next(clazz: Class<T>) {

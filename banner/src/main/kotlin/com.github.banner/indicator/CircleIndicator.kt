@@ -100,7 +100,7 @@ class CircleIndicator(context: Context) : BaseIndicator(context) {
             itemSpace = 4.dp
         }
         if (defaultColor == 0) {
-            defaultColor = Color.LTGRAY
+            defaultColor = Color.WHITE
         }
         if (selectedColor == 0) {
             selectedColor = context.themeColor(R.attr.colorPrimary)
