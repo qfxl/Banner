@@ -12,33 +12,6 @@
         android:layout_height="wrap_content">
 
         <com.github.banner.Banner
-            android:id="@+id/banner_transform_4"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginTop="16dp"
-            app:banner_autoScrollDuration="1500"
-            app:banner_indicatorAlignParentBottom="true"
-            app:banner_indicatorCenterHorizontal="true"
-            app:banner_indicatorDefaultColor="#999"
-            app:banner_indicatorItemSelectWidth="10dp"
-            app:banner_indicatorSelectColor="@color/colorAccent"
-            app:banner_indicatorStyle="CIRCLE" />
-
-        <com.github.banner.Banner
-            android:id="@+id/banner_transform_5"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:banner_autoScrollDuration="1500"
-            app:banner_indicatorAlignParentBottom="true"
-            app:banner_indicatorCenterHorizontal="true"
-            app:banner_indicatorDefaultColor="#999"
-            app:banner_indicatorItemSelectWidth="10dp"
-            app:banner_indicatorSelectColor="@color/colorAccent"
-            app:banner_indicatorStyle="RECT_SMOOTH" />
-
-        <com.github.banner.Banner
             android:layout_width="match_parent"
             android:id="@+id/banner_transform_1"
             android:layout_height="120dp"
@@ -75,6 +48,31 @@
             app:banner_indicatorSelectColor="@color/colorAccent"
             app:banner_indicatorStyle="ROUND_RECT_SMOOTH" />
 
+        <com.github.banner.Banner
+            android:id="@+id/banner_transform_4"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            app:banner_autoScrollDuration="1500"
+            app:banner_indicatorAlignParentBottom="true"
+            app:banner_indicatorCenterHorizontal="true"
+            app:banner_indicatorDefaultColor="#999"
+            app:banner_indicatorItemSelectWidth="10dp"
+            app:banner_indicatorSelectColor="@color/colorAccent"
+            app:banner_indicatorStyle="CIRCLE" />
 
+        <com.github.banner.Banner
+            android:id="@+id/banner_transform_5"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:banner_autoScrollDuration="1500"
+            app:banner_indicatorAlignParentBottom="true"
+            app:banner_indicatorCenterHorizontal="true"
+            app:banner_indicatorDefaultColor="#999"
+            app:banner_indicatorItemSelectWidth="10dp"
+            app:banner_indicatorSelectColor="@color/colorAccent"
+            app:banner_indicatorStyle="RECT_SMOOTH" />
     </LinearLayout>
 </ScrollView>
