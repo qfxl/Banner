@@ -20,6 +20,7 @@
         <activity android:name=".activity.BasicActivity" />
         <activity android:name=".activity.TransformActivity" />
         <activity android:name=".activity.IndicatorActivity" />
+        <activity android:name=".activity.MultiPageActivity" />
     </application>
 
 </manifest>

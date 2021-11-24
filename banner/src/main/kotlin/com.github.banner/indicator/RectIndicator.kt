@@ -6,9 +6,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import com.github.banner.Banner
+import com.github.banner.R
 import com.github.banner.dp
 import com.github.banner.themeColor
-import com.github.banner.R
 import kotlin.math.max
 
 /**
@@ -32,7 +32,7 @@ class RectIndicator(context: Context) : BaseIndicator(context) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val requiredItemWidth = max(itemWidth, itemSelectWidth)
-        val requiredItemHeight = max(requiredItemWidth, max(itemHeight, itemSelectHeight))
+        val requiredItemHeight = max(itemHeight, itemSelectHeight)
         if (orientation == Banner.HORIZONTAL) {
             val measuredWidth = (itemCount - 1) * (itemSpace + itemWidth) + itemSelectWidth
             setMeasuredDimension(measuredWidth, requiredItemHeight)

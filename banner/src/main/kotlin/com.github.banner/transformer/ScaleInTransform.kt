@@ -15,6 +15,7 @@ import kotlin.math.abs
 
 class ScaleInTransform(private val minScale: Float, private val orientation: Int) :
     ViewPager2.PageTransformer {
+
     init {
         require(orientation == Banner.HORIZONTAL || orientation == Banner.VERTICAL) { "Orientation must be Banner.HORIZONTAL or Banner.VERTICAL." }
     }

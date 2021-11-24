@@ -33,6 +33,10 @@ class MainActivity : AppCompatActivity() {
     fun onTransformClick(v: View) {
         next(TransformActivity::class.java)
     }
+
+    fun onMultiPageClick(v: View) {
+        next(MultiPageActivity::class.java)
+    }
 }
 
 fun <T> Activity.next(clazz: Class<T>) {

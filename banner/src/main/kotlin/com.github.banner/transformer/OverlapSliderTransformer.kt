@@ -1,6 +1,7 @@
 package com.github.banner.transformer
 
 import android.view.View
+import androidx.viewpager2.widget.ViewPager2
 import com.github.banner.Banner
 import com.github.banner.toPx
 import kotlin.math.abs
@@ -20,7 +21,7 @@ class OverlapSliderTransformer(
     private val unSelectedItemRotation: Float = 0f,
     private val unSelectedItemAlpha: Float = 0f,
     private val itemGap: Float = 0f
-) : BasePageTransformer() {
+) : ViewPager2.PageTransformer {
 
     init {
         require(minScale in 0f..1f) { "minScale value should be between 1.0 to 0.0" }
@@ -29,7 +30,7 @@ class OverlapSliderTransformer(
 
     private val scalingValue = 0.2f
 
-    override fun startTransform(page: View, position: Float) {
+    override fun transformPage(page: View, position: Float) {
         page.apply {
             elevation = -abs(position)
 
@@ -82,4 +83,5 @@ class OverlapSliderTransformer(
             }
         }
     }
+
 }

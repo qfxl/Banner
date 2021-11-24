@@ -29,7 +29,7 @@ class RoundRectIndicator(context: Context) : BaseIndicator(context) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val requiredItemWidth = max(itemWidth, itemSelectWidth)
-        val requiredItemHeight = max(requiredItemWidth, max(itemHeight, itemSelectHeight))
+        val requiredItemHeight = max(itemHeight, itemSelectHeight)
         if (orientation == Banner.HORIZONTAL) {
             val measuredWidth = (itemCount - 1) * (itemSpace + itemWidth) + itemSelectWidth
             setMeasuredDimension(measuredWidth, requiredItemHeight)

@@ -12,7 +12,7 @@
         android:layout_height="140dp"
         android:layout_marginTop="16dp"
         app:banner_indicatorSelectColor="@color/colorAccent"
-        app:banner_indicatorStyle="CIRCLE"
+        app:banner_indicatorStyle="CIRCLE_SMOOTH"
         app:banner_indicatorAlignParentBottom="true"
         app:banner_indicatorCenterHorizontal="true" />
 
@@ -23,6 +23,6 @@
         android:layout_marginTop="16dp"
         app:banner_orientation="vertical"
         app:banner_indicatorSelectColor="@color/colorAccent"
-        app:banner_indicatorStyle="CIRCLE"
+        app:banner_indicatorStyle="CIRCLE_SMOOTH"
         app:banner_indicatorCenterVertical="true" />
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.github.banner
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
@@ -22,10 +21,9 @@ import com.github.banner.adapter.BannerAdapter
 import com.github.banner.adapter.BannerDecorAdapter
 import com.github.banner.adapter.BannerViewHolder
 import com.github.banner.adapter.BaseBannerAdapter
-import com.github.banner.callback.FakeDragAnimatorListener
-import com.github.banner.callback.FakeDragAnimatorUpdateListener
 import com.github.banner.callback.OnBannerItemClickListener
 import com.github.banner.callback.OnBannerPageChangeCallback
+import com.github.banner.ext.ScrollSpeedLayoutManager
 import com.github.banner.indicator.*
 import com.github.banner.transformer.OverlapSliderTransformer
 import com.github.banner.transformer.ScaleInTransform
@@ -162,29 +160,6 @@ class Banner @JvmOverloads constructor(
         }
     }
 
-    /**
-     * fake drag animator, for scroll duration
-     */
-    private val fakeDragAnimator by lazy(LazyThreadSafetyMode.NONE) {
-        ValueAnimator().apply {
-            addListener(fakeDragAnimatorListener)
-            addUpdateListener(fakeDragAnimatorUpdateListener)
-        }
-    }
-
-    /**
-     * fake drag animator listener, for scroll duration
-     */
-    private val fakeDragAnimatorListener by lazy(LazyThreadSafetyMode.NONE) {
-        FakeDragAnimatorListener(bannerCore)
-    }
-
-    /**
-     * fake drag animator update listener, for scroll duration
-     */
-    private val fakeDragAnimatorUpdateListener by lazy(LazyThreadSafetyMode.NONE) {
-        FakeDragAnimatorUpdateListener(bannerCore)
-    }
     /* -- for auto scroll end-- */
 
     /**
@@ -344,10 +319,12 @@ class Banner @JvmOverloads constructor(
 
         addView(bannerCore, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 
-        //register lifecycle
+        // register lifecycle
         if (context is LifecycleOwner) {
             context.lifecycle.addObserver(this)
         }
+        // reflect RecyclerView#LayoutManager for scroll speed
+        ScrollSpeedLayoutManager.inject(this)
     }
 
     /**
@@ -364,14 +341,6 @@ class Banner @JvmOverloads constructor(
         } else {
             owner.lifecycle.addObserver(this)
         }
-    }
-
-    /**
-     * set auto scroll interpolator, only used for auto scroll.
-     * @param interpolator
-     */
-    fun setAutoScrollInterpolator(interpolator: Interpolator) {
-        fakeDragAnimator.interpolator = interpolator
     }
 
     /**
@@ -443,27 +412,7 @@ class Banner @JvmOverloads constructor(
                 if (currentItem < adapter.itemCount - 1) {
                     nextItem = currentItem + 1
                 }
-                if (autoScrollDuration == 0L) {
-                    bannerCore.currentItem = nextItem
-                } else {
-                    val pxToDrag: Int =
-                        if (orientation == HORIZONTAL) {
-                            bannerCore.width * (nextItem - currentItem) - getRecyclerView().paddingLeft - getRecyclerView().paddingRight
-                        } else {
-                            bannerCore.height * (nextItem - currentItem) - getRecyclerView().paddingTop - getRecyclerView().paddingTop
-                        }
-                    fakeDragAnimatorUpdateListener.reset()
-                    fakeDragAnimator.apply {
-                        setIntValues(0, pxToDrag)
-                        duration = autoScrollDuration
-                        start()
-                    }
-                    //fake drag will delay onPageSelect, invoke manually.
-                    postDelayed({
-                        mIndicator?.onPageSelected(getRealPosition(nextItem))
-                    }, autoScrollDuration / 2)
-
-                }
+                bannerCore.currentItem = nextItem
             }
         }
     }
@@ -728,7 +677,6 @@ class Banner @JvmOverloads constructor(
      * create Banner indicators
      */
     private fun createIndicators(layoutParams: LayoutParams? = null) {
-        removeView(mIndicator)
         mIndicator?.apply {
             defaultColor = indicatorDefaultColor
             selectedColor = indicatorSelectColor
@@ -781,6 +729,7 @@ class Banner @JvmOverloads constructor(
             bannerCore.adapter?.also { adapter ->
                 require(adapter is BannerDecorAdapter) { "Banner adapter must be BannerDecorAdapter!" }
                 itemCount = adapter.realAdapter.itemCount
+                currentPage = getCurrentItem()
             }
         }
         getAdapter()?.apply {
@@ -789,10 +738,18 @@ class Banner @JvmOverloads constructor(
     }
 
     /**
+     * remove indicator
+     */
+    fun removeIndicator() {
+        removeView(mIndicator)
+    }
+
+    /**
      * set indicator style
      * @param style
      */
     fun setIndicatorStyle(@IndicatorStyle style: Int) {
+        removeIndicator()
         mIndicator = when (style) {
             INDICATOR_STYLE_CIRCLE -> CircleIndicator(context)
             INDICATOR_STYLE_RECT -> RectIndicator(context)
@@ -1020,9 +977,5 @@ class Banner @JvmOverloads constructor(
         }.apply {
             submitList(dataList)
         })
-    }
-
-    fun refresh() {
-
     }
 }

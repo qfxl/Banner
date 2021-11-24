@@ -12,6 +12,7 @@ import kotlin.math.abs
  */
 
 class DepthPageTransformer(private val minScale: Float = MIN_SCALE) : BasePageTransformer() {
+
     companion object {
         private const val MIN_SCALE = 0.8f
     }

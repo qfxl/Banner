@@ -23,4 +23,9 @@
         android:text="transform"
         android:onClick="onTransformClick"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="multiPage"
+        android:onClick="onMultiPageClick"/>
 </LinearLayout>

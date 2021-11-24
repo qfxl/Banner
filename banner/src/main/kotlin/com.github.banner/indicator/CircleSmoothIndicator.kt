@@ -3,10 +3,7 @@ package com.github.banner.indicator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import com.github.banner.Banner
-import com.github.banner.R
-import com.github.banner.dp
-import com.github.banner.themeColor
+import com.github.banner.*
 import kotlin.math.max
 import kotlin.math.min
 

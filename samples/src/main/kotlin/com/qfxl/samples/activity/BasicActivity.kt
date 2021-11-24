@@ -1,6 +1,7 @@
 package com.qfxl.samples.activity
 
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.banner.Banner
@@ -22,10 +23,7 @@ class BasicActivity : AppCompatActivity() {
         findViewById<Banner>(R.id.banner_basic_1).apply {
             render(R.layout.banner_item_basic, mockBasicColorData()) { position, t ->
                 itemView.setBackgroundColor(t)
-            }
-
-            setOnBannerItemClickListener { position ->
-                Toast.makeText(this@BasicActivity, "u clicked $position", Toast.LENGTH_SHORT).show()
+                (itemView as TextView).text = position.toString()
             }
         }
 
@@ -34,6 +32,7 @@ class BasicActivity : AppCompatActivity() {
             mockBasicColorData()
         ) { position, t ->
             itemView.setBackgroundColor(t)
+            (itemView as TextView).text = position.toString()
         }
     }
 }

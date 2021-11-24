@@ -6,11 +6,12 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp">
 
-    <ImageView
-        android:id="@+id/iv_transform_page"
+    <TextView
+        android:id="@+id/tv_transform_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop" />
+        android:textColor="#fff"
+        android:gravity="center"
+        android:textSize="30sp" />
 
 </androidx.cardview.widget.CardView>
