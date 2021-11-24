@@ -46,7 +46,7 @@ class Banner @JvmOverloads constructor(
 
     companion object {
         private const val DEFAULT_SCROLL_DURATION = 500L
-        private const val DEFAULT_AUTO_SCROLL_INTERVAL = 3000L
+        private const val DEFAULT_AUTO_SCROLL_INTERVAL = 2000L
 
         const val HORIZONTAL = ViewPager2.ORIENTATION_HORIZONTAL
         const val VERTICAL = ViewPager2.ORIENTATION_VERTICAL
