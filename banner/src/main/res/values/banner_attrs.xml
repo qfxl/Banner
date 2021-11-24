@@ -8,7 +8,8 @@
         </attr>
         <!--can loop indefinitely-->
         <attr name="banner_enableInfinityLoop" format="boolean" />
-        <attr name="banner_enableAutoLoop" format="boolean" />
+        <!--enable auto scroll-->
+        <attr name="banner_enableAutoScroll" format="boolean" />
         <!--whether to scroll automatically when adapter is set-->
         <attr name="banner_autoScrollWhenAttached" format="boolean" />
         <!--auto scroll interval (ms)-->
@@ -57,9 +58,9 @@
         <attr name="banner_indicatorCenterHorizontal" format="boolean" />
         <attr name="banner_indicatorCenterVertical" format="boolean" />
         <!--banner indicator margins-->
-        <attr name="banner_marginStart" format="dimension" />
-        <attr name="banner_marginTop" format="dimension" />
-        <attr name="banner_marginEnd" format="dimension" />
-        <attr name="banner_marginBottom" format="dimension" />
+        <attr name="banner_indicatorMarginStart" format="dimension" />
+        <attr name="banner_indicatorMarginTop" format="dimension" />
+        <attr name="banner_indicatorMarginEnd" format="dimension" />
+        <attr name="banner_indicatorMarginBottom" format="dimension" />
     </declare-styleable>
 </resources>

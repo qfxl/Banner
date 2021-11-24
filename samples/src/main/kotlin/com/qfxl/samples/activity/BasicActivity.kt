@@ -34,5 +34,13 @@ class BasicActivity : AppCompatActivity() {
             itemView.setBackgroundColor(t)
             (itemView as TextView).text = position.toString()
         }
+
+        findViewById<Banner>(R.id.banner_basic_3).render(
+            R.layout.banner_item_basic,
+            mockBasicColorData()
+        ) { position, t ->
+            itemView.setBackgroundColor(t)
+            (itemView as TextView).text = position.toString()
+        }
     }
 }

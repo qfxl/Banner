@@ -39,7 +39,7 @@ inline val Int.sp
 fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 fun String.bannerLog() {
-    Log.d("Banner", this)
+    Log.d(Banner.TAG, this)
 }
 
 @ColorInt

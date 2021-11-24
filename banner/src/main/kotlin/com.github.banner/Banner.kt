@@ -26,7 +26,7 @@ import com.github.banner.callback.OnBannerPageChangeCallback
 import com.github.banner.ext.ScrollSpeedLayoutManager
 import com.github.banner.indicator.*
 import com.github.banner.transformer.OverlapSliderTransformer
-import com.github.banner.transformer.ScaleInTransform
+import com.github.banner.transformer.ScaleInTransformer
 import java.util.*
 import kotlin.math.abs
 
@@ -45,13 +45,13 @@ class Banner @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyle), LifecycleObserver {
 
     companion object {
-        private const val TAG = "Banner"
         private const val DEFAULT_SCROLL_DURATION = 500L
         private const val DEFAULT_AUTO_SCROLL_INTERVAL = 3000L
 
         const val HORIZONTAL = ViewPager2.ORIENTATION_HORIZONTAL
         const val VERTICAL = ViewPager2.ORIENTATION_VERTICAL
 
+        const val TAG = "Banner"
 
         const val INDICATOR_STYLE_NONE = 0
         const val INDICATOR_STYLE_CIRCLE = 1
@@ -201,14 +201,14 @@ class Banner @JvmOverloads constructor(
     init {
         with(context.obtainStyledAttributes(attrs, R.styleable.Banner)) {
             bannerCore.apply {
-                isUserInputEnabled =
-                    getBoolean(R.styleable.Banner_banner_userInputEnable, enableUserInput)
+                enableUserInput =
+                    getBoolean(R.styleable.Banner_banner_userInputEnable, true)
                 offscreenPageLimit =
                     getInt(
                         R.styleable.Banner_banner_pageOffscreenLimit,
                         this@Banner.offscreenPageLimit
                     )
-                enableAutoScroll = getBoolean(R.styleable.Banner_banner_enableAutoLoop, true)
+                enableAutoScroll = getBoolean(R.styleable.Banner_banner_enableAutoScroll, true)
                 autoScrollWhenAttached =
                     getBoolean(R.styleable.Banner_banner_autoScrollWhenAttached, true)
                 enableInfinityLoop = getBoolean(R.styleable.Banner_banner_enableInfinityLoop, true)
@@ -219,7 +219,7 @@ class Banner @JvmOverloads constructor(
                         R.styleable.Banner_banner_autoScrollInterval,
                         DEFAULT_AUTO_SCROLL_INTERVAL.toInt()
                     ).toLong()
-                pageMargin = getInt(R.styleable.Banner_banner_pageMargin, 0)
+                pageMargin = getDimensionPixelOffset(R.styleable.Banner_banner_pageMargin, 0)
 
                 indicatorDefaultColor = getColor(R.styleable.Banner_banner_indicatorDefaultColor, 0)
                 indicatorSelectColor = getColor(R.styleable.Banner_banner_indicatorSelectColor, 0)
@@ -273,13 +273,13 @@ class Banner @JvmOverloads constructor(
                     indicatorLayoutRules.add(CENTER_IN_PARENT)
                 }
                 indicatorMarginStart =
-                    getDimensionPixelOffset(R.styleable.Banner_banner_marginStart, 8.dp)
+                    getDimensionPixelOffset(R.styleable.Banner_banner_indicatorMarginStart, 8.dp)
                 indicatorMarginTop =
-                    getDimensionPixelOffset(R.styleable.Banner_banner_marginTop, 8.dp)
+                    getDimensionPixelOffset(R.styleable.Banner_banner_indicatorMarginTop, 8.dp)
                 indicatorMarginEnd =
-                    getDimensionPixelOffset(R.styleable.Banner_banner_marginEnd, 8.dp)
+                    getDimensionPixelOffset(R.styleable.Banner_banner_indicatorMarginEnd, 8.dp)
                 indicatorMarginBottom =
-                    getDimensionPixelOffset(R.styleable.Banner_banner_marginBottom, 8.dp)
+                    getDimensionPixelOffset(R.styleable.Banner_banner_indicatorMarginBottom, 8.dp)
 
                 mIndicator = when (indicatorStyle) {
                     INDICATOR_STYLE_CIRCLE -> CircleIndicator(context)
@@ -550,7 +550,9 @@ class Banner @JvmOverloads constructor(
         ev?.action?.let { action ->
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
-                    stopAutoScroll()
+                    if (enableUserInput) {
+                        stopAutoScroll()
+                    }
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_OUTSIDE -> {
                     startAutoScroll()
@@ -908,7 +910,7 @@ class Banner @JvmOverloads constructor(
             clipToPadding = false
         }
         setPageTransformer(CompositePageTransformer().apply {
-            addTransformer(ScaleInTransform(minScale, orientation))
+            addTransformer(ScaleInTransformer(minScale, orientation))
             addTransformer(MarginPageTransformer(itemMargin))
         })
     }

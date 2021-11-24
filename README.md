@@ -1,46 +1,47 @@
 ﻿# Banner
 
-## 简介
+## Introduction
 ![license][1]
 
-快速实现Android上的Banner功能，实现原理是Viewpager，此外实现了ViewPager的循环轮播，是否可以手动滑动，滑动的速率，提供自定义指示器，动画，快速集成。
+Quickly implement the Banner function on Android. The implementation principle is Viewpager2. In addition, it realizes the cycle of ViewPager2, whether it can be manually swiped, the rate of sliding, and provides custom indicators, animations, and quick integration.
 
-## 效果图
-![此处输入图片的描述][5]
-
-![此处输入图片的描述][2]
-
-![此处输入图片的描述][3]
-
-![此处输入图片的描述][4]
+## demo
 
 
-## Attributes属性
 
-|attr|format|default|描述|
+## Attributes
+
+|attr|format|default|description|
 |:-:|:-:|:-:|:-|
-|banner_infinityLoop|boolean|true|是否支持循环|
-|banner_autoLoop|boolean|true|是否自动轮播|
-|banner_loopInterval|integer|3000|轮播间隔|
-|banner_touchEnable|boolean|true|是否可以手动滑动|
-|banner_scrollDuration|integer|600|滑动速率|
-|banner_pageMargin|dimension|0|内部ViewPager的pageMargin|
-|banner_pageOffscreenLimit|integer|1|内部ViewPager加载离屏数|
-|banner_isDefaultIndicator|boolean|true|是否采用默认指示器|
-|banner_indicatorBackgroundColor|color|-|指示器背景色|
-|banner_indicatorPosition|enum|bottom|指示器位置top,center,bottom|
-|banner_indicatorWidth|dimension|MATCH_PARENT|指示器宽|
-|banner_indicatorHeight|dimension|wrap_content|指示器高|
-|banner_indicatorSelectResId|reference|默认提供的指示器|指示器选中的资源|
-|banner_indicatorNormalResId|reference|默认提供的指示器|指示器未选中的资源|
-|banner_indicatorItemMargin|dimension|2dp|默认指示器item的间距|
-|banner_indicatorItemWidth|dimension|6dp|默认指示器item宽度|
-|banner_indicatorItemHeight|dimension|6dp|默认指示器item高度|
-|banner_indicatorGravity|enum|center|默认值指示器内部的gravity(left,center,right)|
+|banner_orientation|enum|0|banner orientation,horizontal(0),vertical(1)|
+|banner_enableInfinityLoop|boolean|true|enable infinity loop or not|
+|banner_enableAutoScroll|boolean|true|enable carousel auto scroll or not|
+|banner_autoScrollWhenAttached|boolean|true|automatically turn on carousel when binding data|
+|banner_autoScrollDuration|integer|3000|auto scroll duration|
+|banner_userInputEnable|boolean|true|enable user input or not|
+|banner_pageMargin|dimension|0|banner item page margin|
+|banner_pageOffscreenLimit|integer|-1|banner page offscreenLimit, default is ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT|
+|banner_indicatorStyle|enum|0|NONE(0),CIRCLE(1),RECT(2),ROUND_RECT(3),CIRCLE_SMOOTH(4),RECT_SMOOTH(5),ROUND_RECT_SMOOTH(6)|
+|banner_indicatorDefaultColor|color|Color.WHITE|banner indicator default color|
+|banner_indicatorSelectColor|color|Theme.primary|banner indicator select color|
+|banner_indicatorItemSpace|dimension|4dp|banner indicator each item space|
+|banner_indicatorItemWidth|dimension|CircleIndicator(6dp),RectIndicator(10dp),RoundRectIndicator(10dp)|Banner indicator item width|
+|banner_indicatorItemSelectWidth|dimension|CircleIndicator(6dp),RectIndicator(10dp),RoundRectIndicator(10dp)|Banner indicator item select width|
+|banner_indicatorItemHeight|dimension|CircleIndicator(6dp),RectIndicator(2dp),RoundRectIndicator(2dp)|Banner indicator item height|
+|banner_indicatorItemSelectHeight|dimension|CircleIndicator(6dp),RectIndicator(2dp),RoundRectIndicator(2dp)|Banner indicator item select height|
+|banner_indicatorRoundRectRadius|dimension|RoundRectIndicator#width/2|RoundRectIndicator item radius|
+|banner_indicatorCenterInParent|boolean|false|indicator position center in Banner or not|
+|banner_indicatorAlignParentTop|boolean|false|indicator position align Banner top or not|
+|banner_indicatorAlignParentEnd|boolean|false|indicator position align Banner end or not|
+|banner_indicatorAlignParentBottom|boolean|false|indicator position align Banner bottom or not|
+|banner_indicatorCenterHorizontal|boolean|false|indicator position center horizontal in banner or not|
+|banner_indicatorCenterVertical|boolean|false|indicator position center vertical in Banner or not |
+|banner_marginStart|dimension|8dp|indicator margin start|
+|banner_marginTop|dimension|8dp|indicator margin top|
+|banner_marginEnd|dimension|8dp|indicator margin end|
+|banner_marginBottom|dimension|8dp|indicator margin bottom|
 
-属性都有对应的java api。
-
-## 使用步骤
+## How to use
 ### 1，Gradle
 ```groovy
 allprojects {
@@ -56,149 +57,53 @@ dependencies {
 }
 ```
 
-或者使用本地lib
+or depend on local lib
 ```groovy
 implementation project(':banner')
 ```
 
-### 2，xml声明Banner
+### 2，xml
 ```xml
-    <com.qfxl.view.banner.Banner
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="180dp" />
+    <com.github.banner.Banner
+        android:layout_width="248dp"
+        android:layout_height="140dp"
+        app:banner_indicatorSelectColor="@color/colorAccent" />
 ```
-或者使用自定义属性
+
+or custom attribute
+
 ```xml
-<com.qfxl.view.banner.Banner
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        app:banner_autoLoop="true"
-        app:banner_indicatorBackgroundColor="@android:color/transparent"
-        app:banner_indicatorGravity="center"
-        app:banner_indicatorHeight="16dp"
-        app:banner_indicatorItemHeight="2dp"
-        app:banner_indicatorItemWidth="10dp"
-        app:banner_indicatorItemMargin="3dp"
-        app:banner_indicatorNormalResId="@drawable/sp_line_indicator_normal"
-        app:banner_indicatorPosition="bottom"
-        app:banner_indicatorSelectResId="@drawable/sp_line_indicator_selected"
-        app:banner_infinityLoop="true"
-        app:banner_isDefaultIndicator="true"
-        app:banner_loopInterval="1000"
-        app:banner_pageMargin="0dp"
-        app:banner_pageOffscreenLimit="3"
-        app:banner_scrollDuration="600"
-        app:banner_touchEnable="true" />
+
 ```
-## 3，实现图片加载器（如果使用自定义适配器则可以不用实现）
+### set source 
 ```java
-private IBannerImageLoader imageLoader = new IBannerImageLoader() {
-        @Override
-        public void displayImage(Context context, ImageView imageView, Object path) {
-            Glide.with(context).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.img_placeholder)).load(path).into(imageView);
-        }
 
-        @Override
-        public ImageView createImageViewView(Context context) {
-            return null ;
-        }
-    };
-```
-## 设置数据源
-```java
-banner.autoReady(urls, imageLoader, new BannerDefaultAdapter.OnBannerClickListener() {
-            @Override
-            public void onBannerClick(int position, Object resource) {
-
-            }
-        });
-```
-或者使用代码进行详细配置
-```java
- banner.setAutoLoop(true)
-                .setInfinityLoop(true)
-                .setLoopInterval(1000)
-                .setTouchScrollable(true)
-                .setIsDefaultIndicator(true)
-                .setIndicatorLayoutBackgroundColor(Color.TRANSPARENT)
-                .setIndicatorPosition(Banner.IndicatorPosition.BOTTOM)
-                .setIndicatorGravity(Gravity.CENTER)
-                .setIndicatorHeight(Utils.dp2px(this, 16))
-                .setIndicatorItemWidth(Utils.dp2px(this, 6))
-                .setIndicatorItemHeight(Utils.dp2px(this, 6))
-                .setIndicatorItemMargin(Utils.dp2px(this, 3))
-                .setIndicatorNormalResId(R.drawable.shape_default_indicator_normal)
-                .setIndicatorSelectResId(R.drawable.shape_default_indicator_select)
-                .setOffscreenPageLimit(3)
-                .setScrollDuration(600)
-                .setBannerCLickListener(new BannerDefaultAdapter.OnBannerClickListener() {
-                    @Override
-                    public void onBannerClick(int position, Object resource) {
-
-                    }
-                })
-                .setImageResources(urls)
-                .setImageLoader(imageLoader)
-                .ready();
 ```
 
-## 关于指示器
-Banner内置了一个指示器，提供选中、未选中资源设置，大小设置，背景色设置，间距设置。如果默认指示器不能满足，可以自己实现想要的指示器，或者使用其他开源指示器。
+
+## Indicators
+
+Banner support following indicators
+
+* CircleIndicator
+  
+* CircleSmoothIndicator
+  
+* RectIndicator
+  
+* RectSmoothIndicator
+  
+* RoundRectIndicator
+  
+* RoundRectSmoothIndicator
+
 
 ### 如何自定义指示器
 以[PageIndicatorView][6]为例，如果想使用该库作为指示器，可以参考以下代码。
 **说明：**[BaseIndicator][7]是继承自LinearLayout，需要做的操作是将指自定义的Indicator通过`addView()`添加进去即可，Banner会在`setAdapter()`之后自动调用`createIndicators()`方法中与内部的ViewPager关联。
 
 ```java
-public class PagerIndicatorViewIndicator extends BaseIndicator {
-    private PageIndicatorView pageIndicatorView;
-    private AnimationType animationType = AnimationType.DROP;
 
-    public PagerIndicatorViewIndicator(Context context) {
-        super(context);
-        setGravity(Gravity.CENTER);
-    }
-
-    public PagerIndicatorViewIndicator(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        setGravity(Gravity.CENTER);
-    }
-
-    public PagerIndicatorViewIndicator(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        setGravity(Gravity.CENTER);
-    }
-
-    public void setAnimationType(AnimationType animationType) {
-        this.animationType = animationType;
-    }
-
-    @Override
-    protected void onItemSelected(int position) {
-        pageIndicatorView.setSelection(position);
-    }
-
-    @Override
-    protected void onItemScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        pageIndicatorView.onPageScrolled(position, positionOffset, positionOffsetPixels);
-    }
-
-    @Override
-    protected void createIndicators(int itemCount) {
-        pageIndicatorView = new PageIndicatorView(getContext());
-        int height = animationType == AnimationType.DROP? Utils.dp2px(getContext(), 16) : Utils.dp2px(getContext(), 10);
-        pageIndicatorView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, height));
-        pageIndicatorView.setDynamicCount(true);
-        pageIndicatorView.setSelected(Color.RED);
-        pageIndicatorView.setUnselectedColor(Color.GRAY);
-        pageIndicatorView.setInteractiveAnimation(true);
-        pageIndicatorView.setRadius(3);
-        pageIndicatorView.setAnimationType(animationType);
-        addView(pageIndicatorView);
-    }
-}
 ```
 
 ## 关于切换动画

@@ -20,7 +20,7 @@ import kotlin.math.max
 class NumberIndicator(context: Context) : BaseIndicator(context) {
     private val bgPaint by lazy(LazyThreadSafetyMode.NONE) {
         Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = Color.LTGRAY
+            color = Color.parseColor("#99999999")
         }
     }
 
