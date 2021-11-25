@@ -1,6 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
+plugins {
+    id 'maven-publish'
+    id 'com.android.library'
+    id 'kotlin-android'
+}
 
 group='com.github.qfxl'
 
@@ -24,10 +26,18 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-allprojects {
-    tasks.withType(Javadoc) {
-        options {
-            encoding "UTF-8"
+task androidSourcesJar(type: Jar) {
+    classifier 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                artifact androidSourcesJar // optional sources
+            }
         }
     }
 }

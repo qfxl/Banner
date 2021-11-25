@@ -42,6 +42,10 @@ fun String.bannerLog() {
     Log.d(Banner.TAG, this)
 }
 
+fun <T> cast(t: Any): T {
+    return t as T
+}
+
 @ColorInt
 @SuppressLint("Recycle")
 fun Context.themeColor(

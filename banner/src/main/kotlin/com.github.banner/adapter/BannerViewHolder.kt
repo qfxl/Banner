@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
  * author : qfxl
  * e-mail : xuyonghong0822@gmail.com
  * time   : 2021/11/17
- * desc   :
+ * desc   : Banner ViewHolder for lambda
  * version: 1.0
  */
 
@@ -34,7 +34,7 @@ class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     /**
-     * 设置ImageView的资源id
+     * setImageResource
      *
      * @param viewId
      * @param resId
@@ -48,7 +48,7 @@ class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     /**
-     * 设置ImageView的Bitmap
+     * setImageBitmap
      *
      * @param viewId
      * @param bitmap
@@ -62,7 +62,7 @@ class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     /**
-     * 设置ImageView的Drawable
+     * setImageDrawable
      *
      * @param viewId
      * @param drawable
@@ -74,23 +74,8 @@ class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
         return this
     }
-
     /**
-     * 设置ImageView的url
-     *
-     * @param viewId
-     * @param url
-     * @return
-     */
-    fun setImageUrl(@IdRes viewId: Int, url: String): BannerViewHolder {
-        getView<ImageView>(viewId)?.apply {
-            //TODO
-        }
-        return this
-    }
-
-    /**
-     * 设置ImageView的alpha
+     * setImageViewAlpha
      *
      * @param viewId
      * @param alpha
@@ -107,7 +92,7 @@ class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     /**
-     * 设置背景色
+     * setBackground
      *
      * @param viewId
      * @param color
@@ -121,64 +106,7 @@ class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     /**
-     * 设置View的可见
-     *
-     * @param viewId
-     * @param visible
-     * @return
-     */
-    fun setVisibility(@IdRes viewId: Int, visible: Boolean): BannerViewHolder {
-        getView<View>(viewId)?.apply {
-            visibility = if (visible) View.VISIBLE else View.INVISIBLE
-        }
-        return this
-    }
-
-    /**
-     * 设置View的可见
-     *
-     * @param viewId
-     * @param visible
-     * @return
-     */
-    fun setGone(@IdRes viewId: Int, visible: Boolean): BannerViewHolder {
-        getView<View>(viewId)?.apply {
-            visibility = if (visible) View.VISIBLE else View.GONE
-        }
-        return this
-    }
-
-    /**
-     * 给View设置tag
-     *
-     * @param viewId
-     * @param newTag
-     * @return
-     */
-    fun setTag(@IdRes viewId: Int, newTag: Any): BannerViewHolder {
-        getView<View>(viewId)?.apply {
-            tag = newTag
-        }
-        return this
-    }
-
-    /**
-     * 给View设置tag
-     *
-     * @param viewId
-     * @param tagKey
-     * @param tagValue
-     * @return
-     */
-    fun setTag(@IdRes viewId: Int, tagKey: Int, tagValue: Any): BannerViewHolder {
-        getView<View>(viewId)?.apply {
-            setTag(tagKey, tagValue)
-        }
-        return this
-    }
-
-    /**
-     * 设置某个View的点击事件
+     * setOnClickListener
      *
      * @param viewId
      * @param onClickListener
@@ -195,7 +123,7 @@ class BannerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     /**
-     * 设置某个View的长按事件
+     * setOnLongClickListener
      *
      * @param viewId
      * @param onLongClickListener

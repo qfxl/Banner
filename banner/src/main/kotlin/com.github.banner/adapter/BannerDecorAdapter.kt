@@ -28,6 +28,10 @@ class BannerDecorAdapter(val realAdapter: RecyclerView.Adapter<BannerViewHolder>
         private const val FAKE_PAGE_RATIO = 300
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return realAdapter.getItemViewType(position % realAdapter.itemCount)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
         return realAdapter.createViewHolder(parent, viewType)
     }

@@ -20,7 +20,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.github.banner.adapter.BannerAdapter
 import com.github.banner.adapter.BannerDecorAdapter
 import com.github.banner.adapter.BannerViewHolder
-import com.github.banner.adapter.BaseBannerAdapter
 import com.github.banner.callback.OnBannerItemClickListener
 import com.github.banner.callback.OnBannerPageChangeCallback
 import com.github.banner.ext.ScrollSpeedLayoutManager
@@ -46,7 +45,7 @@ class Banner @JvmOverloads constructor(
 
     companion object {
         private const val DEFAULT_SCROLL_DURATION = 500L
-        private const val DEFAULT_AUTO_SCROLL_INTERVAL = 2000L
+        private const val DEFAULT_AUTO_SCROLL_INTERVAL = 3000L
 
         const val HORIZONTAL = ViewPager2.ORIENTATION_HORIZONTAL
         const val VERTICAL = ViewPager2.ORIENTATION_VERTICAL
@@ -348,7 +347,7 @@ class Banner @JvmOverloads constructor(
      * Note that the adapter must implement BaseBannerAdapter
      * @param adapter
      */
-    fun <T> setAdapter(adapter: BaseBannerAdapter<T>) {
+    fun setAdapter(adapter: RecyclerView.Adapter<BannerViewHolder>) {
         val decorAdapter = BannerDecorAdapter(adapter).also { decor ->
             decor.enableInfinityLoop = enableInfinityLoop
             decor.onBannerItemClickListener = mOnBannerItemClickListener
@@ -953,29 +952,16 @@ class Banner @JvmOverloads constructor(
 
     /**
      * render
+     * @param pageLayoutId
+     * @param renderScope (Position, T)
      */
     fun <T> render(
         @LayoutRes pageLayoutId: Int,
         dataList: List<T>,
         renderScope: BannerViewHolder.(Int, T) -> Unit
     ) {
-        setAdapter(BannerAdapter<T>({ pageLayoutId }) { position, _, t ->
+        setAdapter(BannerAdapter<T>(pageLayoutId) { position, t ->
             renderScope(position, t)
-        }.apply {
-            submitList(dataList)
-        })
-    }
-
-    /**
-     * render multiType
-     */
-    fun <T> renderMultiType(
-        getLayoutId: (Int) -> Int,
-        dataList: List<T>,
-        renderScope: BannerViewHolder.(Int, Int, T) -> Unit
-    ) {
-        setAdapter(BannerAdapter<T>(getLayoutId) { position, viewType, t ->
-            renderScope(position, viewType, t)
         }.apply {
             submitList(dataList)
         })
