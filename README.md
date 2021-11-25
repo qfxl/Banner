@@ -45,15 +45,14 @@ Quickly implement the Banner function on Android. The implementation principle i
 ### 1，Gradle
 ```groovy
 allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
 }
 
 dependencies {
-     // only support AndroidX
-    implementation 'com.github.qfxl:Banner:1.0.0'
+    // only support AndroidX
 }
 ```
 
@@ -65,51 +64,51 @@ implementation project(':banner')
 ### 2，xml
 ```xml
     <com.github.banner.Banner
-        android:layout_width="match_parent"
-        android:layout_height="140dp"/>
+    android:layout_width="match_parent"
+    android:layout_height="140dp"/>
 ```
 
 or custom attribute
 
 ```xml
   <com.github.banner.Banner
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_marginTop="16dp"
-        app:banner_autoScrollDuration="700"
-        app:banner_autoScrollInterval="2000"
-        app:banner_autoScrollWhenAttached="true"
-        app:banner_enableAutoScroll="true"
-        app:banner_enableInfinityLoop="true"
-        app:banner_indicatorAlignParentBottom="true"
-        app:banner_indicatorCenterHorizontal="true"
-        app:banner_indicatorDefaultColor="#999"
-        app:banner_indicatorItemHeight="8dp"
-        app:banner_indicatorItemSelectHeight="10dp"
-        app:banner_indicatorItemSelectWidth="10dp"
-        app:banner_indicatorItemSpace="6dp"
-        app:banner_indicatorItemWidth="8dp"
-        app:banner_indicatorMarginBottom="16dp"
-        app:banner_indicatorSelectColor="@color/colorAccent"
-        app:banner_indicatorStyle="CIRCLE"
-        app:banner_orientation="horizontal"
-        app:banner_pageMargin="12dp"
-        app:banner_pageOffscreenLimit="3"
-        app:banner_userInputEnable="true" />
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:layout_marginTop="16dp"
+    app:banner_autoScrollDuration="700"
+    app:banner_autoScrollInterval="2000"
+    app:banner_autoScrollWhenAttached="true"
+    app:banner_enableAutoScroll="true"
+    app:banner_enableInfinityLoop="true"
+    app:banner_indicatorAlignParentBottom="true"
+    app:banner_indicatorCenterHorizontal="true"
+    app:banner_indicatorDefaultColor="#999"
+    app:banner_indicatorItemHeight="8dp"
+    app:banner_indicatorItemSelectHeight="10dp"
+    app:banner_indicatorItemSelectWidth="10dp"
+    app:banner_indicatorItemSpace="6dp"
+    app:banner_indicatorItemWidth="8dp"
+    app:banner_indicatorMarginBottom="16dp"
+    app:banner_indicatorSelectColor="@color/colorAccent"
+    app:banner_indicatorStyle="CIRCLE"
+    app:banner_orientation="horizontal"
+    app:banner_pageMargin="12dp"
+    app:banner_pageOffscreenLimit="3"
+    app:banner_userInputEnable="true" />
 ```
 ### set source
 ```java
    fun <T> render(
-        @LayoutRes pageLayoutId: Int,
+@LayoutRes pageLayoutId: Int,
         dataList: List<T>,
         renderScope: BannerViewHolder.(Int, T) -> Unit
-    ) {
+        ) {
         setAdapter(BannerAdapter<T>(pageLayoutId) { position, t ->
-            renderScope(position, t)
+        renderScope(position, t)
         }.apply {
-            submitList(dataList)
+        submitList(dataList)
         })
-    }    
+        }    
 ```
 
 or just invoke `Banner#setAdapter()`
@@ -119,14 +118,14 @@ for example, use glide load url to imageView:
 
 ```java
  mBanner.render(
-            R.layout.banner_item_image,
-            listOf(
-                "url1",
-                "url2",
-                "url3"
-            )
+        R.layout.banner_item_image,
+        listOf(
+        "url1",
+        "url2",
+        "url3"
+        )
         ) { position, t ->
-            Glide.with(itemView).load(t).into(itemView as ImageView)
+        Glide.with(itemView).load(t).into(itemView as ImageView)
         }
 ```
 
@@ -166,25 +165,25 @@ for example, demos show how to custome a NumberIndicator.
 
 ```java
 class NumberIndicator(context: Context) : BaseIndicator(context) {
-    private val bgPaint by lazy(LazyThreadSafetyMode.NONE) {
+private val bgPaint by lazy(LazyThreadSafetyMode.NONE) {
         Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = Color.parseColor("#99999999")
+        color = Color.parseColor("#99999999")
         }
-    }
+        }
 
-    private val defaultText = "0/0"
+private val defaultText = "0/0"
 
-    private val defaultPadding = 6.dp
+private val defaultPadding = 6.dp
 
-    init {
+        init {
         indicatorPaint.apply {
-            color = Color.WHITE
-            textSize = 14f.sp
-            textAlign = Paint.Align.CENTER
+        color = Color.WHITE
+        textSize = 14f.sp
+        textAlign = Paint.Align.CENTER
         }
-    }
+        }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val minWidth = indicatorPaint.measureText(defaultText) + defaultPadding * 2
         val fm = indicatorPaint.fontMetrics
@@ -192,22 +191,22 @@ class NumberIndicator(context: Context) : BaseIndicator(context) {
 
         val measuredSize = max(minWidth, minHeight)
         setMeasuredDimension(measuredSize.toInt(), measuredSize.toInt())
-    }
-
-    override fun drawHorizontal(canvas: Canvas?) {
-        canvas?.apply {
-            drawCircle(width / 2f, height / 2f, width / 2f, bgPaint)
-            drawText("${currentPage+1}/$itemCount", width / 2f, height / 2f - (indicatorPaint.descent() + indicatorPaint.ascent()) / 2, indicatorPaint)
         }
-    }
 
-    override fun drawVertical(canvas: Canvas?) {
+        override fun drawHorizontal(canvas: Canvas?) {
         canvas?.apply {
-            drawCircle(width / 2f, height / 2f, width / 2f, bgPaint)
-            drawText("${currentPage+1}/$itemCount", width / 2f, height / 2f - (indicatorPaint.descent() + indicatorPaint.ascent()) / 2, indicatorPaint)
+        drawCircle(width / 2f, height / 2f, width / 2f, bgPaint)
+        drawText("${currentPage+1}/$itemCount", width / 2f, height / 2f - (indicatorPaint.descent() + indicatorPaint.ascent()) / 2, indicatorPaint)
         }
-    }
-}
+        }
+
+        override fun drawVertical(canvas: Canvas?) {
+        canvas?.apply {
+        drawCircle(width / 2f, height / 2f, width / 2f, bgPaint)
+        drawText("${currentPage+1}/$itemCount", width / 2f, height / 2f - (indicatorPaint.descent() + indicatorPaint.ascent()) / 2, indicatorPaint)
+        }
+        }
+        }
 ```
 
 ## PageTransformer
@@ -227,7 +226,7 @@ fun supportPageOverlap(
         unSelectedItemAlpha: Float = 1f,
         itemGap: Float = 0f,
         revealWidthOrHeight: Int = 20.dp
-    )
+        )
 ```
 
 
@@ -253,7 +252,7 @@ This effect also needs to set the revelWidth of `Banner`, For easy operation, `B
         minScale: Float = 0.8f,
         itemMargin: Int = 10.dp,
         revealWidthOrHeight: Int = 20.dp
-    )
+        )
 ```
 
 * DepthPageTransformer
@@ -275,55 +274,59 @@ This effect also needs to set the revelWidth of `Banner`, For easy operation, `B
  class MultiPageAdapter : RecyclerView.Adapter<BannerViewHolder>() {
 
         companion object {
-            private const val VIEW_TYPE_IMAGE = 1
-            private const val VIEW_TYPE_TEXT = 2
-            private const val VIEW_TYPE_BACKGROUND = 3
+private const val VIEW_TYPE_IMAGE = 1
+private const val VIEW_TYPE_TEXT = 2
+private const val VIEW_TYPE_BACKGROUND = 3
         }
 
         override fun getItemViewType(position: Int): Int {
-            return when (position) {
-                0 -> VIEW_TYPE_IMAGE
-                1 -> VIEW_TYPE_TEXT
-                else -> VIEW_TYPE_BACKGROUND
-            }
+        return when (position) {
+        0 -> VIEW_TYPE_IMAGE
+        1 -> VIEW_TYPE_TEXT
+        else -> VIEW_TYPE_BACKGROUND
+        }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
-            val layoutId = when (viewType) {
-                VIEW_TYPE_IMAGE -> {
-                    R.layout.banner_item_multi_page_image
-                }
-                VIEW_TYPE_TEXT -> {
-                    R.layout.banner_item_multi_page_text
-                }
-                else -> {
-                    R.layout.banner_item_multi_page_background
-                }
-            }
-            return BannerViewHolder(
-                LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
-            )
+        val layoutId = when (viewType) {
+        VIEW_TYPE_IMAGE -> {
+        R.layout.banner_item_multi_page_image
+        }
+        VIEW_TYPE_TEXT -> {
+        R.layout.banner_item_multi_page_text
+        }
+        else -> {
+        R.layout.banner_item_multi_page_background
+        }
+        }
+        return BannerViewHolder(
+        LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        )
         }
 
         override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-            when (getItemViewType(position)) {
-                VIEW_TYPE_IMAGE -> {
-                    (holder.itemView as ImageView).setImageResource(R.drawable.img_banner)
-                }
-                VIEW_TYPE_TEXT -> {
-                    holder.itemView.setBackgroundColor(Color.LTGRAY)
-                    (holder.itemView as TextView).text = "This is a Text Page"
-                }
-                else -> {
-                    holder.itemView.setBackgroundColor(Color.parseColor("#BEEDC7"))
-                }
-            }
+        when (getItemViewType(position)) {
+        VIEW_TYPE_IMAGE -> {
+        (holder.itemView as ImageView).setImageResource(R.drawable.img_banner)
+        }
+        VIEW_TYPE_TEXT -> {
+        holder.itemView.setBackgroundColor(Color.LTGRAY)
+        (holder.itemView as TextView).text = "This is a Text Page"
+        }
+        else -> {
+        holder.itemView.setBackgroundColor(Color.parseColor("#BEEDC7"))
+        }
+        }
         }
 
         override fun getItemCount(): Int {
-            return 3
+        return 3
         }
-    }
+        }
+```
+
+```java
+mBanner.setAdapter(MultiPageAdapter())
 ```
 
 [1]: https://camo.githubusercontent.com/fc8e0c80ec74887c0cbc124b5e8cec1009e6f596/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e73652d417061636865253230322e302d626c75652e7376673f7374796c653d666c6174
