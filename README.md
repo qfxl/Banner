@@ -55,7 +55,7 @@ allprojects {
 
 dependencies {
     // only support AndroidX
-    // prepare to publish
+    implementation 'com.github.qfxl:Banner:1.0.2'
 }
 ```
 
